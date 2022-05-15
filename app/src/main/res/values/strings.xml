@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2022 The Jerry xu Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <string name="app_name">中国法律</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_content">ContentActivity</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="general">通用</string>
+    <string name="theme">主题</string>
+    <string name="style">正文样式</string>
+    <string name="layout">布局</string>
+    <string name="other">其他</string>
+    <string name="science">实验室</string>
+
+    <!-- Theme Preferences -->
+    <string name="material_design">风格</string>
+    <string name="night_mode">夜间模式</string>
+    <string name="theme_color">主题颜色</string>
+
+    <!-- Style Preferences -->
+    <string name="font_style">Font style</string>
+    <string name="font_title">字体大小</string>
+    <string name="line_spacing_size">行间距</string>
+    <string name="action_settings">设置</string>
+
+    <string name="other_version">版本</string>
+    <string name="other_version_name">%s（%s）</string>
+    <string name="other_about">关于</string>
+    <string name="other_privacy">隐私政策</string>
+    <string name="other_agreement">用户协议</string>
+
+    <string name="official_url">文章源地址</string>
+    <string name="menu_search">搜索</string>
+    <string name="menu_sort">排序</string>
+    <string name="menu_collections">收藏</string>
+    <string name="menu_settings">设置</string>
+    <string name="menu_info">关于</string>
+    <string name="menu_more">更多</string>
+    <string name="menu_share">分享</string>
+    <string name="menu_pdf">导出 PDF</string>
+    <string name="menu_catalogue">目录</string>
+    <string name="menu_like">喜欢</string>
+    <string name="word_count">字数：%s</string>
+    <string name="select_count">已选择：%d</string>
+    <string name="article_folder">目录：%s</string>
+
+    <string name="delete">删除</string>
+    <string name="cancel">取消</string>
+    <string name="enter">进入</string>
+    <string name="unfold">展开</string>
+
+    <string name="settings_material_design_3_title">Material Design 3</string>
+    <string name="settings_material_design_2_title">Material Design 2</string>
+
+    <string name="data_source">数据源</string>
+    <string name="flk">国家法律法规数据库</string>
+    <string name="flk_npc">https://flk.npc.gov.cn</string>
+    <string name="court">最高人民法院</string>
+    <string name="court_gov">https://www.court.gov.cn</string>
+    <string name="laws">Laws</string>
+    <string name="github_laws">https://github.com/LawRefBook/Laws</string>
+    <string name="release_note">更新日志</string>
+    <string name="source_code">Source Code</string>
+    <string name="github_lawrefbook">https://github.com/IncoderApp/LawRefBook</string>
+    <string name="licenses">Licenses</string>
+    <string name="apache_2_0_license">Apache-2.0 License</string>
+    <string name="developers">Developers</string>
+    <string name="author">Jerry xu</string>
+    <string name="author_blog">https://incoder.org</string>
+    <string name="lawrefbook_log">https://incoder.app/lawrefbook</string>
+    <string name="developer_designer">Developer &amp; Designer</string>
+    <string name="feedback">反馈 &amp; 建议</string>
+    <string name="author_email">incoder.xu@gmail.com</string>
+    <string name="developer_remarks">当前应用为离线应用。项目遵循 Material Design 风格；项目将会上架酷安，Google Play 应用市场，喜欢记得给我好评；项目完全开源，如有特别需要请遵循开源协议的前提下，在下方 GitHub 自行提取使用</string>
+    <string name="thanks">本项目特别感谢 @RanKKI 提供开源数据，以及 LawRefBook 项目功能参考</string>
+
+    <string name="license_text">
+       Copyright 2022 Jerry xu\n\n
+
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at\n\n
+
+           http://www.apache.org/licenses/LICENSE-2.0\n\n
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+    </string>
+    <string name="praise_desc">您的好评将会给予我莫大的动力与帮助</string>
+    <string name="praise">给我好评</string>
+    <string name="share">应用分享</string>
+    <string name="remarks">开发寄语</string>
+
+</resources>

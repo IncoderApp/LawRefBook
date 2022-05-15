@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2022 The Jerry xu Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/general">
+        <ListPreference
+            android:icon="@drawable/ic_baseline_nights_stay_24"
+            app:defaultValue="12pt"
+            app:entries="@array/night_values"
+            app:entryValues="@array/night_values"
+            app:key="night"
+            app:title="@string/night_mode"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/theme">
+
+        <ListPreference
+            android:icon="@drawable/ic_baseline_color_lens_24"
+            app:defaultValue="12pt"
+            app:entries="@array/night_values"
+            app:entryValues="@array/night_values"
+            app:key="color"
+            app:title="@string/theme_color"
+            app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:disableDependentsState="true"
+            android:icon="@drawable/ic_baseline_design_services_24"
+            android:key="theme"
+            android:summaryOff="@string/settings_material_design_2_title"
+            android:summaryOn="@string/settings_material_design_3_title"
+            android:title="@string/material_design" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/style">
+
+        <ListPreference
+            android:icon="@drawable/ic_baseline_format_size_24"
+            app:defaultValue="reply"
+            app:entries="@array/font_size"
+            app:entryValues="@array/reply_values"
+            app:key="size"
+            app:title="@string/font_title"
+            app:useSimpleSummaryProvider="true" />
+        <SeekBarPreference
+            android:icon="@drawable/ic_baseline_format_line_spacing_24"
+            android:key="spacing"
+            android:stepSize="0.1"
+            android:theme="@style/ThemeOverlay.PrimaryPalette.Purple"
+            android:valueFrom="0"
+            android:valueTo="1"
+            app:summary="0"
+            app:title="@string/line_spacing_size" />
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:disableDependentsState="true"
+            android:icon="@drawable/ic_baseline_unfold_less_24"
+            android:key="scrolling"
+            android:title="滑动时隐藏导航菜单" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/other">
+
+        <Preference
+            android:icon="@drawable/ic_info_outline_24px"
+            android:key="about"
+            app:fragment="app.incoder.lawrefbook.ui.settings.AboutFragment"
+            app:title="@string/other_about" />
+
+<!--        <Preference-->
+<!--            android:icon="@drawable/ic_info_outline_24px"-->
+<!--            android:key="privacy"-->
+<!--            app:title="@string/other_privacy" />-->
+
+<!--        <Preference-->
+<!--            android:icon="@drawable/ic_info_outline_24px"-->
+<!--            android:key="agreement"-->
+<!--            app:title="@string/other_agreement" />-->
+
+    </PreferenceCategory>
+</PreferenceScreen>
