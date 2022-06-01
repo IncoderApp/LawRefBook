@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,6 +43,7 @@ public class FeedFragment extends Fragment {
 
     private static final String CATEGORY = "category";
     private Lawre category;
+    private FeedAdapter mAdapter;
 
     public FeedFragment() {
         // Required empty public constructor
@@ -62,8 +64,14 @@ public class FeedFragment extends Fragment {
         return fragment;
     }
 
-    public static void changeLawre(Lawre data) {
-
+    public void changeLawre(Lawre data) {
+        if (mAdapter == null) {
+            mAdapter = new FeedAdapter(requireActivity(), category, requireContext());
+        } else {
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new FeedDiffCallBack(data, category));
+            diffResult.dispatchUpdatesTo(mAdapter);
+        }
+        mAdapter.setData(data);
     }
 
     @Override
@@ -86,9 +94,9 @@ public class FeedFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView mRecyclerView = view.findViewById(R.id.rv_content);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        FeedAdapter adapter = new FeedAdapter(requireActivity(), category, requireContext());
+        mAdapter = new FeedAdapter(requireActivity(), category, requireContext());
         MaterialDividerItemDecoration divider = new MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL);
         mRecyclerView.addItemDecoration(divider);
-        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setAdapter(mAdapter);
     }
 }

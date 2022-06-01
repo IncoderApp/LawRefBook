@@ -17,7 +17,6 @@
 package app.incoder.lawrefbook.model;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -33,6 +32,6 @@ public class Article implements Serializable {
     private String articleId;
     private String title;
     private List<String> content;
-    private LinkedHashMap<Integer, String> catalog;
+    private List<Toc> toc;
     private Extended info;
 }

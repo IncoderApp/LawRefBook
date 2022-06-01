@@ -16,12 +16,12 @@
 
 package app.incoder.lawrefbook.ui.catalog;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,14 +29,9 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import app.incoder.lawrefbook.R;
 import app.incoder.lawrefbook.model.Article;
-import app.incoder.lawrefbook.ui.toc.FileBean;
-import app.incoder.lawrefbook.ui.toc.SimpleTreeAdapter;
-import app.incoder.lawrefbook.ui.toc.TreeListViewAdapter;
+import app.incoder.lawrefbook.model.Toc;
 
 /**
  * CatalogSheetFragment
@@ -47,8 +42,6 @@ import app.incoder.lawrefbook.ui.toc.TreeListViewAdapter;
 public class CatalogSheetFragment extends BottomSheetDialogFragment {
 
     private static final String ARTICLE_INFO = "article_info";
-    private TreeListViewAdapter<FileBean> mAdapter;
-    private List<FileBean> mDatas = new ArrayList<>();
     private Article article;
 
     public static CatalogSheetFragment newInstance(Article article) {
@@ -65,6 +58,9 @@ public class CatalogSheetFragment extends BottomSheetDialogFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             article = (Article) getArguments().getSerializable(ARTICLE_INFO);
+            for (int i = 0; i < article.getToc().size(); i++) {
+                Toc toc = article.getToc().get(i);
+            }
         }
     }
 
@@ -79,40 +75,7 @@ public class CatalogSheetFragment extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ListView mTree = requireView().findViewById(R.id.lv_toc);
-        initDatas();
-        try {
-            mAdapter = new SimpleTreeAdapter<>(mTree, requireContext(), mDatas, 0);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        mTree.setAdapter(mAdapter);
-        mAdapter.setOnTreeNodeClickListener((node, position) -> {
-            if (node.isLeaf()) {
-                Toast.makeText(getContext(), node.getName(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        LayoutInflater inflater = (LayoutInflater) requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    private void initDatas() {
-        // id , pid , label , 其他属性
-        mDatas.add(new FileBean(1, 0, "文件管理系统"));
-        mDatas.add(new FileBean(2, 1, "游戏"));
-        mDatas.add(new FileBean(3, 1, "文档"));
-        mDatas.add(new FileBean(4, 1, "程序"));
-
-        mDatas.add(new FileBean(5, 2, "war3"));
-        mDatas.add(new FileBean(6, 2, "刀塔传奇"));
-
-        mDatas.add(new FileBean(7, 4, "面向对象"));
-        mDatas.add(new FileBean(8, 4, "非面向对象"));
-
-        mDatas.add(new FileBean(9, 7, "C++"));
-        mDatas.add(new FileBean(10, 7, "JAVA"));
-        mDatas.add(new FileBean(11, 7, "Javascript"));
-        mDatas.add(new FileBean(12, 8, "C"));
-        mDatas.add(new FileBean(13, 0, "第一章"));
-        mDatas.add(new FileBean(14, 1, "第一节"));
-        mDatas.add(new FileBean(15, 2, "第一条"));
-        mDatas.add(new FileBean(16, 0, "第二章"));
-    }
 }

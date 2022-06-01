@@ -31,4 +31,7 @@
     <color name="colorPrimaryDark">#FFC2AF</color>
     <color name="colorPrimaryVariant">#FBB8AC</color>
     <color name="colorSecondary">#FEEAE6</color>
+
+    <color name="searchHighlight">@color/purple_500</color>
+    <color name="searchContent">#36969696</color>
 </resources>

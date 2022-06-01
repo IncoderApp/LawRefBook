@@ -21,7 +21,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     //    private LibrariesViewModel mViewModel;
     private TabLayout mTabLayout;
     private List<Lawre> data;
+    private String queryText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +81,24 @@ public class MainActivity extends AppCompatActivity {
                 return mFragmentList.size();
             }
         });
-//        new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> tab.setText(catalog.get(position))).attach();
-        new TabLayoutMediator(mTabLayout, viewPager2, (tab, position) -> tab.setText(data.get(position).getCategory())).attach();
+//        new TabLayoutMediator(mTabLayout, viewPager2, (tab, position) -> tab.setText(data.get(position).getCategory())).attach();
 
+        viewPager2.setOffscreenPageLimit(mFragmentList.size());
+        new TabLayoutMediator(mTabLayout, viewPager2, true, (tab, position) -> {
+            tab.setText(data.get(position).getCategory());
+            if (queryText != null && queryText.length() > 0) {
+                searchData(queryText);
+            }
+        }).attach();
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if (queryText != null && queryText.length() > 0) {
+                    searchData(queryText);
+                }
+            }
+        });
     }
 
     @Override
@@ -120,46 +135,28 @@ public class MainActivity extends AppCompatActivity {
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    Lawre lawre = data.get(mTabLayout.getSelectedTabPosition());
-                    List<Lawre.LawsBean> laws = lawre.getLaws();
-                    Lawre result = new Lawre();
-                    List<Lawre.LawsBean> searchResult = lawre.getLaws();
-                    for (Lawre.LawsBean law : laws) {
-                        if (law.getName().contains(query)) {
-                            searchResult.add(law);
-                        }
-                    }
-                    result.setCategory(lawre.getCategory());
-                    result.setFolder(lawre.getFolder());
-                    result.setId(lawre.getId());
-                    result.setLinks(lawre.getLinks());
-                    result.setIsSubFolder(lawre.getIsSubFolder());
-                    result.setGroup(lawre.getGroup());
-                    result.setLaws(searchResult);
-                    FeedFragment.changeLawre(result);
-                    System.out.println(result);
-                    return false;
+                    queryText = query;
+                    searchData(query);
+                    return true;
                 }
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    // clear
-                    return false;
+                    if (newText.length() < 1) {
+                        queryText = "";
+                        Lawre lawre = data.get(mTabLayout.getSelectedTabPosition());
+                        mFragmentList.get(mTabLayout.getSelectedTabPosition()).changeLawre(lawre);
+                    } else {
+                        queryText = newText;
+                        // clear
+                        searchData(newText);
+                    }
+                    return true;
                 }
             });
-            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-                @Override
-                public boolean onClose() {
-                    return false;
-                }
-            });
-            searchView.setOnSearchClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-            return true;
+//            searchView.setOnCloseListener(() -> {
+//                return true;
+//            });
         } else if (id == R.id.menu_collections) {
             startActivity(new Intent(this, FavoriteActivity.class));
             return true;
@@ -168,5 +165,25 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void searchData(String query) {
+        Lawre lawre = data.get(mTabLayout.getSelectedTabPosition());
+        List<Lawre.LawsBean> laws = lawre.getLaws();
+        Lawre result = new Lawre();
+        List<Lawre.LawsBean> searchResult = new ArrayList<>();
+        for (Lawre.LawsBean law : laws) {
+            if (law.getName().contains(query)) {
+                searchResult.add(law);
+            }
+        }
+        result.setCategory(lawre.getCategory());
+        result.setFolder(lawre.getFolder());
+        result.setId(lawre.getId());
+        result.setLinks(lawre.getLinks());
+        result.setIsSubFolder(lawre.getIsSubFolder());
+        result.setGroup(lawre.getGroup());
+        result.setLaws(searchResult);
+        mFragmentList.get(mTabLayout.getSelectedTabPosition()).changeLawre(result);
     }
 }

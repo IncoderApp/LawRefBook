@@ -48,9 +48,9 @@
     </string-array>
 
     <string-array name="content_action">
-        <item>反馈</item>
         <item>收藏</item>
-        <item>复制并分享至</item>
+        <item>内容反馈</item>
+        <item>复制并分享至其他应用</item>
     </string-array>
 
 

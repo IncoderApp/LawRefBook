@@ -98,7 +98,7 @@ public class AboutFragment extends Fragment {
         licenses.setOnClickListener(v -> showLicenses());
         praise.setOnClickListener(v -> openMarket(requireContext()));
         author.setOnClickListener(v -> requireActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.author_blog)))));
-        email.setOnClickListener(v -> IntentAction.sendEmail(requireContext(), "【" + getResources().getString(R.string.app_name) + "】建议", "", getString(R.string.author_email)));
+        email.setOnClickListener(v -> IntentAction.sendEmail(requireContext(), String.format(getString(R.string.content_feedback), getResources().getString(R.string.app_name)), "", getString(R.string.author_email)));
     }
 
     public static void openMarket(Context context) {
@@ -108,7 +108,7 @@ public class AboutFragment extends Fragment {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         } catch (Exception e) {
-            Toast.makeText(context, "您的手机没有安装 Android 应用市场", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getResources().getString(R.string.app_market), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }
@@ -116,7 +116,7 @@ public class AboutFragment extends Fragment {
     private void showLicenses() {
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.licenses)
-                .setPositiveButton("我知道了", null)
+                .setPositiveButton(getResources().getString(R.string.i_know), null)
                 .setMessage(R.string.license_text)
                 .show();
     }

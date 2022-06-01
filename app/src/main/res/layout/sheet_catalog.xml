@@ -9,9 +9,9 @@
         android:id="@+id/tv_catalog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawablePadding="8dp"
+        android:drawablePadding="@dimen/dimen_8"
         android:gravity="center"
-        android:padding="8dp"
+        android:padding="@dimen/dimen_8"
         android:text="@string/menu_catalogue"
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
         app:drawableTopCompat="@drawable/catalog_indicator" />
@@ -21,8 +21,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_catalog"
-        android:divider="#000"
-        android:dividerHeight="1px"
         android:footerDividersEnabled="true"
         android:headerDividersEnabled="true" />
 </RelativeLayout>

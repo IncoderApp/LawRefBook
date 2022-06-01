@@ -42,6 +42,23 @@ public class ExampleUnitTest {
         System.out.println(f.format(new Date()));
     }
 
+    @Test
+    public void contentIndex() {
+        String content = "在刑法第三十七条后增加一条，作为第三十七条之一:“因利用职业便利实施犯罪，或者实施违背职业要求的特定义务的犯罪被判处刑罚的，人民法院可以根据犯罪情况和预防再犯罪的需要，禁止其自刑罚执行完毕之日或者假释之日起从事相关职业，期限为三年至五年。";
+        String search = "一条";
+        searchAllIndex(content, search);
+    }
+
+    private void searchAllIndex(String content, String key) {
+        // 第一个出现的索引位置
+        int a = content.indexOf(key);
+        while (a != -1) {
+            // 从这个索引往后开始第一个出现的位置
+            System.out.println("位置" + a);
+            a = content.indexOf(key, a + 1);
+        }
+    }
+
     public int way3(String str, String M) {
         return str.split(M).length - 1;
     }

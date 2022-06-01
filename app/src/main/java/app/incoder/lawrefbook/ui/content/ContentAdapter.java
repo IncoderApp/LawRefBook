@@ -16,6 +16,13 @@
 
 package app.incoder.lawrefbook.ui.content;
 
+import android.content.Context;
+import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,7 +42,6 @@ import java.util.List;
 
 import app.incoder.lawrefbook.R;
 
-
 /**
  * ContentAdapter
  *
@@ -44,12 +50,23 @@ import app.incoder.lawrefbook.R;
  */
 public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentViewHolder> {
 
-    private final List<String> mContent;
+    private List<String> mContent;
+    private String queryText;
     private SelectionTracker<Long> selectionTracker;
 
     public ContentAdapter(List<String> content) {
         this.mContent = content;
     }
+
+    public void setData(List<String> content, String queryText) {
+        this.mContent = content;
+        this.queryText = queryText;
+    }
+
+    public List<String> getData() {
+        return mContent;
+    }
+
 
     public void setSelectionTracker(SelectionTracker<Long> selectionTracker) {
         this.selectionTracker = selectionTracker;
@@ -59,14 +76,14 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
     @Override
     public ContentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.item_content, parent, false);
-        return new ContentViewHolder(view);
+        View itemView = inflater.inflate(R.layout.item_content, parent, false);
+        return new ContentViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ContentViewHolder holder, int position) {
         String item = mContent.get(position);
-        holder.bind(item, position);
+        holder.bind(item, holder.mTitle.getContext(), position);
     }
 
     @Override
@@ -86,9 +103,30 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
             details = new Details();
         }
 
-        private void bind(String item, int position) {
+        private void bind(String item, Context context, int position) {
             details.position = position;
-            mTitle.setText(item);
+            SpannableString spannableString = new SpannableString(item);
+            if (queryText != null && queryText.length() > 0 && item.contains(queryText)) {
+                // search
+                int temp = item.indexOf(queryText);
+                while (temp != -1) {
+                    // highlighted search
+                    ForegroundColorSpan colorSpan = new ForegroundColorSpan(context.getColor(R.color.searchHighlight));
+                    spannableString.setSpan(colorSpan, temp, temp + queryText.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                    RelativeSizeSpan sizeSpan11 = new RelativeSizeSpan(1.1f);
+                    spannableString.setSpan(sizeSpan11, temp, temp + queryText.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                    temp = item.indexOf(queryText, temp + 1);
+                }
+            }
+            // mark
+            if (item.matches("(第.+?条)( *)([\\s\\S]*)")) {
+                StyleSpan styleSpan = new StyleSpan(Typeface.BOLD);
+                int end = item.indexOf("条") + 1;
+                if (end > 0) {
+                    spannableString.setSpan(styleSpan, 0, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                }
+            }
+            mTitle.setText(spannableString);
             if (selectionTracker != null) {
                 bindSelectedState();
             }
@@ -102,7 +140,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
             return details;
         }
     }
-
 
     static class DetailsLookup extends ItemDetailsLookup<Long> {
 

@@ -1,8 +1,10 @@
-package app.incoder.lawrefbook.ui.content;
+package app.incoder.lawrefbook.ui.favorite;
 
 import androidx.recyclerview.widget.DiffUtil;
 
 import java.util.List;
+
+import app.incoder.lawrefbook.storage.Libraries;
 
 /**
  * ContentDiffCallBack
@@ -10,12 +12,12 @@ import java.util.List;
  * @author : Jerry xu
  * @since : 2022/5/19 23:31
  */
-public class ContentDiffCallBack extends DiffUtil.Callback {
+public class FavoriteDiffCallBack extends DiffUtil.Callback {
 
-    private final List<String> mNewContent;
-    private final List<String> mOldContent;
+    private final List<Libraries> mNewContent;
+    private final List<Libraries> mOldContent;
 
-    public ContentDiffCallBack(List<String> newContent, List<String> oldContent) {
+    public FavoriteDiffCallBack(List<Libraries> newContent, List<Libraries> oldContent) {
         this.mNewContent = newContent;
         this.mOldContent = oldContent;
     }
@@ -37,8 +39,8 @@ public class ContentDiffCallBack extends DiffUtil.Callback {
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        String oldContent = mOldContent.get(oldItemPosition);
-        String newContent = mNewContent.get(newItemPosition);
-        return oldContent.equals(newContent);
+        Libraries oldContent = mOldContent.get(oldItemPosition);
+        Libraries newContent = mNewContent.get(newItemPosition);
+        return oldContent.getId() != newContent.getId();
     }
 }

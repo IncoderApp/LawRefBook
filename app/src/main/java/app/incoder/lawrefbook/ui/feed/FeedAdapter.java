@@ -39,13 +39,14 @@ import app.incoder.lawrefbook.ui.content.ContentActivity;
  */
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder> {
 
-    private final Lawre mLawre;
+    private Lawre mLawre;
     private final Context mContext;
-    private Activity mActivity;
+    private final Activity mActivity;
+    public static final int VIEW_TYPE_ITEM = 1;
+    public static final int VIEW_TYPE_EMPTY = 0;
 
-    public FeedAdapter(Lawre lawre, Context context) {
-        this.mLawre = lawre;
-        this.mContext = context;
+    public void setData(Lawre data) {
+        mLawre = data;
     }
 
     public FeedAdapter(Activity activity, Lawre lawre, Context context) {
@@ -58,47 +59,63 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     @Override
     public FeedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.item_feed, parent, false);
+        View view;
+        if (viewType == VIEW_TYPE_EMPTY) {
+            view = inflater.inflate(R.layout.empty_view, parent, false);
+        } else {
+            view = inflater.inflate(R.layout.item_feed, parent, false);
+        }
         return new FeedViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
-        String title = mLawre.getLaws().get(position).getName();
-        String filename = mLawre.getLaws().get(position).getFilename();
-        String articleId = mLawre.getLaws().get(position).getId();
-        String path;
-        if (filename == null) {
-            path = mLawre.getFolder() + "/" + title + ".md";
-        } else {
-            path = mLawre.getFolder() + "/" + filename + ".md";
-        }
-        holder.mTitle.setText(title);
-        holder.itemView.setOnClickListener(v ->
-                mContext.startActivity(new Intent(mContext, ContentActivity.class)
+        if (mLawre != null && mLawre.getLaws().size() > 0) {
+            String title = mLawre.getLaws().get(position).getName();
+            String filename = mLawre.getLaws().get(position).getFilename();
+            String articleId = mLawre.getLaws().get(position).getId();
+            String path;
+            if (filename == null) {
+                path = mLawre.getFolder() + "/" + title + ".md";
+            } else {
+                path = mLawre.getFolder() + "/" + filename + ".md";
+            }
+            holder.mTitle.setText(title);
+            holder.itemView.setOnClickListener(v ->
+                    mContext.startActivity(new Intent(mContext, ContentActivity.class)
+                            .putExtra(ContentActivity.mPath, path)
+                            .putExtra(ContentActivity.mFolder, mLawre.getFolder())
+                            .putExtra(ContentActivity.mArticleId, articleId)
+                            .putExtra(ContentActivity.mTitle, title))
+            );
+            // transition animation
+            /*holder.itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(mContext, ContentActivity.class)
                         .putExtra(ContentActivity.mPath, path)
                         .putExtra(ContentActivity.mFolder, mLawre.getFolder())
                         .putExtra(ContentActivity.mArticleId, articleId)
-                        .putExtra(ContentActivity.mTitle, title))
-        );
-        /*holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(mContext, ContentActivity.class)
-                    .putExtra(ContentActivity.mPath, path)
-                    .putExtra(ContentActivity.mTitle, title);
-            ActivityOptions options =
-                    ActivityOptions.makeSceneTransitionAnimation(mActivity, v, "shared_element_end_root");
-            mContext.startActivity(intent, options.toBundle());
-        });*/
-
+                        .putExtra(ContentActivity.mTitle, title);
+                ActivityOptions options =
+                        ActivityOptions.makeSceneTransitionAnimation(mActivity, v, "shared_element_end_root");
+                mContext.startActivity(intent, options.toBundle());
+            });*/
+        }
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (mLawre.getLaws().size() == 0) {
+            return VIEW_TYPE_EMPTY;
+        }
+        return VIEW_TYPE_ITEM;
+    }
 
     @Override
     public int getItemCount() {
-        if (mLawre != null) {
+        if (mLawre != null && mLawre.getLaws().size() > 0) {
             return mLawre.getLaws().size();
         } else {
-            return 0;
+            return 1;
         }
     }
 

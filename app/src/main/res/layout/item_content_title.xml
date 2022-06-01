@@ -14,28 +14,16 @@
   ~ limitations under the License.
   -->
 
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mcv_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/listChoiceBackgroundIndicator"
-    android:checkable="true"
-    android:clickable="true"
-    android:focusable="true"
-    android:gravity="center_vertical"
-    app:cardCornerRadius="0dp"
-    app:cardElevation="0dp">
-
-    <TextView
-        android:id="@+id/tv_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?android:attr/listPreferredItemHeightSmall"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-        android:paddingTop="4dp"
-        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:paddingBottom="4dp"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
-</com.google.android.material.card.MaterialCardView>
+    android:gravity="center_horizontal"
+    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+    android:paddingTop="@dimen/dimen_12"
+    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+    android:paddingBottom="@dimen/dimen_12"
+    android:textAppearance="?android:attr/textAppearanceSearchResultTitle"
+    tools:text="@string/app_name" />

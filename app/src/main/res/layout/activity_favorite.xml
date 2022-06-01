@@ -25,4 +25,5 @@
     android:paddingTop="@dimen/dimen_8"
     android:paddingEnd="@dimen/dimen_16"
     android:paddingBottom="@dimen/dimen_8"
+    android:scrollbars="vertical"
     tools:context=".ui.favorite.FavoriteActivity" />

@@ -35,6 +35,7 @@ import java.util.List;
 import app.incoder.lawrefbook.model.Article;
 import app.incoder.lawrefbook.model.Extended;
 import app.incoder.lawrefbook.model.Lawre;
+import app.incoder.lawrefbook.model.Toc;
 
 /**
  * LawRefBookRepository
@@ -171,6 +172,7 @@ public class LawRefBookRepository {
     public static Article getArticle(Context context, String path) {
         Article article = new Article();
         Extended extended = new Extended();
+        List<Toc> tocList = new ArrayList<>();
         List<String> history = new ArrayList<>();
         List<String> content = new ArrayList<>();
         LinkedHashMap<Integer, String> catalog = new LinkedHashMap<>();
@@ -179,23 +181,27 @@ public class LawRefBookRepository {
             AssetManager assetManager = context.getAssets();
             BufferedReader bf = new BufferedReader(new InputStreamReader(assetManager.open("Laws/" + path), StandardCharsets.UTF_8));
             String line;
-            boolean text = false;
-            int levelIndex = 0;
+            boolean body = false;
+            int tocIndex = 0;
             while ((line = bf.readLine()) != null) {
                 if ("".equals(line)) {
                     continue;
                 }
                 if ("<!-- INFO END -->".equals(line)) {
-                    text = true;
+                    body = true;
                     continue;
                 }
-                if (text) {
+                if (body) {
+                    tocIndex++;
                     if (line.matches("^#+ .*")) {
                         String headline = line.replaceAll("^#+ ", "");
-                        String level = (line.split("#").length - 1) + "";
-                        catalog.put(levelIndex, level + ":" + headline);
+                        int level = (line.split("#").length - 1);
+                        Toc toc = new Toc();
+                        toc.setPosition(tocIndex);
+                        toc.setTitle(headline);
+                        toc.setTitleLevel(level);
+                        tocList.add(toc);
                         content.add(headline);
-                        levelIndex++;
                     } else {
                         content.add(line);
                     }
@@ -211,7 +217,7 @@ public class LawRefBookRepository {
             extended.setWordsCount(count + "");
             extended.setCorrectHistory(history);
             article.setContent(content);
-            article.setCatalog(catalog);
+            article.setToc(tocList);
             article.setInfo(extended);
         } catch (IOException e) {
             e.printStackTrace();

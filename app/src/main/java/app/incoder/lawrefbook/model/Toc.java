@@ -1,8 +1,16 @@
 package app.incoder.lawrefbook.model;
+
+import lombok.Data;
+
 /**
- * app.incoder.lawrefbook.model.
+ * Toc
  *
- * @author   : Jerry xu
- * @since    : 2022/5/28 10:20
- */   class Toc   {
+ * @author : Jerry xu
+ * @since : 2022/5/28 10:20
+ */
+@Data
+public class Toc {
+    private String title;
+    private int position;
+    private int titleLevel;
 }

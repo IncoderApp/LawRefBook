@@ -37,7 +37,6 @@ import java.util.List;
 
 import app.incoder.lawrefbook.R;
 import app.incoder.lawrefbook.storage.Libraries;
-import app.incoder.lawrefbook.storage.LibrariesViewModel;
 import app.incoder.lawrefbook.ui.content.ContentActivity;
 
 /**
@@ -49,11 +48,12 @@ import app.incoder.lawrefbook.ui.content.ContentActivity;
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder> {
 
     private List<Libraries> mLibraries;
-    private LibrariesViewModel mViewModel;
     private SelectionTracker<Long> selectionTracker;
+    public static final int VIEW_TYPE_ITEM = 1;
+    public static final int VIEW_TYPE_EMPTY = 0;
 
-    public FavoriteAdapter(LibrariesViewModel viewModel) {
-        this.mViewModel = viewModel;
+    public FavoriteAdapter() {
+
     }
 
     void setLibraries(List<Libraries> libraries) {
@@ -68,30 +68,45 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
     @Override
     public FavoriteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.item_favorite, parent, false);
+        View view;
+        if (viewType == VIEW_TYPE_EMPTY) {
+            view = inflater.inflate(R.layout.empty_view, parent, false);
+        } else {
+            view = inflater.inflate(R.layout.item_favorite, parent, false);
+        }
         return new FavoriteViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull FavoriteViewHolder holder, int position) {
-        Libraries item = mLibraries.get(position);
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(holder.itemView.getContext(), ContentActivity.class)
-                    .putExtra(ContentActivity.mPath, item.getArticlePath())
-                    .putExtra(ContentActivity.mArticleId, item.getLawsId())
-                    .putExtra(ContentActivity.mTitle, item.getName());
-            holder.itemView.getContext().startActivity(intent);
-        });
-        holder.bind(item, holder.itemView.getContext(), position);
+        if (mLibraries != null && mLibraries.size() > 0) {
+            Libraries item = mLibraries.get(position);
+            holder.itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(holder.itemView.getContext(), ContentActivity.class)
+                        .putExtra(ContentActivity.mPath, item.getArticlePath())
+                        .putExtra(ContentActivity.mArticleId, item.getLawsId())
+                        .putExtra(ContentActivity.mTitle, item.getName());
+                holder.itemView.getContext().startActivity(intent);
+            });
+            holder.bind(item, holder.itemView.getContext(), position);
+        }
     }
 
     @Override
     public int getItemCount() {
-        if (mLibraries != null) {
+        if (mLibraries != null && mLibraries.size() > 0) {
             return mLibraries.size();
         } else {
-            return 0;
+            return 1;
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (mLibraries == null || mLibraries.size() == 0) {
+            return VIEW_TYPE_EMPTY;
+        }
+        return VIEW_TYPE_ITEM;
     }
 
     public class FavoriteViewHolder extends RecyclerView.ViewHolder {
@@ -134,7 +149,6 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             return details;
         }
     }
-
 
     static class DetailsLookup extends ItemDetailsLookup<Long> {
 

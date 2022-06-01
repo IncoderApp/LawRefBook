@@ -22,11 +22,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.ViewModelProvider;
@@ -34,6 +36,7 @@ import androidx.recyclerview.selection.Selection;
 import androidx.recyclerview.selection.SelectionPredicates;
 import androidx.recyclerview.selection.SelectionTracker;
 import androidx.recyclerview.selection.StorageStrategy;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -70,9 +73,14 @@ public class ContentActivity extends AppCompatActivity {
     public static String mPath = "path";
     public static String mFolder = "folder";
     public static String mArticleId = "articleId";
+
+    protected CoordinatorLayout coordinatorLayout;
     private ActivityContentBinding binding;
     private BottomAppBar bar;
-    protected CoordinatorLayout coordinatorLayout;
+    private RecyclerView mRecyclerView;
+    private ContentAdapter mAdapter;
+    private CatalogSheetFragment mSheetFragment;
+
     private Article article;
     private String title;
     private String path;
@@ -83,8 +91,8 @@ public class ContentActivity extends AppCompatActivity {
     private SelectionTracker<Long> selectionTracker;
     private List<String> content;
     private boolean headerTitle;
-    private RecyclerView mRecyclerView;
-    private ContentAdapter mAdapter;
+    private boolean collected;
+    private Integer librariesId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,15 +140,18 @@ public class ContentActivity extends AppCompatActivity {
         // TODO 文章官方地址
         fabInfo.setOnClickListener(view -> new MaterialAlertDialogBuilder(ContentActivity.this)
                 .setTitle(view.getContentDescription())
-                .setPositiveButton("我知道了", null)
-                .setMessage("暂无数据")
+                .setPositiveButton(getResources().getString(R.string.i_know), null)
+                .setMessage(getResources().getString(R.string.empty_data))
                 .show());
 
         mViewModel.getFavorite(articleId, Category.FULL_CATEGORY.getName()).observe(this, libraries -> {
             if (libraries.size() > 0) {
+                librariesId = libraries.stream().map(Libraries::getId).findFirst().get();
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_24);
+                collected = true;
             } else {
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+                collected = false;
             }
         });
 
@@ -169,32 +180,15 @@ public class ContentActivity extends AppCompatActivity {
         bar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.menu_share) {
                 if (selectionTracker.getSelection().size() < 1) {
-                    Toast.makeText(this, "请长按选择要分享的内容", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getResources().getString(R.string.select_share_content), Toast.LENGTH_SHORT).show();
                 } else {
                     Selection<Long> selection = selectionTracker.getSelection();
                     new MaterialAlertDialogBuilder(ContentActivity.this)
                             .setTitle(getResources().getString(R.string.menu_share))
-                            .setPositiveButton("我知道了", null)
+                            .setPositiveButton(getResources().getString(R.string.i_know), null)
                             .setItems(getResources().getStringArray(R.array.content_action), (dialog, which) -> {
                                 if (which == 0) {
-                                    // 邮箱
-                                    StringBuilder builder = new StringBuilder();
-                                    for (Long snippetsIndex : selection) {
-                                        String snippets = content.get(snippetsIndex.intValue());
-                                        builder.append(snippets)
-                                                .append(selection.size() > 1 ? "\n" : "");
-                                    }
-                                    // open text application
-                                    if (builder.length() > 0) {
-                                        IntentAction.sendEmail(this
-                                                , "【" + getResources().getString(R.string.app_name) + "】反馈"
-                                                , title + "\n" + folder + "\n" + builder
-                                                , getString(R.string.author_email));
-                                    }
-                                    selectionTracker.clearSelection();
-                                    binding.tvCount.setText(String.format(getString(R.string.word_count), article.getInfo().getWordsCount()));
-                                } else if (which == 1) {
-                                    // 收藏
+                                    // collection
                                     for (Long snippetsIndex : selection) {
                                         String snippets = content.get(snippetsIndex.intValue());
                                         Libraries libraries = new Libraries();
@@ -212,7 +206,24 @@ public class ContentActivity extends AppCompatActivity {
                                     }
                                     selectionTracker.clearSelection();
                                     binding.tvCount.setText(String.format(getString(R.string.word_count), article.getInfo().getWordsCount()));
-                                    Toast.makeText(this, "已收藏", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(this, getResources().getString(R.string.collected), Toast.LENGTH_SHORT).show();
+                                } else if (which == 1) {
+                                    // email feedback
+                                    StringBuilder builder = new StringBuilder();
+                                    for (Long snippetsIndex : selection) {
+                                        String snippets = content.get(snippetsIndex.intValue());
+                                        builder.append(snippets)
+                                                .append(selection.size() > 1 ? "\n" : "");
+                                    }
+                                    // open text application
+                                    if (builder.length() > 0) {
+                                        IntentAction.sendEmail(this
+                                                , String.format(getString(R.string.content_feedback), getResources().getString(R.string.app_name))
+                                                , title + "\n" + folder + "\n" + builder
+                                                , getString(R.string.author_email));
+                                    }
+                                    selectionTracker.clearSelection();
+                                    binding.tvCount.setText(String.format(getString(R.string.word_count), article.getInfo().getWordsCount()));
                                 } else {
                                     StringBuilder builder = new StringBuilder();
                                     for (Long snippetsIndex : selection) {
@@ -279,54 +290,58 @@ public class ContentActivity extends AppCompatActivity {
 
     private void favoriteManager() {
         Libraries libraries = new Libraries();
-        libraries.setName(article.getTitle());
-        libraries.setLawsId(articleId);
-        libraries.setArticlePath(path);
-        Date now = new Date();
-        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
-        libraries.setCreateTime(f.format(now));
-        libraries.setArticleFolder(folder);
-        libraries.setCategory(Category.FULL_CATEGORY.getName());
-        mViewModel.insertAction(libraries);
-        favorite.setImageResource(R.drawable.ic_baseline_favorite_24);
-        Toast.makeText(this, "文章收藏成功", Toast.LENGTH_SHORT).show();
+        if (collected) {
+            libraries.setId(librariesId);
+            mViewModel.delete(libraries);
+            favorite.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+            Toast.makeText(this, getResources().getString(R.string.unbookmark_articles), Toast.LENGTH_SHORT).show();
+            collected = false;
+        } else {
+            libraries.setName(article.getTitle());
+            libraries.setLawsId(articleId);
+            libraries.setArticlePath(path);
+            Date now = new Date();
+            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+            libraries.setCreateTime(f.format(now));
+            libraries.setArticleFolder(folder);
+            libraries.setCategory(Category.FULL_CATEGORY.getName());
+            mViewModel.insertAction(libraries);
+            favorite.setImageResource(R.drawable.ic_baseline_favorite_24);
+            Toast.makeText(this, getResources().getString(R.string.bookmark_articles), Toast.LENGTH_SHORT).show();
+            collected = true;
+        }
     }
 
     private void showHistory() {
         new MaterialAlertDialogBuilder(ContentActivity.this)
                 .setTitle(article.getTitle())
-                .setPositiveButton("我知道了", null)
+                .setPositiveButton(getResources().getString(R.string.i_know), null)
                 .setItems(article.getInfo().getCorrectHistory().toArray(new String[0]), null)
                 .show();
     }
 
     protected void setUpBottomDrawer() {
-        bar.setNavigationOnClickListener(v -> CatalogSheetFragment.newInstance(article).show(getSupportFragmentManager(), "dialog"));
+        bar.setNavigationOnClickListener(v -> {
+            if (mSheetFragment == null) {
+                mSheetFragment = CatalogSheetFragment.newInstance(article);
+            }
+            mSheetFragment.show(getSupportFragmentManager(), "dialog");
+        });
     }
 
-//    /**
-//     * 滚动到底部（不带动画）
-//     */
-//    private void scrollToBottom() {
-//        LinearLayoutManager ll = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-//        // 获取到最底部时position
-//        int bottomDataPosition = getBottomDataPosition();
-//        Objects.requireNonNull(ll).scrollToPositionWithOffset(bottomDataPosition, 0);
-//    }
+    private int getBottomDataPosition() {
+        return mAdapter.getItemCount() + mAdapter.getData().size() - 1;
+    }
 
-//    private int getBottomDataPosition() {
-//        return mAdapter.getItemCount() + mAdapter.getData().size() - 1;
-//    }
-
-//    /**
-//     * 滚动到底部（带动画）
-//     */
-//    private void smoothScrollToBottom() {
-//        if (mAdapter.isEmpty()) {
-//            return;
-//        }
-//        mRecyclerView.post(() -> mRecyclerView.smoothScrollToPosition(getBottomDataPosition()));
-//    }
+    public void smoothScrollToBottom() {
+        if (mAdapter == null) {
+            return;
+        }
+        mRecyclerView.post(() -> {
+            mSheetFragment.dismiss();
+            mRecyclerView.smoothScrollToPosition(getBottomDataPosition());
+        });
+    }
 
     @Override
     public void onBackPressed() {
@@ -342,6 +357,34 @@ public class ContentActivity extends AppCompatActivity {
         // load the file of menu that you created
         getMenuInflater().inflate(R.menu.menu_search, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.menu_search) {
+            SearchView searchView = (SearchView) item.getActionView();
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    querySearch(query);
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    querySearch(newText);
+                    return true;
+                }
+            });
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void querySearch(String query) {
+        mAdapter.setData(content, query);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ContentDiffCallBack(content, content));
+        diffResult.dispatchUpdatesTo(mAdapter);
     }
 
 }

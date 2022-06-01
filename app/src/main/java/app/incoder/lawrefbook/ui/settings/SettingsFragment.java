@@ -29,6 +29,7 @@ import app.incoder.lawrefbook.R;
  * @since : 2022/5/2 15:30
  */
 public class SettingsFragment extends PreferenceFragmentCompat {
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
+import app.incoder.lawrefbook.R;
+
 /**
  * system intent action
  *
@@ -19,6 +21,6 @@ public class IntentAction {
         emailIntent.putExtra(Intent.EXTRA_EMAIL, address);
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, title);
         emailIntent.putExtra(Intent.EXTRA_TEXT, content);
-        context.startActivity(Intent.createChooser(emailIntent, "选择邮箱"));
+        context.startActivity(Intent.createChooser(emailIntent, context.getString(R.string.send_email)));
     }
 }

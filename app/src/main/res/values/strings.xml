@@ -33,19 +33,19 @@
     <string name="night_mode">夜间模式</string>
     <string name="theme_color">主题颜色</string>
 
+    <string name="settings_material_design_3_title">Material Design 3</string>
+    <string name="settings_material_design_2_title">Material Design 2</string>
+
     <!-- Style Preferences -->
     <string name="font_style">Font style</string>
     <string name="font_title">字体大小</string>
     <string name="line_spacing_size">行间距</string>
     <string name="action_settings">设置</string>
 
-    <string name="other_version">版本</string>
-    <string name="other_version_name">%s（%s）</string>
     <string name="other_about">关于</string>
     <string name="other_privacy">隐私政策</string>
     <string name="other_agreement">用户协议</string>
 
-    <string name="official_url">文章源地址</string>
     <string name="menu_search">搜索</string>
     <string name="menu_sort">排序</string>
     <string name="menu_collections">收藏</string>
@@ -56,17 +56,32 @@
     <string name="menu_pdf">导出 PDF</string>
     <string name="menu_catalogue">目录</string>
     <string name="menu_like">喜欢</string>
+
+    <string name="official_url">文章源地址</string>
+    <string name="select_share_content">请长按选择要分享的内容</string>
+    <string name="i_know">我知道了</string>
+    <string name="collected">已收藏</string>
+    <string name="unbookmark_articles">取消文章收藏</string>
+    <string name="bookmark_articles">文章收藏成功</string>
+
     <string name="word_count">字数：%s</string>
     <string name="select_count">已选择：%d</string>
     <string name="article_folder">目录：%s</string>
+    <string name="content_feedback">【 %s 】反馈</string>
 
     <string name="delete">删除</string>
     <string name="cancel">取消</string>
     <string name="enter">进入</string>
     <string name="unfold">展开</string>
 
-    <string name="settings_material_design_3_title">Material Design 3</string>
-    <string name="settings_material_design_2_title">Material Design 2</string>
+    <string name="remarks">开发寄语</string>
+    <string name="developer_remarks">
+        1. 当前版本为离线应用；&lt;br>
+        2. 应用遵循 Material Design 风格；&lt;br>
+        3. 应用将会上架酷安，Google Play 应用市场；&lt;br>
+        4. 应用完全开源，如有需要请遵循开源协议自行提取
+    </string>
+    <string name="thanks">本项目特别感谢 @RanKKI 提供开源数据，以及 LawRefBook 项目功能参考</string>
 
     <string name="data_source">数据源</string>
     <string name="flk">国家法律法规数据库</string>
@@ -75,21 +90,15 @@
     <string name="court_gov">https://www.court.gov.cn</string>
     <string name="laws">Laws</string>
     <string name="github_laws">https://github.com/LawRefBook/Laws</string>
+
+    <string name="other_version">版本</string>
+    <string name="other_version_name">%s（%s）</string>
     <string name="release_note">更新日志</string>
+    <string name="lawrefbook_log">https://incoder.app/lawrefbook</string>
     <string name="source_code">Source Code</string>
     <string name="github_lawrefbook">https://github.com/IncoderApp/LawRefBook</string>
     <string name="licenses">Licenses</string>
     <string name="apache_2_0_license">Apache-2.0 License</string>
-    <string name="developers">Developers</string>
-    <string name="author">Jerry xu</string>
-    <string name="author_blog">https://incoder.org</string>
-    <string name="lawrefbook_log">https://incoder.app/lawrefbook</string>
-    <string name="developer_designer">Developer &amp; Designer</string>
-    <string name="feedback">反馈 &amp; 建议</string>
-    <string name="author_email">incoder.xu@gmail.com</string>
-    <string name="developer_remarks">当前应用为离线应用。项目遵循 Material Design 风格；项目将会上架酷安，Google Play 应用市场，喜欢记得给我好评；项目完全开源，如有特别需要请遵循开源协议的前提下，在下方 GitHub 自行提取使用</string>
-    <string name="thanks">本项目特别感谢 @RanKKI 提供开源数据，以及 LawRefBook 项目功能参考</string>
-
     <string name="license_text">
        Copyright 2022 Jerry xu\n\n
 
@@ -105,9 +114,19 @@
        See the License for the specific language governing permissions and
        limitations under the License.
     </string>
-    <string name="praise_desc">您的好评将会给予我莫大的动力与帮助</string>
     <string name="praise">给我好评</string>
+    <string name="praise_desc">您的好评是我更新的动力</string>
+
+    <string name="developers">Developers</string>
+    <string name="author">Jerry xu</string>
+    <string name="author_blog">https://incoder.org</string>
+    <string name="developer_designer">Developer &amp; Designer</string>
+    <string name="feedback">反馈 &amp; 建议</string>
+    <string name="author_email">incoder.xu@gmail.com</string>
+
     <string name="share">应用分享</string>
-    <string name="remarks">开发寄语</string>
+    <string name="send_email">选择邮箱</string>
+    <string name="empty_data">暂无数据</string>
+    <string name="app_market">您的手机没有安装应用市场</string>
 
 </resources>
