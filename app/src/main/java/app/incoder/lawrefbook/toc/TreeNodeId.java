@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package app.incoder.lawrefbook.model;
+package app.incoder.lawrefbook.toc;
 
-import lombok.Data;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Toc
+ * TreeNodeId
  *
  * @author : Jerry xu
- * @since : 2022/5/28 10:20
+ * @since : 2022/5/3 08:56
  */
-@Data
-public class Toc {
-    private String title;
-    private int position;
-    private int titleLevel;
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface TreeNodeId {
 }

@@ -29,7 +29,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import app.incoder.lawrefbook.model.Article;
@@ -175,7 +174,6 @@ public class LawRefBookRepository {
         List<Toc> tocList = new ArrayList<>();
         List<String> history = new ArrayList<>();
         List<String> content = new ArrayList<>();
-        LinkedHashMap<Integer, String> catalog = new LinkedHashMap<>();
         int count = 0;
         try {
             AssetManager assetManager = context.getAssets();

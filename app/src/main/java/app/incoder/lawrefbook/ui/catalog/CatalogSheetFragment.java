@@ -16,12 +16,12 @@
 
 package app.incoder.lawrefbook.ui.catalog;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,9 +29,14 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import app.incoder.lawrefbook.R;
 import app.incoder.lawrefbook.model.Article;
 import app.incoder.lawrefbook.model.Toc;
+import app.incoder.lawrefbook.toc.FileBean;
+import app.incoder.lawrefbook.toc.TreeListViewAdapter;
 
 /**
  * CatalogSheetFragment
@@ -42,7 +47,8 @@ import app.incoder.lawrefbook.model.Toc;
 public class CatalogSheetFragment extends BottomSheetDialogFragment {
 
     private static final String ARTICLE_INFO = "article_info";
-    private Article article;
+    private TreeListViewAdapter<FileBean> mAdapter;
+    private List<FileBean> mCatalogList;
 
     public static CatalogSheetFragment newInstance(Article article) {
         CatalogSheetFragment mBottomSheet = new CatalogSheetFragment();
@@ -57,9 +63,11 @@ public class CatalogSheetFragment extends BottomSheetDialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            article = (Article) getArguments().getSerializable(ARTICLE_INFO);
+            mCatalogList = new ArrayList<>();
+            Article article = (Article) getArguments().getSerializable(ARTICLE_INFO);
             for (int i = 0; i < article.getToc().size(); i++) {
                 Toc toc = article.getToc().get(i);
+                mCatalogList.add(new FileBean(i + 1, toc.getTitleLevel() - 2, toc.getTitle()));
             }
         }
     }
@@ -75,7 +83,17 @@ public class CatalogSheetFragment extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ListView mTree = requireView().findViewById(R.id.lv_toc);
-        LayoutInflater inflater = (LayoutInflater) requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        try {
+            mAdapter = new SimpleTreeAdapter<>(mTree, requireContext(), mCatalogList, 0);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        mTree.setAdapter(mAdapter);
+        mAdapter.setOnTreeNodeClickListener((node, position) -> {
+            if (node.isLeaf()) {
+                Toast.makeText(getContext(), node.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

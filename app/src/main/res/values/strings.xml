@@ -63,6 +63,7 @@
     <string name="collected">已收藏</string>
     <string name="unbookmark_articles">取消文章收藏</string>
     <string name="bookmark_articles">文章收藏成功</string>
+    <string name="untitled">无标题</string>
 
     <string name="word_count">字数：%s</string>
     <string name="select_count">已选择：%d</string>
@@ -78,7 +79,7 @@
     <string name="developer_remarks">
         1. 当前版本为离线应用；&lt;br>
         2. 应用遵循 Material Design 风格；&lt;br>
-        3. 应用将会上架酷安，Google Play 应用市场；&lt;br>
+        3. 应用上架酷安，Google Play 应用市场；&lt;br>
         4. 应用完全开源，如有需要请遵循开源协议自行提取
     </string>
     <string name="thanks">本项目特别感谢 @RanKKI 提供开源数据，以及 LawRefBook 项目功能参考</string>

@@ -322,6 +322,10 @@ public class ContentActivity extends AppCompatActivity {
 
     protected void setUpBottomDrawer() {
         bar.setNavigationOnClickListener(v -> {
+            if (article.getToc().size() < 1) {
+                Toast.makeText(this, getResources().getString(R.string.untitled), Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (mSheetFragment == null) {
                 mSheetFragment = CatalogSheetFragment.newInstance(article);
             }
