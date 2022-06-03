@@ -95,7 +95,7 @@
     <string name="other_version">版本</string>
     <string name="other_version_name">%s（%s）</string>
     <string name="release_note">更新日志</string>
-    <string name="lawrefbook_log">https://incoder.app/lawrefbook</string>
+    <string name="lawrefbook_log">https://incoder.app/2022/06/01/lawrefbook/</string>
     <string name="source_code">Source Code</string>
     <string name="github_lawrefbook">https://github.com/IncoderApp/LawRefBook</string>
     <string name="licenses">Licenses</string>

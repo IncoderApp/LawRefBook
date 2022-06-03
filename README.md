@@ -24,6 +24,8 @@
 |![](art/feed.jpg)|![](art/article.jpg)|![](art/about.jpg)|
 | 历史 | 目录 | 收藏 |
 |![](art/history.jpg)|![](art/catalog.jpg)|![](art/favorite.jpg)|
+| 搜索文章 | 搜索内容 | 等等 |
+|![](art/title-search.jpg)|![](art/article-search.jpg)|……|
 
 ## Features
 
