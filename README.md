@@ -1,9 +1,12 @@
 # LawRefBook
 
+开发环境说明，[Android Studio 4.2 及以上版本，JDK 必须是 JDK11](https://developer.android.google.cn/studio/releases/past-releases?hl=zh-cn#4-2-0) ，因此该项目的 JDK 版本取决于你的运行环境，低版本 Android Studio，要求 JDK8+ 及以上即可
+
+[![](https://img.shields.io/badge/DevTool-Chipmunk%202021.2.1-06?logo=Android%20Studio&labelColor=02303A)](https://developer.android.google.cn/studio/releases)
 [![](https://img.shields.io/badge/Compatibleby-SDK%2024%20~%2031-06?logo=Android&labelColor=02303A)](https://developer.android.google.cn/reference)
-[![](https://img.shields.io/badge/Use%20up%20by-JDK%201.8+-important?logo=java&labelColor=02303A)](https://www.oracle.com/cn/java/technologies/javase/javase-jdk8-downloads.html)
+[![](https://img.shields.io/badge/Use%20up%20by-JDK%201.11+-important?logo=java&labelColor=02303A)](https://jdk.java.net/java-se-ri/11)
 [![](https://img.shields.io/badge/Build%20up%20by-Gradle%207.3.3%20bin-06A0CE?logo=Gradle&labelColor=02303A)](https://docs.gradle.org/7.3.3/release-notes.html)
-![](https://github.com/IncoderApp/LawRefBook/actions/workflows/action.yml/badge.svg?branch=hexo)
+[![](https://github.com/IncoderApp/LawRefBook/actions/workflows/android.yml/badge.svg?branch=main)](https://github.com/IncoderApp/LawRefBook/actions)
 
 1. 当前版本为离线应用；
 2. 应用遵循 Material Design 风格；
@@ -30,7 +33,7 @@
 
 ### 1.0.0（20220601）
 
-1. 聚合 [国家法律法规数据库](https://flk.npc.gov.cn)，[最高人民法院](https://www.court.gov.cn) 网站数据
+1. 使用 [Laws](https://github.com/LawRefBook/Laws) 项目作为数据源，聚合 [国家法律法规数据库](https://flk.npc.gov.cn)，[最高人民法院](https://www.court.gov.cn) 网站数据
 2. 离线使用
 3. 全文，片段法条收藏
 4. 文本分享

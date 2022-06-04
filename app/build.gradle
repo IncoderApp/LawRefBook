@@ -9,7 +9,7 @@ android {
         applicationId "app.incoder.lawrefbook"
         minSdk 24
         targetSdk 31
-        versionCode 202205015
+        versionCode 20220601
         versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
