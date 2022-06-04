@@ -14,7 +14,7 @@
 
 ## Download
 
-[![](art/google-play.png)](https://play.google.com/store/apps/details?id=app.incoder.lawrefbook) [![](art/coolapk.png)](https://www.coolapk.com/apk/app.incoder.lawrefbook) 
+[<img alt="下载应用，请到 Coolapk" src="art/coolapk.png" width="240">](https://www.coolapk.com/apk/app.incoder.lawrefbook) [<img alt="下载应用，请到 Google Play" src="art/google-play.png" width="240">](https://play.google.com/store/apps/details?id=app.incoder.lawrefbook)
 
 ## Preview
 
