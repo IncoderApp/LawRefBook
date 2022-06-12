@@ -16,7 +16,6 @@
 
 package app.incoder.lawrefbook.ui.feed;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -27,8 +26,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import app.incoder.lawrefbook.R;
-import app.incoder.lawrefbook.model.Lawre;
+import app.incoder.lawrefbook.storage.Category;
+import app.incoder.lawrefbook.storage.Law;
 import app.incoder.lawrefbook.ui.content.ContentActivity;
 
 /**
@@ -39,19 +41,18 @@ import app.incoder.lawrefbook.ui.content.ContentActivity;
  */
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder> {
 
-    private Lawre mLawre;
+    private List<Law> mLaw;
     private final Context mContext;
-    private final Activity mActivity;
+    private Category mCategory;
     public static final int VIEW_TYPE_ITEM = 1;
     public static final int VIEW_TYPE_EMPTY = 0;
 
-    public void setData(Lawre data) {
-        mLawre = data;
+    public void setData(Category category, List<Law> data) {
+        mLaw = data;
+        this.mCategory = category;
     }
 
-    public FeedAdapter(Activity activity, Lawre lawre, Context context) {
-        this.mActivity = activity;
-        this.mLawre = lawre;
+    public FeedAdapter(Context context) {
         this.mContext = context;
     }
 
@@ -70,41 +71,59 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
-        if (mLawre != null && mLawre.getLaws().size() > 0) {
-            String title = mLawre.getLaws().get(position).getName();
-            String filename = mLawre.getLaws().get(position).getFilename();
-            String articleId = mLawre.getLaws().get(position).getId();
+//        if (mLawre != null && mLawre.getLaws().size() > 0) {
+//            String title = mLawre.getLaws().get(position).getName();
+//            String filename = mLawre.getLaws().get(position).getFilename();
+//            String articleId = mLawre.getLaws().get(position).getId();
+//            String path;
+//            if (filename == null) {
+//                path = mLawre.getFolder() + "/" + title + ".md";
+//            } else {
+//                path = mLawre.getFolder() + "/" + filename + ".md";
+//            }
+//            holder.mTitle.setText(title);
+//            holder.itemView.setOnClickListener(v ->
+//                    mContext.startActivity(new Intent(mContext, ContentActivity.class)
+//                            .putExtra(ContentActivity.mPath, path)
+//                            .putExtra(ContentActivity.mFolder, mLawre.getFolder())
+//                            .putExtra(ContentActivity.mArticleId, articleId)
+//                            .putExtra(ContentActivity.mTitle, title))
+//            );
+//            // transition animation
+//            /*holder.itemView.setOnClickListener(v -> {
+//                Intent intent = new Intent(mContext, ContentActivity.class)
+//                        .putExtra(ContentActivity.mPath, path)
+//                        .putExtra(ContentActivity.mFolder, mLawre.getFolder())
+//                        .putExtra(ContentActivity.mArticleId, articleId)
+//                        .putExtra(ContentActivity.mTitle, title);
+//                ActivityOptions options =
+//                        ActivityOptions.makeSceneTransitionAnimation(mActivity, v, "shared_element_end_root");
+//                mContext.startActivity(intent, options.toBundle());
+//            });*/
+//        }
+        if (mLaw != null && mLaw.size() > 0) {
+            Law law = mLaw.get(position);
+            holder.mTitle.setText(law.getName());
             String path;
-            if (filename == null) {
-                path = mLawre.getFolder() + "/" + title + ".md";
+            if (law.getFilename() == null) {
+                path = mCategory.getFolder() + "/" + law.getName() + ".md";
             } else {
-                path = mLawre.getFolder() + "/" + filename + ".md";
+                path = mCategory.getFolder() + "/" + law.getFilename() + ".md";
             }
-            holder.mTitle.setText(title);
             holder.itemView.setOnClickListener(v ->
                     mContext.startActivity(new Intent(mContext, ContentActivity.class)
                             .putExtra(ContentActivity.mPath, path)
-                            .putExtra(ContentActivity.mFolder, mLawre.getFolder())
-                            .putExtra(ContentActivity.mArticleId, articleId)
-                            .putExtra(ContentActivity.mTitle, title))
+                            .putExtra(ContentActivity.mFolder, mCategory.getFolder())
+                            .putExtra(ContentActivity.mArticleId, law.getId())
+                            .putExtra(ContentActivity.mTitle, law.getName()))
             );
-            // transition animation
-            /*holder.itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(mContext, ContentActivity.class)
-                        .putExtra(ContentActivity.mPath, path)
-                        .putExtra(ContentActivity.mFolder, mLawre.getFolder())
-                        .putExtra(ContentActivity.mArticleId, articleId)
-                        .putExtra(ContentActivity.mTitle, title);
-                ActivityOptions options =
-                        ActivityOptions.makeSceneTransitionAnimation(mActivity, v, "shared_element_end_root");
-                mContext.startActivity(intent, options.toBundle());
-            });*/
         }
+
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (mLawre.getLaws().size() == 0) {
+        if (mLaw.size() == 0) {
             return VIEW_TYPE_EMPTY;
         }
         return VIEW_TYPE_ITEM;
@@ -112,8 +131,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
     @Override
     public int getItemCount() {
-        if (mLawre != null && mLawre.getLaws().size() > 0) {
-            return mLawre.getLaws().size();
+        if (mLaw.size() > 0) {
+            return mLaw.size();
         } else {
             return 1;
         }

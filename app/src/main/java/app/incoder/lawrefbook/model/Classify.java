@@ -16,24 +16,23 @@
 
 package app.incoder.lawrefbook.model;
 
-import java.io.Serializable;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
- * Article
+ * Classify
  *
  * @author : Jerry xu
- * @since : 2022/5/1 12:58
+ * @since : 2022/5/3 07:00
  */
-@lombok.NoArgsConstructor
-@lombok.Data
-public class Article implements Serializable {
+@Getter
+@AllArgsConstructor
+public enum Classify {
+    /**
+     * Classify
+     */
+    FULL_CATEGORY("full"),
+    SNIPPETS_CATEGORY("snippets");
 
-    private String articleId;
-    private String title;
-//    private List<String> chapters;
-//    private List<String> content;
-    private List<Content> contents;
-    private List<Toc> toc;
-    private Extended info;
+    private final String name;
 }

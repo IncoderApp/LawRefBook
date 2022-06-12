@@ -18,9 +18,12 @@ package app.incoder.lawrefbook.storage;
 
 import android.content.Context;
 
+import androidx.room.AutoMigration;
 import androidx.room.Database;
+import androidx.room.RenameColumn;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.migration.AutoMigrationSpec;
 
 /**
  * Single Room Database
@@ -28,20 +31,28 @@ import androidx.room.RoomDatabase;
  * @author : Jerry xu
  * @since : 2022/5/2 13:18
  */
-@Database(entities = Libraries.class, version = 1, exportSchema = false)
-public abstract class LibrariesDatabase extends RoomDatabase {
+@Database(entities = {Libraries.class}, version = 2,
+        autoMigrations = {@AutoMigration(from = 1, to = 2, spec = AppDatabase.Libraries1To2AutoMigration.class)}
+)
+public abstract class AppDatabase extends RoomDatabase {
 
-    private static LibrariesDatabase INSTANCE;
+    private static AppDatabase INSTANCE;
 
-    static synchronized LibrariesDatabase getInstance(Context context) {
+    /**
+     * getLibrariesDAO
+     *
+     * @return LibrariesDao
+     */
+    public abstract LibrariesDao getLibrariesDAO();
+
+    static synchronized AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
-            INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                    // database name
-                    LibrariesDatabase.class, "lawre_room")
+            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "lawre_room")
+//                    .createFromAsset("database/db.sqlite3")
                     // sql log
-                    .setJournalMode(JournalMode.TRUNCATE)
+//                    .setJournalMode(JournalMode.TRUNCATE)
                     // 破坏式迁移
-                    //.fallbackToDestructiveMigration()
+//                    .fallbackToDestructiveMigration()
                     // 迁移策略
 //                    .addMigrations(MIGRATION1_2)
                     .build();
@@ -49,13 +60,15 @@ public abstract class LibrariesDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    public abstract LibrariesDao getLibrariesDAO();
+    @RenameColumn(tableName = "libraries", fromColumnName = "category", toColumnName = "classify")
+    static class Libraries1To2AutoMigration implements AutoMigrationSpec {
+    }
 
     /*static final Migration MIGRATION1_2 = new Migration(1, 2) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-            // 这里是版本迁移更改的数据库脚本
-            database.execSQL("ALTER TABLE Libraries ADD COLUMN tag");
+            database.execSQL("ALTER TABLE Libraries ADD COLUMN classify");
+//            database.execSQL("alter table 'product' add 'enable' integer not null default '1'");
         }
     };*/
 

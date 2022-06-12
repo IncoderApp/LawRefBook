@@ -79,12 +79,12 @@ interface LibrariesDao {
     /**
      * queryLibraries
      *
-     * @param paraName     paraName
-     * @param paraCategory paraCategory
+     * @param paraName paraName
+     * @param classify classify
      * @return LiveData
      */
-    @Query("SELECT * FROM libraries WHERE name LIKE :paraName AND category = :paraCategory")
-    LiveData<List<Libraries>> queryLibraries(String paraName, String paraCategory);
+    @Query("SELECT * FROM libraries WHERE name LIKE :paraName AND classify = :classify")
+    LiveData<List<Libraries>> queryLibraries(String paraName, String classify);
 
     /**
      * queryAll
@@ -98,9 +98,9 @@ interface LibrariesDao {
      * getFavorite
      *
      * @param articleId articleId
-     * @param category  category
+     * @param classify  classify
      * @return LiveData
      */
-    @Query("SELECT * FROM libraries WHERE laws_id = :articleId AND category = :category")
-    LiveData<List<Libraries>> getFavorite(String articleId, String category);
+    @Query("SELECT * FROM libraries WHERE laws_id = :articleId AND classify = :classify")
+    LiveData<List<Libraries>> getFavorite(String articleId, String classify);
 }

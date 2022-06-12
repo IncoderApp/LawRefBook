@@ -16,15 +16,18 @@
 
 package app.incoder.lawrefbook.storage;
 
-import java.io.Serializable;
-
 import lombok.Builder;
 import lombok.Data;
 
 /**
- * Category
+ * Law
+ *
  * <pre>
- * CREATE TABLE "category" ("id" INTEGER NOT NULL PRIMARY KEY, "name" TEXT NOT NULL, "folder" TEXT NOT NULL, "isSubFolder" INTEGER NOT NULL, "group" TEXT, "order" integer);
+ * CREATE TABLE "law" ("id" TEXT NOT NULL PRIMARY KEY, "level" TEXT NOT NULL, "name" TEXT NOT NULL, "filename" TEXT, "publish" DATE, "expired" INTEGER NOT NULL, "category_id" INTEGER NOT NULL, "order" integer, "subtitle" TEXT, valid_from DATE, FOREIGN KEY ("category_id") REFERENCES "category" ("id"));
+ *
+ * CREATE INDEX "law_category_id" ON "law" ("category_id");
+ *
+ * CREATE INDEX "law_name" ON "law" ("name");
  * </pre>
  *
  * @author : Jerry xu
@@ -32,12 +35,17 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class Category implements Serializable {
+public class Law {
 
-    private int id;
+    private String id;
+    private String level;
     private String name;
-    private String folder;
-    private Integer isSubFolder;
-    private String group;
+    private String filename;
+    private String publish;
+    private String expired;
+    private Integer categoryId;
     private Integer order;
+    private String subtitle;
+    private String validFrom;
+
 }

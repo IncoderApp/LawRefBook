@@ -57,7 +57,7 @@ public class LibrariesRepository {
 
 
     LibrariesRepository(Context context) {
-        LibrariesDatabase database = LibrariesDatabase.getInstance(context.getApplicationContext());
+        AppDatabase database = AppDatabase.getInstance(context.getApplicationContext());
         mDao = database.getLibrariesDAO();
         mLibrariesLive = mDao.queryAll();
     }

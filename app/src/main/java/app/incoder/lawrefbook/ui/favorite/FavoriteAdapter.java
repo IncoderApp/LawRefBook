@@ -134,7 +134,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             mTitle.setText(libraries.getName());
             mContent.setText(libraries.getSnippetsContent());
             mFolder.setText(String.format(context.getResources().getString(R.string.article_folder), libraries.getArticleFolder()));
-            mType.setText("full".equals(libraries.getCategory()) ? "全文" : "片段");
+            mType.setText("full".equals(libraries.getClassify()) ? "全文" : "片段");
             mDate.setText(libraries.getCreateTime());
             if (selectionTracker != null) {
                 bindSelectedState();

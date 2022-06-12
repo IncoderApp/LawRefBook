@@ -65,6 +65,16 @@ public class ExampleUnitTest {
         searchAllIndex(content, search);
     }
 
+    @Test
+    public void lawLine() {
+        String content = "第一条 为了保护民事主体的合法权益，调整民事关系，维护社会和经济秩序，适应中国特色社会主义发展要求，弘扬社会主义核心价值观，根据宪法，制定本法。";
+        // (第.+?条)( *)([\s\S]*)
+        // ^(第[一二三四五六七八九十零百千万]条).*?
+        if (content.matches("(第[一二三四五六七八九十零百千万]*条)( *)([\\s\\S]*)")) {
+            System.out.println(content);
+        }
+    }
+
     private void searchAllIndex(String content, String key) {
         // 第一个出现的索引位置
         int a = content.indexOf(key);

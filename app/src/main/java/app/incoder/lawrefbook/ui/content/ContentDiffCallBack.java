@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import java.util.List;
 
+import app.incoder.lawrefbook.model.Content;
+
 /**
  * ContentDiffCallBack
  *
@@ -28,10 +30,10 @@ import java.util.List;
  */
 public class ContentDiffCallBack extends DiffUtil.Callback {
 
-    private final List<String> mNewContent;
-    private final List<String> mOldContent;
+    private final List<Content> mNewContent;
+    private final List<Content> mOldContent;
 
-    public ContentDiffCallBack(List<String> newContent, List<String> oldContent) {
+    public ContentDiffCallBack(List<Content> newContent, List<Content> oldContent) {
         this.mNewContent = newContent;
         this.mOldContent = oldContent;
     }
@@ -53,8 +55,8 @@ public class ContentDiffCallBack extends DiffUtil.Callback {
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        String oldContent = mOldContent.get(oldItemPosition);
-        String newContent = mNewContent.get(newItemPosition);
+        String oldContent = mOldContent.get(oldItemPosition).getRule();
+        String newContent = mNewContent.get(newItemPosition).getRule();
         return oldContent.equals(newContent);
     }
 }

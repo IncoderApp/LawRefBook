@@ -20,6 +20,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import app.incoder.lawrefbook.model.Classify;
 import lombok.Data;
 
 /**
@@ -35,10 +36,10 @@ public class Libraries {
     @PrimaryKey(autoGenerate = true)
     private int id;
     /**
-     * {@link Category#getName()}
+     * {@link Classify#getName()}
      */
-    @ColumnInfo(name = "category")
-    private String category;
+    @ColumnInfo(name = "classify")
+    private String classify;
     @ColumnInfo(name = "tag")
     private String tag;
     @ColumnInfo(name = "name")

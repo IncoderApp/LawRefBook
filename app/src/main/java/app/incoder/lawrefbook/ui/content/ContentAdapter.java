@@ -41,6 +41,8 @@ import com.google.android.material.card.MaterialCardView;
 import java.util.List;
 
 import app.incoder.lawrefbook.R;
+import app.incoder.lawrefbook.model.Content;
+import app.incoder.lawrefbook.model.Type;
 
 /**
  * ContentAdapter
@@ -48,25 +50,27 @@ import app.incoder.lawrefbook.R;
  * @author : Jerry xu
  * @since : 2022/5/1 19:46
  */
-public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentViewHolder> {
+public class ContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<String> mContent;
+    private List<Content> mContent;
     private String queryText;
     private SelectionTracker<Long> selectionTracker;
+    public static final int VIEW_TYPE_TITLE = 0;
+    public static final int VIEW_TYPE_NODE = 1;
+    public static final int VIEW_TYPE_CONTENT = 2;
 
-    public ContentAdapter(List<String> content) {
+    public ContentAdapter(List<Content> content) {
         this.mContent = content;
     }
 
-    public void setData(List<String> content, String queryText) {
+    public void setData(List<Content> content, String queryText) {
         this.mContent = content;
         this.queryText = queryText;
     }
 
-    public List<String> getData() {
+    public List<Content> getData() {
         return mContent;
     }
-
 
     public void setSelectionTracker(SelectionTracker<Long> selectionTracker) {
         this.selectionTracker = selectionTracker;
@@ -74,16 +78,37 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
 
     @NonNull
     @Override
-    public ContentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View itemView = inflater.inflate(R.layout.item_content, parent, false);
-        return new ContentViewHolder(itemView);
+        View itemView;
+        RecyclerView.ViewHolder holder;
+        if (viewType == VIEW_TYPE_TITLE) {
+            itemView = inflater.inflate(R.layout.item_content_title, parent, false);
+            holder = new TitleViewHolder(itemView);
+        } else if (viewType == VIEW_TYPE_NODE) {
+            itemView = inflater.inflate(R.layout.item_content_node, parent, false);
+            holder = new NodeViewHolder(itemView);
+        } else {
+            itemView = inflater.inflate(R.layout.item_content, parent, false);
+            holder = new ContentViewHolder(itemView);
+        }
+        return holder;
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ContentViewHolder holder, int position) {
-        String item = mContent.get(position);
-        holder.bind(item, holder.mTitle.getContext(), position);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        String item = mContent.get(position).getRule();
+        if (holder instanceof TitleViewHolder) {
+            TitleViewHolder viewHolder = (TitleViewHolder) holder;
+            viewHolder.mTitle.setText(item);
+        } else if (holder instanceof NodeViewHolder) {
+            NodeViewHolder viewHolder = (NodeViewHolder) holder;
+            viewHolder.mNode.setText(item);
+        } else if (holder instanceof ContentViewHolder) {
+            ContentViewHolder viewHolder = (ContentViewHolder) holder;
+            viewHolder.bind(item, viewHolder.mArticleContent.getContext(), position);
+        }
     }
 
     @Override
@@ -91,15 +116,45 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
         return mContent.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (mContent.get(position).getType() == Type.SECTION_TYPE.getCode()) {
+            return VIEW_TYPE_TITLE;
+        } else if (mContent.get(position).getType() == Type.NODE_TYPE.getCode()) {
+            return VIEW_TYPE_NODE;
+        }
+        return VIEW_TYPE_CONTENT;
+    }
+
+    public static class TitleViewHolder extends RecyclerView.ViewHolder {
+
+        TextView mTitle;
+
+        public TitleViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mTitle = itemView.findViewById(R.id.tv_title);
+        }
+    }
+
+    public static class NodeViewHolder extends RecyclerView.ViewHolder {
+
+        TextView mNode;
+
+        public NodeViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mNode = itemView.findViewById(R.id.tv_node);
+        }
+    }
+
     public class ContentViewHolder extends RecyclerView.ViewHolder {
         MaterialCardView mCardView;
         private final Details details;
-        TextView mTitle;
+        TextView mArticleContent;
 
         public ContentViewHolder(@NonNull View itemView) {
             super(itemView);
             mCardView = itemView.findViewById(R.id.mcv_content);
-            mTitle = itemView.findViewById(R.id.tv_content);
+            mArticleContent = itemView.findViewById(R.id.tv_content);
             details = new Details();
         }
 
@@ -119,14 +174,14 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
                 }
             }
             // mark
-            if (item.matches("(第.+?条)( *)([\\s\\S]*)")) {
+            if (item.matches("(第[一二三四五六七八九十零百千万]*条)( *)([\\s\\S]*)")) {
                 StyleSpan styleSpan = new StyleSpan(Typeface.BOLD);
                 int end = item.indexOf("条") + 1;
                 if (end > 0) {
                     spannableString.setSpan(styleSpan, 0, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                 }
             }
-            mTitle.setText(spannableString);
+            mArticleContent.setText(spannableString);
             if (selectionTracker != null) {
                 bindSelectedState();
             }
@@ -165,7 +220,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
 
     static class KeyProvider extends ItemKeyProvider<Long> {
 
-        KeyProvider(RecyclerView.Adapter<ContentAdapter.ContentViewHolder> adapter) {
+        KeyProvider(RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
             super(ItemKeyProvider.SCOPE_MAPPED);
         }
 

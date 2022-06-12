@@ -32,9 +32,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import app.incoder.lawrefbook.model.Article;
+import app.incoder.lawrefbook.model.Content;
 import app.incoder.lawrefbook.model.Extended;
 import app.incoder.lawrefbook.model.Lawre;
 import app.incoder.lawrefbook.model.Toc;
+import app.incoder.lawrefbook.model.Type;
 
 /**
  * LawRefBookRepository
@@ -173,7 +175,7 @@ public class LawRefBookRepository {
         Extended extended = new Extended();
         List<Toc> tocList = new ArrayList<>();
         List<String> history = new ArrayList<>();
-        List<String> content = new ArrayList<>();
+        List<Content> articleContent = new ArrayList<>();
         int count = 0;
         try {
             AssetManager assetManager = context.getAssets();
@@ -181,6 +183,7 @@ public class LawRefBookRepository {
             String line;
             boolean body = false;
             int tocIndex = 0;
+            StringBuilder sb = new StringBuilder();
             while ((line = bf.readLine()) != null) {
                 if ("".equals(line)) {
                     continue;
@@ -189,23 +192,51 @@ public class LawRefBookRepository {
                     body = true;
                     continue;
                 }
+                Content content = new Content();
                 if (body) {
-                    tocIndex++;
                     if (line.matches("^#+ .*")) {
+                        tocIndex++;
                         String headline = line.replaceAll("^#+ ", "");
-                        int level = (line.split("#").length - 1);
+                        int level = line.split("#").length;
                         Toc toc = new Toc();
                         toc.setPosition(tocIndex);
                         toc.setTitle(headline);
-                        toc.setTitleLevel(level);
+                        toc.setTitleLevel(level - 1);
                         tocList.add(toc);
-                        content.add(headline);
+                        if (headline.matches("^(第[一二三四五六七八九十零百千万]).*?") && level == 3) {
+                            content.setType(Type.SECTION_TYPE.getCode());
+                        } else if (level > 3) {
+                            content.setType(Type.NODE_TYPE.getCode());
+                        }
+                        content.setRule(headline);
+                        articleContent.add(content);
                     } else {
-                        content.add(line);
+                        if (line.matches("^$")) {
+                            // empty line
+                            continue;
+                        } else if (line.matches("(第[一二三四五六七八九十零百千万]*条)( *)([\\s\\S]*)")) {
+                            content.setType(Type.CONTENT_TYPE.getCode());
+                            if (sb.length() > 0) {
+                                content.setRule(sb.toString());
+                                tocIndex++;
+                                articleContent.add(content);
+                                
+                                // clear sb
+                                sb.delete(0, sb.length());
+                            }
+                            sb.append(line);
+                        } else {
+                            sb.append("\n").append(line);
+                        }
                     }
                 } else {
                     if (line.matches("^#+ .*")) {
-                        article.setTitle(line.replaceAll("^#+ ", ""));
+                        if (article.getTitle() != null && article.getTitle().trim().length() > 0) {
+                            String temp = line.replaceAll("^#+ ", "");
+                            article.setTitle(article.getTitle() + temp);
+                        } else {
+                            article.setTitle(line.replaceAll("^#+ ", ""));
+                        }
                     } else {
                         history.add(line);
                     }
@@ -214,7 +245,7 @@ public class LawRefBookRepository {
             }
             extended.setWordsCount(count + "");
             extended.setCorrectHistory(history);
-            article.setContent(content);
+            article.setContents(articleContent);
             article.setToc(tocList);
             article.setInfo(extended);
         } catch (IOException e) {

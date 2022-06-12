@@ -54,7 +54,8 @@ import app.incoder.lawrefbook.LawRefBookRepository;
 import app.incoder.lawrefbook.R;
 import app.incoder.lawrefbook.databinding.ActivityContentBinding;
 import app.incoder.lawrefbook.model.Article;
-import app.incoder.lawrefbook.storage.Category;
+import app.incoder.lawrefbook.model.Classify;
+import app.incoder.lawrefbook.model.Content;
 import app.incoder.lawrefbook.storage.Libraries;
 import app.incoder.lawrefbook.storage.LibrariesViewModel;
 import app.incoder.lawrefbook.ui.catalog.CatalogSheetFragment;
@@ -89,7 +90,7 @@ public class ContentActivity extends AppCompatActivity {
     private LibrariesViewModel mViewModel;
     private FloatingActionButton favorite;
     private SelectionTracker<Long> selectionTracker;
-    private List<String> content;
+    private List<Content> content;
     private boolean headerTitle;
     private boolean collected;
     private Integer librariesId;
@@ -144,7 +145,7 @@ public class ContentActivity extends AppCompatActivity {
                 .setMessage(getResources().getString(R.string.empty_data))
                 .show());
 
-        mViewModel.getFavorite(articleId, Category.FULL_CATEGORY.getName()).observe(this, libraries -> {
+        mViewModel.getFavorite(articleId, Classify.FULL_CATEGORY.getName()).observe(this, libraries -> {
             if (libraries.size() > 0) {
                 librariesId = libraries.stream().map(Libraries::getId).findFirst().get();
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_24);
@@ -190,7 +191,7 @@ public class ContentActivity extends AppCompatActivity {
                                 if (which == 0) {
                                     // collection
                                     for (Long snippetsIndex : selection) {
-                                        String snippets = content.get(snippetsIndex.intValue());
+                                        String snippets = content.get(snippetsIndex.intValue()).getRule();
                                         Libraries libraries = new Libraries();
                                         libraries.setName(article.getTitle());
                                         libraries.setLawsId(articleId);
@@ -201,7 +202,7 @@ public class ContentActivity extends AppCompatActivity {
                                         Date now = new Date();
                                         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
                                         libraries.setCreateTime(f.format(now));
-                                        libraries.setCategory(Category.SNIPPETS_CATEGORY.getName());
+                                        libraries.setClassify(Classify.SNIPPETS_CATEGORY.getName());
                                         mViewModel.insertAction(libraries);
                                     }
                                     selectionTracker.clearSelection();
@@ -211,7 +212,7 @@ public class ContentActivity extends AppCompatActivity {
                                     // email feedback
                                     StringBuilder builder = new StringBuilder();
                                     for (Long snippetsIndex : selection) {
-                                        String snippets = content.get(snippetsIndex.intValue());
+                                        String snippets = content.get(snippetsIndex.intValue()).getRule();
                                         builder.append(snippets)
                                                 .append(selection.size() > 1 ? "\n" : "");
                                     }
@@ -227,7 +228,7 @@ public class ContentActivity extends AppCompatActivity {
                                 } else {
                                     StringBuilder builder = new StringBuilder();
                                     for (Long snippetsIndex : selection) {
-                                        String snippets = content.get(snippetsIndex.intValue());
+                                        String snippets = content.get(snippetsIndex.intValue()).getRule();
                                         builder.append(snippets)
                                                 .append(selection.size() > 1 ? "\n" : "");
                                     }
@@ -260,7 +261,7 @@ public class ContentActivity extends AppCompatActivity {
     private void setUpRecyclerView() {
         mRecyclerView = findViewById(R.id.rv_text);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        content = article.getContent();
+        content = article.getContents();
         mAdapter = new ContentAdapter(content);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -304,7 +305,7 @@ public class ContentActivity extends AppCompatActivity {
             SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
             libraries.setCreateTime(f.format(now));
             libraries.setArticleFolder(folder);
-            libraries.setCategory(Category.FULL_CATEGORY.getName());
+            libraries.setClassify(Classify.FULL_CATEGORY.getName());
             mViewModel.insertAction(libraries);
             favorite.setImageResource(R.drawable.ic_baseline_favorite_24);
             Toast.makeText(this, getResources().getString(R.string.bookmark_articles), Toast.LENGTH_SHORT).show();

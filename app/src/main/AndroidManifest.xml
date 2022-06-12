@@ -17,6 +17,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -28,10 +29,10 @@
             android:exported="false" />
         <activity
             android:name=".ui.content.ContentActivity"
+            android:configChanges="uiMode"
             android:exported="false"
             android:label="@string/title_activity_content"
             android:theme="@style/Theme.LawRefBook.NoActionBar"
-            android:configChanges="uiMode"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize|adjustNothing" />
         <activity
             android:name=".ui.settings.SettingsActivity"

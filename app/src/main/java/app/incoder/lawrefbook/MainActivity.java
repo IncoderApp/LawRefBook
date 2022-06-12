@@ -34,8 +34,11 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import app.incoder.lawrefbook.model.Lawre;
+import app.incoder.lawrefbook.sqlite.Sqlite3Dao;
+import app.incoder.lawrefbook.storage.Category;
+import app.incoder.lawrefbook.storage.Law;
 import app.incoder.lawrefbook.ui.favorite.FavoriteActivity;
 import app.incoder.lawrefbook.ui.feed.FeedFragment;
 import app.incoder.lawrefbook.ui.settings.SettingsActivity;
@@ -49,26 +52,20 @@ import app.incoder.lawrefbook.ui.settings.SettingsActivity;
 public class MainActivity extends AppCompatActivity {
 
     private List<FeedFragment> mFragmentList;
-    //    private LibrariesViewModel mViewModel;
     private TabLayout mTabLayout;
-    private List<Lawre> data;
     private String queryText;
+    private List<Category> mCategories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mCategories = Sqlite3Dao.categoryList(this);
 
-//        mViewModel = new ViewModelProvider(this).get(LibrariesViewModel.class);
-        mTabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager2 = findViewById(R.id.vp_content);
-        data = LawRefBookRepository.getData(this);
-//        List<String> catalog = LawRefBookRepository.getCatalog(this);
-        mFragmentList = new ArrayList<>(data.size());
-        for (int i = 0; i < data.size(); i++) {
-//            mFragmentList.add(FeedFragment.newInstance(catalog.get(i)));
-            mFragmentList.add(FeedFragment.newInstance(data.get(i)));
-        }
+        mTabLayout = findViewById(R.id.tabLayout);
+        mFragmentList = new ArrayList<>(mCategories.size());
+        mCategories.forEach(t -> mFragmentList.add(FeedFragment.newInstance(t)));
         viewPager2.setAdapter(new FragmentStateAdapter(this) {
             @NonNull
             @Override
@@ -81,11 +78,9 @@ public class MainActivity extends AppCompatActivity {
                 return mFragmentList.size();
             }
         });
-//        new TabLayoutMediator(mTabLayout, viewPager2, (tab, position) -> tab.setText(data.get(position).getCategory())).attach();
-
         viewPager2.setOffscreenPageLimit(mFragmentList.size());
         new TabLayoutMediator(mTabLayout, viewPager2, true, (tab, position) -> {
-            tab.setText(data.get(position).getCategory());
+            tab.setText(mCategories.get(position).getName());
             if (queryText != null && queryText.length() > 0) {
                 searchData(queryText);
             }
@@ -144,19 +139,13 @@ public class MainActivity extends AppCompatActivity {
                 public boolean onQueryTextChange(String newText) {
                     if (newText.length() < 1) {
                         queryText = "";
-                        Lawre lawre = data.get(mTabLayout.getSelectedTabPosition());
-                        mFragmentList.get(mTabLayout.getSelectedTabPosition()).changeLawre(lawre);
                     } else {
                         queryText = newText;
-                        // clear
-                        searchData(newText);
                     }
+                    searchData(queryText);
                     return true;
                 }
             });
-//            searchView.setOnCloseListener(() -> {
-//                return true;
-//            });
         } else if (id == R.id.menu_collections) {
             startActivity(new Intent(this, FavoriteActivity.class));
             return true;
@@ -168,22 +157,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void searchData(String query) {
-        Lawre lawre = data.get(mTabLayout.getSelectedTabPosition());
-        List<Lawre.LawsBean> laws = lawre.getLaws();
-        Lawre result = new Lawre();
-        List<Lawre.LawsBean> searchResult = new ArrayList<>();
-        for (Lawre.LawsBean law : laws) {
-            if (law.getName().contains(query)) {
-                searchResult.add(law);
-            }
-        }
-        result.setCategory(lawre.getCategory());
-        result.setFolder(lawre.getFolder());
-        result.setId(lawre.getId());
-        result.setLinks(lawre.getLinks());
-        result.setIsSubFolder(lawre.getIsSubFolder());
-        result.setGroup(lawre.getGroup());
-        result.setLaws(searchResult);
-        mFragmentList.get(mTabLayout.getSelectedTabPosition()).changeLawre(result);
+        Category category = mCategories.get(mTabLayout.getSelectedTabPosition());
+        List<Law> laws = Sqlite3Dao.lawList(this, category.getId());
+        List<Law> data = laws.stream().filter(t -> t.getName().contains(query)).collect(Collectors.toList());
+        mFragmentList.get(mTabLayout.getSelectedTabPosition()).changeLawre(data);
     }
 }

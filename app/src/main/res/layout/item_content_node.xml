@@ -16,7 +16,7 @@
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/tv_title"
+    android:id="@+id/tv_node"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
@@ -24,5 +24,5 @@
     android:paddingTop="@dimen/dimen_12"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:paddingBottom="@dimen/dimen_12"
-    android:textAppearance="?android:attr/textAppearanceSearchResultTitle"
+    android:textAppearance="?android:attr/textAppearanceSmall"
     tools:text="@string/app_name" />

@@ -30,8 +30,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.divider.MaterialDividerItemDecoration;
 
+import java.util.List;
+
 import app.incoder.lawrefbook.R;
-import app.incoder.lawrefbook.model.Lawre;
+import app.incoder.lawrefbook.sqlite.Sqlite3Dao;
+import app.incoder.lawrefbook.storage.Category;
+import app.incoder.lawrefbook.storage.Law;
 
 /**
  * Feed
@@ -42,21 +46,15 @@ import app.incoder.lawrefbook.model.Lawre;
 public class FeedFragment extends Fragment {
 
     private static final String CATEGORY = "category";
-    private Lawre category;
+    private Category mCategory;
+    private List<Law> laws;
     private FeedAdapter mAdapter;
 
     public FeedFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param category category.
-     * @return A new instance of fragment FeedFragment.
-     */
-    public static FeedFragment newInstance(Lawre category) {
+    public static FeedFragment newInstance(Category category) {
         FeedFragment fragment = new FeedFragment();
         Bundle args = new Bundle();
         args.putSerializable(CATEGORY, category);
@@ -64,21 +62,21 @@ public class FeedFragment extends Fragment {
         return fragment;
     }
 
-    public void changeLawre(Lawre data) {
+    public void changeLawre(List<Law> data) {
         if (mAdapter == null) {
-            mAdapter = new FeedAdapter(requireActivity(), category, requireContext());
+            mAdapter = new FeedAdapter(requireActivity());
         } else {
-            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new FeedDiffCallBack(data, category));
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new FeedDiffCallBack(data, laws));
             diffResult.dispatchUpdatesTo(mAdapter);
         }
-        mAdapter.setData(data);
+        mAdapter.setData(mCategory, data);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            category = (Lawre) getArguments().getSerializable(CATEGORY);
+            mCategory = (Category) getArguments().getSerializable(CATEGORY);
         }
     }
 
@@ -94,7 +92,9 @@ public class FeedFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView mRecyclerView = view.findViewById(R.id.rv_content);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        mAdapter = new FeedAdapter(requireActivity(), category, requireContext());
+        mAdapter = new FeedAdapter(requireContext());
+        laws = Sqlite3Dao.lawList(requireContext(), mCategory.getId());
+        mAdapter.setData(mCategory, laws);
         MaterialDividerItemDecoration divider = new MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL);
         mRecyclerView.addItemDecoration(divider);
         mRecyclerView.setAdapter(mAdapter);

@@ -42,9 +42,9 @@
 
 ### 1.1.0
 
-* [ ] 项目数据以 [git subtree](https://lwn.net/Articles/235109/) 方式依赖
+* [x] 项目数据以 [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules) 方式依赖
 * [ ] 应用手动更新数据源选项
-* [ ] 数据按照法条解析
+* [x] 数据按照法条解析
 * [ ] 目录可定位，以及流畅的滚动效果
 * [ ] 分享内容生成图片
 * [ ] 应用上架 F-Droid
@@ -56,6 +56,29 @@
 * [ ] 行间距调整
 * [ ] 法条间距调整
 * [ ] 动态适配不同长度文章标题
+
+## Command
+
+### git
+
+```shell
+# update submodule
+cd app/src/main/assets/ 
+git pull
+
+hint: pulling without specifying how to reconcile divergent branches is
+hint: discouraged. you can squelch this message by running one of the following
+hint: commands sometime before your next pull:
+hint: 
+hint:   git config pull.rebase false  # merge (the default strategy)
+hint:   git config pull.rebase true   # rebase
+hint:   git config pull.ff only       # fast-forward only
+hint: 
+hint: You can replace "git config" with "git config --global" to set a default
+hint: preference for all repositories. You can also pass --rebase, --no-rebase,
+hint: or --ff-only on the command line to override the configured default per
+hint: invocation.
+```
 
 ## License
 

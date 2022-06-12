@@ -3,17 +3,23 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 32
 
     defaultConfig {
         applicationId "app.incoder.lawrefbook"
         minSdk 24
-        targetSdk 31
+        targetSdk 32
         versionCode 20220601
         versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        // https://developer.android.google.cn/training/data-storage/room/migrating-db-versions#export-schema
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/database".toString()]
+            }
+        }
     }
 
     buildTypes {

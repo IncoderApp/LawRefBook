@@ -18,9 +18,10 @@ package app.incoder.lawrefbook.ui.feed;
 
 import androidx.recyclerview.widget.DiffUtil;
 
+import java.util.List;
 import java.util.Objects;
 
-import app.incoder.lawrefbook.model.Lawre;
+import app.incoder.lawrefbook.storage.Law;
 
 /**
  * FeedDiffCallBack
@@ -30,33 +31,33 @@ import app.incoder.lawrefbook.model.Lawre;
  */
 public class FeedDiffCallBack extends DiffUtil.Callback {
 
-    private final Lawre mNewLaws;
-    private final Lawre mOldLaws;
+    private final List<Law> mNewLaws;
+    private final List<Law> mOldLaws;
 
-    public FeedDiffCallBack(Lawre newLaws, Lawre oldLaws) {
+    public FeedDiffCallBack(List<Law> newLaws, List<Law> oldLaws) {
         this.mNewLaws = newLaws;
         this.mOldLaws = oldLaws;
     }
 
     @Override
     public int getOldListSize() {
-        return mOldLaws.getLaws() != null ? mOldLaws.getLaws().size() : 0;
+        return mOldLaws != null ? mOldLaws.size() : 0;
     }
 
     @Override
     public int getNewListSize() {
-        return mNewLaws.getLaws() != null ? mNewLaws.getLaws().size() : 0;
+        return mNewLaws != null ? mNewLaws.size() : 0;
     }
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return mOldLaws.getLaws().get(oldItemPosition).getName().equals(mNewLaws.getLaws().get(newItemPosition).getName());
+        return mOldLaws.get(oldItemPosition).getName().equals(mNewLaws.get(newItemPosition).getName());
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        Lawre.LawsBean beanOld = mOldLaws.getLaws().get(oldItemPosition);
-        Lawre.LawsBean beanNew = mNewLaws.getLaws().get(newItemPosition);
+        Law beanOld = mOldLaws.get(oldItemPosition);
+        Law beanNew = mNewLaws.get(newItemPosition);
         if (!beanOld.getName().equals(beanNew.getName())) {
             // 如果有内容不同，就返回 false
             return false;
