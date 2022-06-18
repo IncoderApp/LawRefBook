@@ -23,6 +23,7 @@ package app.incoder.lawrefbook.toc;
  * @since : 2022/5/3 08:53
  */
 @lombok.Data
+@lombok.Builder
 public class FileBean {
 
     @TreeNodeId
@@ -31,13 +32,12 @@ public class FileBean {
     private int parentId;
     @TreeNodeLabel
     private String name;
-    private long length;
-    private String desc;
+    private int position;
 
-    public FileBean(int id, int parentId, String name) {
-        super();
-        this.id = id;
-        this.parentId = parentId;
-        this.name = name;
-    }
+//    public FileBean(int id, int parentId, String name) {
+//        super();
+//        this.id = id;
+//        this.parentId = parentId;
+//        this.name = name;
+//    }
 }

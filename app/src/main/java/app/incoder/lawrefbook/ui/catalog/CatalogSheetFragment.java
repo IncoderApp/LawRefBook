@@ -31,10 +31,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import app.incoder.lawrefbook.R;
 import app.incoder.lawrefbook.model.Article;
-import app.incoder.lawrefbook.model.Toc;
 import app.incoder.lawrefbook.toc.FileBean;
 import app.incoder.lawrefbook.toc.TreeListViewAdapter;
 
@@ -65,10 +65,11 @@ public class CatalogSheetFragment extends BottomSheetDialogFragment {
         if (getArguments() != null) {
             mCatalogList = new ArrayList<>();
             Article article = (Article) getArguments().getSerializable(ARTICLE_INFO);
-            for (int i = 0; i < article.getToc().size(); i++) {
-                Toc toc = article.getToc().get(i);
-                mCatalogList.add(new FileBean(i + 1, toc.getTitleLevel() - 2, toc.getTitle()));
-            }
+            mCatalogList = article.getToc().stream().map(t -> FileBean.builder().id(t.getId())
+                    .parentId(t.getParentId())
+                    .name(t.getTitle())
+                    .position(t.getPosition()).build()).collect(Collectors.toList());
+            mCatalogList.forEach(System.out::println);
         }
     }
 

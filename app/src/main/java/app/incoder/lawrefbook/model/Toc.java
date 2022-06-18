@@ -26,7 +26,10 @@ import lombok.Data;
  */
 @Data
 public class Toc {
-    private String title;
+
+    private int id;
+    private int parentId;
     private int position;
     private int titleLevel;
+    private String title;
 }

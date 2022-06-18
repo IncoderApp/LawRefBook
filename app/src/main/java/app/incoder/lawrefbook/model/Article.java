@@ -31,8 +31,6 @@ public class Article implements Serializable {
 
     private String articleId;
     private String title;
-//    private List<String> chapters;
-//    private List<String> content;
     private List<Content> contents;
     private List<Toc> toc;
     private Extended info;

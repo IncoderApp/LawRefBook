@@ -29,7 +29,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import app.incoder.lawrefbook.model.Article;
 import app.incoder.lawrefbook.model.Content;
@@ -183,8 +185,14 @@ public class LawRefBookRepository {
             String line;
             boolean body = false;
             int tocIndex = 0;
+            int tocId = 0;
+            // key = realLevel, value = parentId
+            Map<Integer, Integer> indexMap = new HashMap<>(8);
+            // 记录上一次标题的 parentId，初始化默认没有，即定义为 -1
+            Integer compareLevelParentId = -1;
             StringBuilder sb = new StringBuilder();
             while ((line = bf.readLine()) != null) {
+                line = line.trim();
                 if ("".equals(line)) {
                     continue;
                 }
@@ -194,18 +202,42 @@ public class LawRefBookRepository {
                 }
                 Content content = new Content();
                 if (body) {
+                    if (line.matches("^#+")) {
+                        // 行内容 ## 的标题，丢弃
+                        continue;
+                    }
                     if (line.matches("^#+ .*")) {
                         tocIndex++;
+                        tocId++;
                         String headline = line.replaceAll("^#+ ", "");
                         int level = line.split("#").length;
                         Toc toc = new Toc();
+                        toc.setId(tocId);
+                        int realLevel = level - 2;
+                        Integer currentLevelParentId = indexMap.get(realLevel);
+                        // 利用 map 特性记录最新 top 的 level 和 id
+                        if (!compareLevelParentId.equals(currentLevelParentId)) {
+                            // 第一层级，清除记录
+                            if (realLevel == 1) {
+                                indexMap.clear();
+                            }
+                            if (currentLevelParentId == null || compareLevelParentId < currentLevelParentId) {
+                                indexMap.put(realLevel, tocId - 1);
+                                compareLevelParentId = tocId - 1;
+                            } else {
+                                indexMap.put(realLevel, currentLevelParentId);
+                                compareLevelParentId = currentLevelParentId;
+                            }
+                        }
+                        Integer realLevelParentId = indexMap.get(realLevel);
+                        toc.setParentId(realLevelParentId != null ? realLevelParentId : -1);
                         toc.setPosition(tocIndex);
                         toc.setTitle(headline);
-                        toc.setTitleLevel(level - 1);
+                        toc.setTitleLevel(realLevel);
                         tocList.add(toc);
-                        if (headline.matches("^(第[一二三四五六七八九十零百千万]).*?") && level == 3) {
+                        if (headline.matches("^(第[一二三四五六七八九十零百千万]).*?") && realLevel == 1) {
                             content.setType(Type.SECTION_TYPE.getCode());
-                        } else if (level > 3) {
+                        } else if (realLevel > 1) {
                             content.setType(Type.NODE_TYPE.getCode());
                         }
                         content.setRule(headline);
@@ -220,13 +252,20 @@ public class LawRefBookRepository {
                                 content.setRule(sb.toString());
                                 tocIndex++;
                                 articleContent.add(content);
-                                
                                 // clear sb
                                 sb.delete(0, sb.length());
                             }
                             sb.append(line);
                         } else {
                             sb.append("\n").append(line);
+                        }
+                        // 预解析，查看是否为最后一行内容
+                        if (bf.readLine() == null) {
+                            Content lastContent = new Content();
+                            lastContent.setType(Type.CONTENT_TYPE.getCode());
+                            lastContent.setRule(sb.toString());
+                            tocIndex++;
+                            articleContent.add(lastContent);
                         }
                     }
                 } else {
