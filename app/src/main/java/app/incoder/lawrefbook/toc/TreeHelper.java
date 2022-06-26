@@ -84,6 +84,7 @@ public class TreeHelper {
         for (T t : data) {
             int id = -1;
             int pId = -1;
+            int position = -1;
             String label = null;
             Class<?> clazz = t.getClass();
             Field[] declaredFields = clazz.getDeclaredFields();
@@ -96,15 +97,19 @@ public class TreeHelper {
                     f.setAccessible(true);
                     pId = f.getInt(t);
                 }
+                if (f.getAnnotation(TreeNodePosition.class) != null) {
+                    f.setAccessible(true);
+                    position = f.getInt(t);
+                }
                 if (f.getAnnotation(TreeNodeLabel.class) != null) {
                     f.setAccessible(true);
                     label = (String) f.get(t);
                 }
-                if (id != -1 && pId != -1 && label != null) {
+                if (id != -1 && pId != -1 && position != -1 && label != null) {
                     break;
                 }
             }
-            node = new Node(id, pId, label);
+            node = new Node(id, pId, label, position);
             nodes.add(node);
         }
         // 先按照 pid 排序，再按照 id 排序

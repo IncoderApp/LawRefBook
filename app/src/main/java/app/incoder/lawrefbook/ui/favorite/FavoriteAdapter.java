@@ -83,9 +83,9 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             Libraries item = mLibraries.get(position);
             holder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(holder.itemView.getContext(), ContentActivity.class)
-                        .putExtra(ContentActivity.mPath, item.getArticlePath())
-                        .putExtra(ContentActivity.mArticleId, item.getLawsId())
-                        .putExtra(ContentActivity.mTitle, item.getName());
+                        .putExtra(ContentActivity.Path, item.getArticlePath())
+                        .putExtra(ContentActivity.ArticleId, item.getLawsId())
+                        .putExtra(ContentActivity.Title, item.getName());
                 holder.itemView.getContext().startActivity(intent);
             });
             holder.bind(item, holder.itemView.getContext(), position);

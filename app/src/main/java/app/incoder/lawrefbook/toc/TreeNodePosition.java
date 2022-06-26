@@ -16,23 +16,19 @@
 
 package app.incoder.lawrefbook.toc;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
- * FileBean
+ * TreeNodePosition
  *
  * @author : Jerry xu
- * @since : 2022/5/3 08:53
+ * @since : 2022/5/3 08:57
  */
-@lombok.Data
-@lombok.Builder
-public class FileBean {
-
-    @TreeNodeId
-    private int id;
-    @TreeNodePid
-    private int parentId;
-    @TreeNodeLabel
-    private String name;
-    @TreeNodePosition
-    private int position;
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface TreeNodePosition {
 
 }

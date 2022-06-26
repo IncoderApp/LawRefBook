@@ -39,14 +39,14 @@ public class Sqlite3Dao {
     /**
      * 获取单例
      *
-     * @return retrofit
+     * @return Sqlite3Dao
      */
     public static Sqlite3Dao getInstance() {
         return SingletonHolder.INSTANCE;
     }
 
     /**
-     * 在访问 HttpMethods 时创建单例
+     * 在访问数据库时创建单例
      */
     private static class SingletonHolder {
         private static final Sqlite3Dao INSTANCE = new Sqlite3Dao();

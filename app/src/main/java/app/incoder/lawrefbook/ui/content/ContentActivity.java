@@ -38,8 +38,10 @@ import androidx.recyclerview.selection.SelectionTracker;
 import androidx.recyclerview.selection.StorageStrategy;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -49,6 +51,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import app.incoder.lawrefbook.LawRefBookRepository;
 import app.incoder.lawrefbook.R;
@@ -70,63 +73,65 @@ import app.incoder.lawrefbook.util.IntentAction;
  */
 public class ContentActivity extends AppCompatActivity {
 
-    public static String mTitle = "title";
-    public static String mPath = "path";
-    public static String mFolder = "folder";
-    public static String mArticleId = "articleId";
+    public static String Title = "title";
+    public static String Path = "path";
+    public static String Folder = "folder";
+    public static String ArticleId = "articleId";
 
-    protected CoordinatorLayout coordinatorLayout;
-    private ActivityContentBinding binding;
-    private BottomAppBar bar;
+    protected CoordinatorLayout mCoordinatorLayout;
+    private ActivityContentBinding mBinding;
+    private BottomAppBar mBottomAppBar;
+    private AppBarLayout mBarLayout;
     private RecyclerView mRecyclerView;
     private ContentAdapter mAdapter;
     private CatalogSheetFragment mSheetFragment;
 
-    private Article article;
-    private String title;
-    private String path;
-    private String folder;
-    private String articleId;
+    private Article mArticle;
+    private String mTitle;
+    private String mPath;
+    private String mFolder;
+    private String mArticleId;
     private LibrariesViewModel mViewModel;
-    private FloatingActionButton favorite;
-    private SelectionTracker<Long> selectionTracker;
-    private List<Content> content;
+    private FloatingActionButton mFavorite;
+    private SelectionTracker<Long> mSelectionTracker;
+    private List<Content> mContentList;
     private boolean headerTitle;
-    private boolean collected;
-    private Integer librariesId;
+    private boolean mCollected;
+    private Integer mLibrariesId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mViewModel = new ViewModelProvider(this).get(LibrariesViewModel.class);
-        binding = ActivityContentBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        mBinding = ActivityContentBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
-        Toolbar toolbar = binding.toolbar;
-        coordinatorLayout = binding.coordinatorLayout;
+        Toolbar toolbar = mBinding.toolbar;
+        mBarLayout = mBinding.appBar;
+        mCoordinatorLayout = mBinding.coordinatorLayout;
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        title = getIntent().getStringExtra(ContentActivity.mTitle);
-        path = getIntent().getStringExtra(ContentActivity.mPath);
-        articleId = getIntent().getStringExtra(ContentActivity.mArticleId);
-        folder = getIntent().getStringExtra(ContentActivity.mFolder);
+        mTitle = getIntent().getStringExtra(ContentActivity.Title);
+        mPath = getIntent().getStringExtra(ContentActivity.Path);
+        mArticleId = getIntent().getStringExtra(ContentActivity.ArticleId);
+        mFolder = getIntent().getStringExtra(ContentActivity.Folder);
 
         toolbar.setNavigationOnClickListener(v -> finish());
-        CollapsingToolbarLayout toolBarLayout = binding.toolbarLayout;
+        CollapsingToolbarLayout toolBarLayout = mBinding.toolbarLayout;
 
-        article = LawRefBookRepository.getArticle(this, path);
-        FloatingActionButton fabInfo = binding.officialUrl;
-        favorite = binding.favorite;
-        bar = binding.extend;
-        binding.tvCount.setText(String.format(getString(R.string.word_count), article.getInfo().getWordsCount()));
-        if ("".equals(article.getTitle())) {
-            toolBarLayout.setTitle(title);
+        mArticle = LawRefBookRepository.getArticle(this, mPath);
+        FloatingActionButton fabInfo = mBinding.officialUrl;
+        mFavorite = mBinding.favorite;
+        mBottomAppBar = mBinding.extend;
+        mBinding.tvCount.setText(String.format(getString(R.string.word_count), mArticle.getInfo().getWordsCount()));
+        if ("".equals(mArticle.getTitle())) {
+            toolBarLayout.setTitle(mTitle);
         } else {
-            String toolbarTitle = article.getTitle();
+            String toolbarTitle = mArticle.getTitle();
             if (toolbarTitle.length() > 18) {
                 headerTitle = true;
                 StringBuilder stringBuffer = new StringBuilder(toolbarTitle);
@@ -145,18 +150,18 @@ public class ContentActivity extends AppCompatActivity {
                 .setMessage(getResources().getString(R.string.empty_data))
                 .show());
 
-        mViewModel.getFavorite(articleId, Classify.FULL_CATEGORY.getName()).observe(this, libraries -> {
+        mViewModel.getFavorite(mArticleId, Classify.FULL_CATEGORY.getName()).observe(this, libraries -> {
             if (libraries.size() > 0) {
-                librariesId = libraries.stream().map(Libraries::getId).findFirst().get();
-                favorite.setImageResource(R.drawable.ic_baseline_favorite_24);
-                collected = true;
+                mLibrariesId = libraries.stream().map(Libraries::getId).findFirst().get();
+                mFavorite.setImageResource(R.drawable.ic_baseline_favorite_24);
+                mCollected = true;
             } else {
-                favorite.setImageResource(R.drawable.ic_baseline_favorite_border_24);
-                collected = false;
+                mFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+                mCollected = false;
             }
         });
 
-        favorite.setOnClickListener(view -> favoriteManager());
+        mFavorite.setOnClickListener(view -> favoriteManager());
 
         setUpRecyclerView();
 
@@ -167,23 +172,23 @@ public class ContentActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState != null) {
-            selectionTracker.onRestoreInstanceState(savedInstanceState);
+            mSelectionTracker.onRestoreInstanceState(savedInstanceState);
         }
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        selectionTracker.onSaveInstanceState(outState);
+        mSelectionTracker.onSaveInstanceState(outState);
     }
 
     private void barMenuOnClickListener() {
-        bar.setOnMenuItemClickListener(item -> {
+        mBottomAppBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.menu_share) {
-                if (selectionTracker.getSelection().size() < 1) {
+                if (mSelectionTracker.getSelection().size() < 1) {
                     Toast.makeText(this, getResources().getString(R.string.select_share_content), Toast.LENGTH_SHORT).show();
                 } else {
-                    Selection<Long> selection = selectionTracker.getSelection();
+                    Selection<Long> selection = mSelectionTracker.getSelection();
                     new MaterialAlertDialogBuilder(ContentActivity.this)
                             .setTitle(getResources().getString(R.string.menu_share))
                             .setPositiveButton(getResources().getString(R.string.i_know), null)
@@ -191,28 +196,28 @@ public class ContentActivity extends AppCompatActivity {
                                 if (which == 0) {
                                     // collection
                                     for (Long snippetsIndex : selection) {
-                                        String snippets = content.get(snippetsIndex.intValue()).getRule();
+                                        String snippets = mContentList.get(snippetsIndex.intValue()).getRule();
                                         Libraries libraries = new Libraries();
-                                        libraries.setName(article.getTitle());
-                                        libraries.setLawsId(articleId);
-                                        libraries.setArticlePath(path);
+                                        libraries.setName(mArticle.getTitle());
+                                        libraries.setLawsId(mArticleId);
+                                        libraries.setArticlePath(mPath);
                                         libraries.setSnippetsContent(snippets);
 //                                        libraries.setSnippetsIndex();
-                                        libraries.setArticleFolder(folder);
+                                        libraries.setArticleFolder(mFolder);
                                         Date now = new Date();
                                         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
                                         libraries.setCreateTime(f.format(now));
                                         libraries.setClassify(Classify.SNIPPETS_CATEGORY.getName());
                                         mViewModel.insertAction(libraries);
                                     }
-                                    selectionTracker.clearSelection();
-                                    binding.tvCount.setText(String.format(getString(R.string.word_count), article.getInfo().getWordsCount()));
+                                    mSelectionTracker.clearSelection();
+                                    mBinding.tvCount.setText(String.format(getString(R.string.word_count), mArticle.getInfo().getWordsCount()));
                                     Toast.makeText(this, getResources().getString(R.string.collected), Toast.LENGTH_SHORT).show();
                                 } else if (which == 1) {
                                     // email feedback
                                     StringBuilder builder = new StringBuilder();
                                     for (Long snippetsIndex : selection) {
-                                        String snippets = content.get(snippetsIndex.intValue()).getRule();
+                                        String snippets = mContentList.get(snippetsIndex.intValue()).getRule();
                                         builder.append(snippets)
                                                 .append(selection.size() > 1 ? "\n" : "");
                                     }
@@ -220,15 +225,15 @@ public class ContentActivity extends AppCompatActivity {
                                     if (builder.length() > 0) {
                                         IntentAction.sendEmail(this
                                                 , String.format(getString(R.string.content_feedback), getResources().getString(R.string.app_name))
-                                                , title + "\n" + folder + "\n" + builder
+                                                , mTitle + "\n" + mFolder + "\n" + builder
                                                 , getString(R.string.author_email));
                                     }
-                                    selectionTracker.clearSelection();
-                                    binding.tvCount.setText(String.format(getString(R.string.word_count), article.getInfo().getWordsCount()));
+                                    mSelectionTracker.clearSelection();
+                                    mBinding.tvCount.setText(String.format(getString(R.string.word_count), mArticle.getInfo().getWordsCount()));
                                 } else {
                                     StringBuilder builder = new StringBuilder();
                                     for (Long snippetsIndex : selection) {
-                                        String snippets = content.get(snippetsIndex.intValue()).getRule();
+                                        String snippets = mContentList.get(snippetsIndex.intValue()).getRule();
                                         builder.append(snippets)
                                                 .append(selection.size() > 1 ? "\n" : "");
                                     }
@@ -243,8 +248,8 @@ public class ContentActivity extends AppCompatActivity {
                                         intent.setType("text/plain");
                                         startActivity(intent);
                                     }
-                                    selectionTracker.clearSelection();
-                                    binding.tvCount.setText(String.format(getString(R.string.word_count), article.getInfo().getWordsCount()));
+                                    mSelectionTracker.clearSelection();
+                                    mBinding.tvCount.setText(String.format(getString(R.string.word_count), mArticle.getInfo().getWordsCount()));
                                 }
                             })
                             .show();
@@ -260,12 +265,13 @@ public class ContentActivity extends AppCompatActivity {
 
     private void setUpRecyclerView() {
         mRecyclerView = findViewById(R.id.rv_text);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        content = article.getContents();
-        mAdapter = new ContentAdapter(content);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(manager);
+        mContentList = mArticle.getContents();
+        mAdapter = new ContentAdapter(mContentList);
         mRecyclerView.setAdapter(mAdapter);
 
-        selectionTracker = new SelectionTracker.Builder<>(
+        mSelectionTracker = new SelectionTracker.Builder<>(
                 "content_selection",
                 mRecyclerView,
                 new ContentAdapter.KeyProvider(mAdapter),
@@ -274,15 +280,15 @@ public class ContentActivity extends AppCompatActivity {
                 .withSelectionPredicate(SelectionPredicates.createSelectAnything())
                 .build();
 
-        mAdapter.setSelectionTracker(selectionTracker);
-        selectionTracker.addObserver(new SelectionTracker.SelectionObserver<Long>() {
+        mAdapter.setSelectionTracker(mSelectionTracker);
+        mSelectionTracker.addObserver(new SelectionTracker.SelectionObserver<Long>() {
             @Override
             public void onSelectionChanged() {
-                if (selectionTracker.getSelection().size() > 0) {
-                    String title = String.format(getString(R.string.select_count), selectionTracker.getSelection().size());
-                    binding.tvCount.setText(title);
+                if (mSelectionTracker.getSelection().size() > 0) {
+                    String title = String.format(getString(R.string.select_count), mSelectionTracker.getSelection().size());
+                    mBinding.tvCount.setText(title);
                 } else {
-                    binding.tvCount.setText(String.format(getString(R.string.word_count), article.getInfo().getWordsCount()));
+                    mBinding.tvCount.setText(String.format(getString(R.string.word_count), mArticle.getInfo().getWordsCount()));
                 }
             }
         });
@@ -291,67 +297,66 @@ public class ContentActivity extends AppCompatActivity {
 
     private void favoriteManager() {
         Libraries libraries = new Libraries();
-        if (collected) {
-            libraries.setId(librariesId);
+        if (mCollected) {
+            libraries.setId(mLibrariesId);
             mViewModel.delete(libraries);
-            favorite.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+            mFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24);
             Toast.makeText(this, getResources().getString(R.string.unbookmark_articles), Toast.LENGTH_SHORT).show();
-            collected = false;
+            mCollected = false;
         } else {
-            libraries.setName(article.getTitle());
-            libraries.setLawsId(articleId);
-            libraries.setArticlePath(path);
+            libraries.setName(mArticle.getTitle());
+            libraries.setLawsId(mArticleId);
+            libraries.setArticlePath(mPath);
             Date now = new Date();
             SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
             libraries.setCreateTime(f.format(now));
-            libraries.setArticleFolder(folder);
+            libraries.setArticleFolder(mFolder);
             libraries.setClassify(Classify.FULL_CATEGORY.getName());
             mViewModel.insertAction(libraries);
-            favorite.setImageResource(R.drawable.ic_baseline_favorite_24);
+            mFavorite.setImageResource(R.drawable.ic_baseline_favorite_24);
             Toast.makeText(this, getResources().getString(R.string.bookmark_articles), Toast.LENGTH_SHORT).show();
-            collected = true;
+            mCollected = true;
         }
     }
 
     private void showHistory() {
         new MaterialAlertDialogBuilder(ContentActivity.this)
-                .setTitle(article.getTitle())
+                .setTitle(mArticle.getTitle())
                 .setPositiveButton(getResources().getString(R.string.i_know), null)
-                .setItems(article.getInfo().getCorrectHistory().toArray(new String[0]), null)
+                .setItems(mArticle.getInfo().getCorrectHistory().toArray(new String[0]), null)
                 .show();
     }
 
     protected void setUpBottomDrawer() {
-        bar.setNavigationOnClickListener(v -> {
-            if (article.getToc().size() < 1) {
+        mBottomAppBar.setNavigationOnClickListener(v -> {
+            if (mArticle.getToc().size() < 1) {
                 Toast.makeText(this, getResources().getString(R.string.untitled), Toast.LENGTH_SHORT).show();
                 return;
             }
             if (mSheetFragment == null) {
-                mSheetFragment = CatalogSheetFragment.newInstance(article);
+                mSheetFragment = CatalogSheetFragment.newInstance(mArticle, ContentActivity.this);
             }
             mSheetFragment.show(getSupportFragmentManager(), "dialog");
         });
     }
 
-    private int getBottomDataPosition() {
-        return mAdapter.getItemCount() + mAdapter.getData().size() - 1;
-    }
-
-    public void smoothScrollToBottom() {
-        if (mAdapter == null) {
-            return;
-        }
-        mRecyclerView.post(() -> {
-            mSheetFragment.dismiss();
-            mRecyclerView.smoothScrollToPosition(getBottomDataPosition());
-        });
+    public void smoothScrollToPosition(int position) {
+        mSheetFragment.dismiss();
+        mBarLayout.setExpanded(false);
+        LinearSmoothScroller smoothScroller = new LinearSmoothScroller(this) {
+            @Override
+            protected int getVerticalSnapPreference() {
+                return LinearSmoothScroller.SNAP_TO_START;
+            }
+        };
+        smoothScroller.setTargetPosition(position - 1);
+        Objects.requireNonNull(mRecyclerView.getLayoutManager()).startSmoothScroll(smoothScroller);
     }
 
     @Override
     public void onBackPressed() {
-        if (selectionTracker.getSelection().size() > 0) {
-            selectionTracker.clearSelection();
+        if (mSelectionTracker.getSelection().size() > 0) {
+            mSelectionTracker.clearSelection();
         } else {
             super.onBackPressed();
         }
@@ -387,8 +392,8 @@ public class ContentActivity extends AppCompatActivity {
     }
 
     private void querySearch(String query) {
-        mAdapter.setData(content, query);
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ContentDiffCallBack(content, content));
+        mAdapter.setData(mContentList, query);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ContentDiffCallBack(mContentList, mContentList));
         diffResult.dispatchUpdatesTo(mAdapter);
     }
 

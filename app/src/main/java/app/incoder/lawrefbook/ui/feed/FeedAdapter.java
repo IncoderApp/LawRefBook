@@ -112,10 +112,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
             }
             holder.itemView.setOnClickListener(v ->
                     mContext.startActivity(new Intent(mContext, ContentActivity.class)
-                            .putExtra(ContentActivity.mPath, path)
-                            .putExtra(ContentActivity.mFolder, mCategory.getFolder())
-                            .putExtra(ContentActivity.mArticleId, law.getId())
-                            .putExtra(ContentActivity.mTitle, law.getName()))
+                            .putExtra(ContentActivity.Path, path)
+                            .putExtra(ContentActivity.Folder, mCategory.getFolder())
+                            .putExtra(ContentActivity.ArticleId, law.getId())
+                            .putExtra(ContentActivity.Title, law.getName()))
             );
         }
 

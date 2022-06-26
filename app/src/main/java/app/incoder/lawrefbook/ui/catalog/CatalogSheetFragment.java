@@ -21,7 +21,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +36,7 @@ import app.incoder.lawrefbook.R;
 import app.incoder.lawrefbook.model.Article;
 import app.incoder.lawrefbook.toc.FileBean;
 import app.incoder.lawrefbook.toc.TreeListViewAdapter;
+import app.incoder.lawrefbook.ui.content.ContentActivity;
 
 /**
  * CatalogSheetFragment
@@ -47,10 +47,12 @@ import app.incoder.lawrefbook.toc.TreeListViewAdapter;
 public class CatalogSheetFragment extends BottomSheetDialogFragment {
 
     private static final String ARTICLE_INFO = "article_info";
+    private static ContentActivity mActivity;
     private TreeListViewAdapter<FileBean> mAdapter;
     private List<FileBean> mCatalogList;
 
-    public static CatalogSheetFragment newInstance(Article article) {
+    public static CatalogSheetFragment newInstance(Article article, ContentActivity activity) {
+        mActivity = activity;
         CatalogSheetFragment mBottomSheet = new CatalogSheetFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARTICLE_INFO, article);
@@ -92,7 +94,7 @@ public class CatalogSheetFragment extends BottomSheetDialogFragment {
         mTree.setAdapter(mAdapter);
         mAdapter.setOnTreeNodeClickListener((node, position) -> {
             if (node.isLeaf()) {
-                Toast.makeText(getContext(), node.getName(), Toast.LENGTH_SHORT).show();
+                mActivity.smoothScrollToPosition(node.getPosition());
             }
         });
     }

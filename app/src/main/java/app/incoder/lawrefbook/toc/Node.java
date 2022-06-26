@@ -42,6 +42,10 @@ public class Node {
      */
     private String name;
     /**
+     * position
+     */
+    private int position;
+    /**
      * 当前的级别
      */
     private int level;
@@ -62,11 +66,12 @@ public class Node {
      */
     private Node parent;
 
-    public Node(int id, int pId, String name) {
+    public Node(int id, int pId, String name, int position) {
         super();
         this.id = id;
         this.pId = pId;
         this.name = name;
+        this.position = position;
     }
 
     /**
@@ -115,7 +120,7 @@ public class Node {
         this.isExpand = isExpand;
         if (!isExpand) {
             for (Node node : children) {
-                node.setExpand(isExpand);
+                node.setExpand(false);
             }
         }
     }
