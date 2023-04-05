@@ -38,14 +38,18 @@ import lombok.Data;
 public class Law {
 
     private String id;
+    /*** 法律效力位阶 */
     private String level;
     private String name;
     private String filename;
+    /*** 施行日期 */
     private String publish;
+    /*** 时效性 0-有效，1-已修改（已废止）*/
     private String expired;
     private Integer categoryId;
     private Integer order;
     private String subtitle;
+    /*** 公布日期 */
     private String validFrom;
 
 }

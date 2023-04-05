@@ -26,7 +26,8 @@
     android:focusable="true"
     android:gravity="center_vertical"
     app:cardCornerRadius="0dp"
-    app:cardElevation="0dp">
+    app:cardElevation="0dp"
+    tools:ignore="TouchTargetSizeCheck">
 
     <TextView
         android:id="@+id/tv_content"
@@ -34,9 +35,9 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-        tools:text="@string/app_name"
         android:paddingTop="@dimen/dimen_3"
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:paddingBottom="@dimen/dimen_3"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        tools:text="@string/app_name" />
 </com.google.android.material.card.MaterialCardView>

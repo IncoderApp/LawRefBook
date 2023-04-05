@@ -74,48 +74,24 @@
     <string name="cancel">取消</string>
     <string name="enter">进入</string>
     <string name="unfold">展开</string>
+    <string name="save_success">保存成功</string>
 
     <string name="remarks">开发寄语</string>
     <string name="developer_remarks">
-        1. 当前版本为离线应用；&lt;br>
-        2. 应用遵循 Material Design 风格；&lt;br>
-        3. 应用上架酷安，Google Play 应用市场；&lt;br>
-        4. 应用完全开源，如有需要请遵循开源协议自行提取
+        1. 离线使用；&lt;br>
+        2. 遵循 Material Design 风格；&lt;br>
+        3. 上架 F-Droid，Google Play 应用市场；&lt;br>
+        4. 完全开源，如有需要请遵循开源协议自行提取
     </string>
     <string name="thanks">本项目特别感谢 @RanKKI 提供开源数据，以及 LawRefBook 项目功能参考</string>
-
-    <string name="data_source">数据源</string>
-    <string name="flk">国家法律法规数据库</string>
-    <string name="flk_npc">https://flk.npc.gov.cn</string>
-    <string name="court">最高人民法院</string>
-    <string name="court_gov">https://www.court.gov.cn</string>
-    <string name="laws">Laws</string>
-    <string name="github_laws">https://github.com/LawRefBook/Laws</string>
 
     <string name="other_version">版本</string>
     <string name="other_version_name">%s（%s）</string>
     <string name="release_note">更新日志</string>
-    <string name="lawrefbook_log">https://incoder.app/2022/06/01/lawrefbook/</string>
+    <string name="lawrefbook_log">https://incoder.app/2022/06/01/lawrefbook</string>
     <string name="source_code">Source Code</string>
     <string name="github_lawrefbook">https://github.com/IncoderApp/LawRefBook</string>
-    <string name="licenses">Licenses</string>
-    <string name="apache_2_0_license">Apache-2.0 License</string>
-    <string name="license_text">
-       Copyright 2022 Jerry xu\n\n
-
-       Licensed under the Apache License, Version 2.0 (the "License");
-       you may not use this file except in compliance with the License.
-       You may obtain a copy of the License at\n\n
-
-           http://www.apache.org/licenses/LICENSE-2.0\n\n
-
-       Unless required by applicable law or agreed to in writing, software
-       distributed under the License is distributed on an "AS IS" BASIS,
-       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-       See the License for the specific language governing permissions and
-       limitations under the License.
-    </string>
-    <string name="praise">给我好评</string>
+    <string name="praise">五星评价</string>
     <string name="praise_desc">您的好评是我更新的动力</string>
 
     <string name="developers">Developers</string>
@@ -125,9 +101,14 @@
     <string name="feedback">反馈 &amp; 建议</string>
     <string name="author_email">incoder.xu@gmail.com</string>
 
+    <string name="unable_to_parse">数据问题，无法解析</string>
+    <string name="obtain_permissions">存储权限获取失败</string>
+    <string name="picture_format">%s-%s</string>
     <string name="share">应用分享</string>
     <string name="send_email">选择邮箱</string>
     <string name="empty_data">暂无数据</string>
     <string name="app_market">您的手机没有安装应用市场</string>
 
+    <!--    Accessibility-->
+    <string name="title">标题栏</string>
 </resources>

@@ -16,6 +16,8 @@
 
 package app.incoder.lawrefbook.model;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 /**
@@ -25,7 +27,7 @@ import lombok.Data;
  * @since : 2022/5/28 10:20
  */
 @Data
-public class Toc {
+public class Toc implements Serializable {
 
     private int id;
     private int parentId;

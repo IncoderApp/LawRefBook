@@ -23,6 +23,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,7 +36,9 @@ import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
+import app.incoder.lawrefbook.LawRefBookRepository;
 import app.incoder.lawrefbook.R;
+import app.incoder.lawrefbook.model.Article;
 import app.incoder.lawrefbook.storage.Libraries;
 import app.incoder.lawrefbook.ui.content.ContentActivity;
 
@@ -82,8 +85,14 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
         if (mLibraries != null && mLibraries.size() > 0) {
             Libraries item = mLibraries.get(position);
             holder.itemView.setOnClickListener(v -> {
+                Article article = LawRefBookRepository.getArticle(v.getContext(), item.getArticlePath());
+                if (article == null) {
+                    Toast.makeText(v.getContext(), v.getContext().getResources().getString(R.string.unable_to_parse), Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Intent intent = new Intent(holder.itemView.getContext(), ContentActivity.class)
                         .putExtra(ContentActivity.Path, item.getArticlePath())
+                        .putExtra(ContentActivity.Article, article)
                         .putExtra(ContentActivity.ArticleId, item.getLawsId())
                         .putExtra(ContentActivity.Title, item.getName());
                 holder.itemView.getContext().startActivity(intent);

@@ -19,6 +19,7 @@ package app.incoder.lawrefbook;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,6 +35,8 @@ import java.io.OutputStream;
  */
 public class App extends Application {
 
+    private static final String TAG = "App";
+
     public static void packDataBase(Context context) {
         // internal
         @SuppressLint("SdCardPath")
@@ -42,13 +45,13 @@ public class App extends Application {
         // external
         String originPath = "Laws" + sqliteName;
 
-        // check internal SQLite is exist
+        // check internal SQLite is existed
         if (!(new File(internalPath + sqliteName)).exists()) {
             File f = new File(internalPath);
             // if databases category is not exist
             if (!f.exists()) {
                 if (f.mkdir()) {
-                    System.out.println("create databases");
+                    Log.d(TAG, "create databases");
                 }
             }
             try {

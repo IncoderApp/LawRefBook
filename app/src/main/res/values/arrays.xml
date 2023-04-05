@@ -48,9 +48,10 @@
     </string-array>
 
     <string-array name="content_action">
-        <item>收藏</item>
+        <item>法条收藏</item>
         <item>内容反馈</item>
-        <item>复制并分享至其他应用</item>
+        <item>文字分享</item>
+        <item>图片保存</item>
     </string-array>
 
 

@@ -16,6 +16,8 @@
 
 package app.incoder.lawrefbook.model;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 /**
@@ -25,7 +27,7 @@ import lombok.Data;
  * @since : 2022/6/11 14:41
  */
 @Data
-public class Content {
+public class Content implements Serializable {
 
     /**
      * {@link Type}

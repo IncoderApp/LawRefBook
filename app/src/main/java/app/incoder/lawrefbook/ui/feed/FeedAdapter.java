@@ -22,13 +22,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Arrays;
 import java.util.List;
 
+import app.incoder.lawrefbook.LawRefBookRepository;
 import app.incoder.lawrefbook.R;
+import app.incoder.lawrefbook.model.Article;
 import app.incoder.lawrefbook.storage.Category;
 import app.incoder.lawrefbook.storage.Law;
 import app.incoder.lawrefbook.ui.content.ContentActivity;
@@ -44,6 +48,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     private List<Law> mLaw;
     private final Context mContext;
     private Category mCategory;
+    private final List<String> ignorePublish = Arrays.asList("刑法", "宪法", "案例/劳动人事", "案例/民法典", "案例/消费购物", "案例/行政协议诉讼", "民法典");
     public static final int VIEW_TYPE_ITEM = 1;
     public static final int VIEW_TYPE_EMPTY = 0;
 
@@ -71,52 +76,45 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
-//        if (mLawre != null && mLawre.getLaws().size() > 0) {
-//            String title = mLawre.getLaws().get(position).getName();
-//            String filename = mLawre.getLaws().get(position).getFilename();
-//            String articleId = mLawre.getLaws().get(position).getId();
-//            String path;
-//            if (filename == null) {
-//                path = mLawre.getFolder() + "/" + title + ".md";
-//            } else {
-//                path = mLawre.getFolder() + "/" + filename + ".md";
-//            }
-//            holder.mTitle.setText(title);
-//            holder.itemView.setOnClickListener(v ->
-//                    mContext.startActivity(new Intent(mContext, ContentActivity.class)
-//                            .putExtra(ContentActivity.mPath, path)
-//                            .putExtra(ContentActivity.mFolder, mLawre.getFolder())
-//                            .putExtra(ContentActivity.mArticleId, articleId)
-//                            .putExtra(ContentActivity.mTitle, title))
-//            );
-//            // transition animation
-//            /*holder.itemView.setOnClickListener(v -> {
-//                Intent intent = new Intent(mContext, ContentActivity.class)
-//                        .putExtra(ContentActivity.mPath, path)
-//                        .putExtra(ContentActivity.mFolder, mLawre.getFolder())
-//                        .putExtra(ContentActivity.mArticleId, articleId)
-//                        .putExtra(ContentActivity.mTitle, title);
-//                ActivityOptions options =
-//                        ActivityOptions.makeSceneTransitionAnimation(mActivity, v, "shared_element_end_root");
-//                mContext.startActivity(intent, options.toBundle());
-//            });*/
-//        }
         if (mLaw != null && mLaw.size() > 0) {
             Law law = mLaw.get(position);
             holder.mTitle.setText(law.getName());
             String path;
+
             if (law.getFilename() == null) {
-                path = mCategory.getFolder() + "/" + law.getName() + ".md";
+                if (ignorePublish.contains(mCategory.getFolder())) {
+                    path = mCategory.getFolder() + "/" + law.getName() + ".md";
+                } else {
+                    if (law.getPublish() == null) {
+                        path = mCategory.getFolder() + "/" + law.getName() + ".md";
+                    } else {
+                        path = mCategory.getFolder() + "/" + law.getName() + "(" + law.getPublish() + ")" + ".md";
+                    }
+                }
             } else {
-                path = mCategory.getFolder() + "/" + law.getFilename() + ".md";
+                if (ignorePublish.contains(mCategory.getFolder())) {
+                    path = mCategory.getFolder() + "/" + law.getFilename() + ".md";
+                } else {
+                    if (law.getPublish() == null) {
+                        path = mCategory.getFolder() + "/" + law.getFilename() + ".md";
+                    } else {
+                        path = mCategory.getFolder() + "/" + law.getFilename() + "(" + law.getPublish() + ")" + ".md";
+                    }
+                }
             }
-            holder.itemView.setOnClickListener(v ->
-                    mContext.startActivity(new Intent(mContext, ContentActivity.class)
-                            .putExtra(ContentActivity.Path, path)
-                            .putExtra(ContentActivity.Folder, mCategory.getFolder())
-                            .putExtra(ContentActivity.ArticleId, law.getId())
-                            .putExtra(ContentActivity.Title, law.getName()))
-            );
+            holder.itemView.setOnClickListener(v -> {
+                Article article = LawRefBookRepository.getArticle(v.getContext(), path);
+                if (article == null) {
+                    Toast.makeText(v.getContext(), v.getContext().getResources().getString(R.string.unable_to_parse), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                mContext.startActivity(new Intent(mContext, ContentActivity.class)
+                        .putExtra(ContentActivity.Path, path)
+                        .putExtra(ContentActivity.Article, article)
+                        .putExtra(ContentActivity.Folder, mCategory.getFolder())
+                        .putExtra(ContentActivity.ArticleId, law.getId())
+                        .putExtra(ContentActivity.Title, law.getName()));
+            });
         }
 
     }

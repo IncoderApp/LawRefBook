@@ -27,7 +27,6 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,8 +34,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,9 +63,6 @@ public class AboutFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LinearLayout flk = requireView().findViewById(R.id.ll_flk);
-        LinearLayout court = requireView().findViewById(R.id.ll_court);
-        LinearLayout laws = requireView().findViewById(R.id.ll_laws);
         TextView developerRemarks = requireView().findViewById(R.id.tv_developer_remarks);
         developerRemarks.setText(Html.fromHtml(getResources().getString(R.string.developer_remarks), Html.FROM_HTML_MODE_LEGACY));
 
@@ -76,7 +70,6 @@ public class AboutFragment extends Fragment {
         TextView versionName = requireView().findViewById(R.id.tv_version_number);
         RelativeLayout releaseNote = requireView().findViewById(R.id.rl_log);
         RelativeLayout sourceCode = requireView().findViewById(R.id.rl_code);
-        RelativeLayout licenses = requireView().findViewById(R.id.rl_licenses);
         RelativeLayout praise = requireView().findViewById(R.id.rl_praise);
 
         RelativeLayout author = requireView().findViewById(R.id.rl_author);
@@ -85,9 +78,6 @@ public class AboutFragment extends Fragment {
         String name = versionMap.get("versionName");
         String code = versionMap.get("versionCode");
         versionName.setText(String.format(getString(R.string.other_version_name), name, code));
-        flk.setOnClickListener(v -> requireActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.flk_npc)))));
-        court.setOnClickListener(v -> requireActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.court_gov)))));
-        laws.setOnClickListener(v -> requireActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_laws)))));
 
         version.setOnClickListener(v -> {
 
@@ -95,7 +85,6 @@ public class AboutFragment extends Fragment {
 
         releaseNote.setOnClickListener(v -> requireActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.lawrefbook_log)))));
         sourceCode.setOnClickListener(v -> requireActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_lawrefbook)))));
-        licenses.setOnClickListener(v -> showLicenses());
         praise.setOnClickListener(v -> openMarket(requireContext()));
         author.setOnClickListener(v -> requireActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.author_blog)))));
         email.setOnClickListener(v -> IntentAction.sendEmail(requireContext(), String.format(getString(R.string.content_feedback), getResources().getString(R.string.app_name)), "", getString(R.string.author_email)));
@@ -111,14 +100,6 @@ public class AboutFragment extends Fragment {
             Toast.makeText(context, context.getResources().getString(R.string.app_market), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-    }
-
-    private void showLicenses() {
-        new MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.licenses)
-                .setPositiveButton(getResources().getString(R.string.i_know), null)
-                .setMessage(R.string.license_text)
-                .show();
     }
 
     public static Map<String, String> getVersion(Context context) {

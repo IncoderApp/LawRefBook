@@ -14,16 +14,32 @@
   ~ limitations under the License.
   -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- Android11新增 -->
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <!-- android10.0根目录创建文件夹android:requestLegacyExternalStorage="true" -->
+    <!-- android11 根目录创建文件夹android:preserveLegacyExternalStorage="true"
+         在Android11的机器上覆盖安装时，才能访问旧版存储位置，卸载重装会失效-->
+    <!-- Android11 更新了新的存储权限分区存储，将不再允许用户授权访问 Downloads 的根目录、每个可用 SD 卡的根目录以及其它应用的目录。
+         应用仍然可以通过 Storage Access Framework API 或者文件选择器来帮助用户从共享存储中选取个别文件-->
 
     <application
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:preserveLegacyExternalStorage="true"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.LawRefBook">
+        android:theme="@style/Theme.LawRefBook"
+        tools:targetApi="r">
         <activity
             android:name=".ui.favorite.FavoriteActivity"
             android:exported="false" />

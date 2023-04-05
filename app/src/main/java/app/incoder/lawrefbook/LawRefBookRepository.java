@@ -289,6 +289,7 @@ public class LawRefBookRepository {
             article.setInfo(extended);
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
         return article;
     }

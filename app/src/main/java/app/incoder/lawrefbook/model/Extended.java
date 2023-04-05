@@ -29,7 +29,13 @@ import java.util.List;
 @lombok.Data
 public class Extended implements Serializable {
 
+    /**
+     * 官方文章地址
+     */
     private String officialUrl;
+    /**
+     * 字数统计
+     */
     private String wordsCount;
     /**
      * 施行日期
@@ -44,10 +50,13 @@ public class Extended implements Serializable {
      */
     private String formulationOrgan;
     /**
-     * 时效性尚未生效
-     * 有效
-     * 已修改
-     * 已废止
+     * 时效性
+     * <ol>
+     *     <li>尚未生效</li>
+     *     <li>有效</li>
+     *     <li>已修改</li>
+     *     <li>已废止</li>
+     * </ol>
      */
     private String timeliness;
     /**
