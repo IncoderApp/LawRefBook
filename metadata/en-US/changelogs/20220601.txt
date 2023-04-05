@@ -1,0 +1,6 @@
+1. Use the Laws project as a data source
+2. Offline use
+3. Full text, fragment collection
+4. Text sharing
+5. Hierarchical Table of Contents
+6. Highlight retrieval

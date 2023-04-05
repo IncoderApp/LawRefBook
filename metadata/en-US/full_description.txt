@@ -1,0 +1,11 @@
+An open source LawRefBook App.
+
+Features:
+- Open source: Lightweight, clean and secure.
+- App Style: Follows Material Design guidelines.
+- Search: Title, content highlight match.
+- Hierarchical directory: Locate content quickly.
+- Offline support: No network hassles.
+- Diverse sharing: text, pictures, there is always a way you like
+
+https://github.com/IncoderApp/LawRefBook
