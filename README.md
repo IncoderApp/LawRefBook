@@ -23,17 +23,19 @@
 
 ## Download
 
-[<img alt="下载应用，请到 Google Play" src="art/google-play.png" width="240">](https://play.google.com/store/apps/details?id=app.incoder.lawrefbook) [<img alt="下载应用，请到 F-Droid" src="art/f-droid.png" width="240">]()
+[//]: # ([<img alt="下载应用，请到 Google Play" src="art/google-play.png" width="240">]&#40;https://play.google.com/store/apps/details?id=app.incoder.lawrefbook&#41; [<img alt="下载应用，请到 F-Droid" src="art/f-droid.png" width="240">]&#40;&#41; [<img alt="下载应用，请到 Github" src="art/github.png" width="240">]&#40;https://github.com/IncoderApp/LawRefBook/releases&#41;)
+
+[//]: # (> LawRefBook 是一个可重复构建的应用，你不需要担心 F-Droid 和其他应用商店签名问题，参见：[向可重现的 F-Droid 前进]&#40;https://f-droid.org/zh_Hans/2023/01/15/towards-a-reproducible-fdroid.html&#41;)
 
 ## Preview
 
 |                                主页                                |                                内容页                                 |                            个人页                             |
 |:----------------------------------------------------------------:|:------------------------------------------------------------------:|:----------------------------------------------------------:|
-|      ![主页](metadata/zh-CN/images/phoneScreenshots/feed.jpg)      |     ![内容页](metadata/zh-CN/images/phoneScreenshots/article.jpg)     |  ![个人页](metadata/zh-CN/images/phoneScreenshots/about.jpg)  |
+|      ![主页](fastlane/metadata/zh-CN/images/phoneScreenshots/feed.jpg)      |     ![内容页](fastlane/metadata/zh-CN/images/phoneScreenshots/article.jpg)     |  ![个人页](fastlane/metadata/zh-CN/images/phoneScreenshots/about.jpg)  |
 |                                历史                                |                                 目录                                 |                             收藏                             |
-|    ![历史](metadata/zh-CN/images/phoneScreenshots/history.jpg)     |     ![目录](metadata/zh-CN/images/phoneScreenshots/catalog.jpg)      | ![收藏](metadata/zh-CN/images/phoneScreenshots/favorite.jpg) |
+|    ![历史](fastlane/metadata/zh-CN/images/phoneScreenshots/history.jpg)     |     ![目录](fastlane/metadata/zh-CN/images/phoneScreenshots/catalog.jpg)      | ![收藏](fastlane/metadata/zh-CN/images/phoneScreenshots/favorite.jpg) |
 |                               搜索文章                               |                                搜索内容                                |                             分享                             |
-| ![搜索文章](metadata/zh-CN/images/phoneScreenshots/title-search.jpg) | ![搜索内容](metadata/zh-CN/images/phoneScreenshots/article-search.jpg) |  ![收藏](metadata/zh-CN/images/phoneScreenshots/share.jpg)   |
+| ![搜索文章](fastlane/metadata/zh-CN/images/phoneScreenshots/title-search.jpg) | ![搜索内容](fastlane/metadata/zh-CN/images/phoneScreenshots/article-search.jpg) |  ![收藏](fastlane/metadata/zh-CN/images/phoneScreenshots/share.jpg)   |
 
 ## Release Note
 
@@ -70,7 +72,7 @@
 3. [ ] 文字大小调整
 4. [ ] 行间距调整
 5. [ ] 法条间距调整
-7. [ ] 超长文章标题滚动显示
+6. [ ] 超长文章标题滚动显示
 
 ## License
 
