@@ -65,10 +65,10 @@
     <string name="bookmark_articles">文章收藏成功</string>
     <string name="untitled">无标题</string>
 
-    <string name="word_count">字数：%s</string>
-    <string name="select_count">已选择：%d</string>
-    <string name="article_folder">目录：%s</string>
-    <string name="content_feedback">【 %s 】反馈</string>
+    <string name="word_count" formatted="false">字数：%s</string>
+    <string name="select_count" formatted="false">已选择：%d</string>
+    <string name="article_folder" formatted="false">目录：%s</string>
+    <string name="content_feedback" formatted="false">【 %s 】反馈</string>
 
     <string name="delete">删除</string>
     <string name="cancel">取消</string>
@@ -77,7 +77,7 @@
     <string name="save_success">保存成功</string>
 
     <string name="remarks">开发寄语</string>
-    <string name="developer_remarks">
+    <string name="developer_remarks" formatted="false">
         1. 离线使用；&lt;br>
         2. 遵循 Material Design 风格；&lt;br>
         3. 上架 F-Droid，Google Play 应用市场；&lt;br>
@@ -86,24 +86,26 @@
     <string name="thanks">本项目特别感谢 @RanKKI 提供开源数据，以及 LawRefBook 项目功能参考</string>
 
     <string name="other_version">版本</string>
-    <string name="other_version_name">%s（%s）</string>
+    <string name="other_version_name" formatted="false">%s（%s）</string>
     <string name="release_note">更新日志</string>
     <string name="lawrefbook_log">https://incoder.app/2022/06/01/lawrefbook</string>
     <string name="source_code">Source Code</string>
+    <string name="privacy_des">Privacy</string>
     <string name="github_lawrefbook">https://github.com/IncoderApp/LawRefBook</string>
+    <string name="privacy_address">https://privacy.incoder.app/2024/05/21/lawrefbook.html</string>
     <string name="praise">五星评价</string>
     <string name="praise_desc">您的好评是我更新的动力</string>
 
     <string name="developers">Developers</string>
     <string name="author">Jerry xu</string>
     <string name="author_blog">https://incoder.org</string>
-    <string name="developer_designer">Developer &amp; Designer</string>
-    <string name="feedback">反馈 &amp; 建议</string>
+    <string name="developer_designer" formatted="false">Developer &amp; Designer</string>
+    <string name="feedback" formatted="false">反馈 &amp; 建议</string>
     <string name="author_email">incoder.xu@gmail.com</string>
 
     <string name="unable_to_parse">数据问题，无法解析</string>
     <string name="obtain_permissions">存储权限获取失败</string>
-    <string name="picture_format">%s-%s</string>
+    <string name="picture_format" formatted="false">%s-%s</string>
     <string name="share">应用分享</string>
     <string name="send_email">选择邮箱</string>
     <string name="empty_data">暂无数据</string>

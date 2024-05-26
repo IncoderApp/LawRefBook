@@ -54,8 +54,7 @@ public class AboutFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_about, container, false);
     }
@@ -70,6 +69,7 @@ public class AboutFragment extends Fragment {
         TextView versionName = requireView().findViewById(R.id.tv_version_number);
         RelativeLayout releaseNote = requireView().findViewById(R.id.rl_log);
         RelativeLayout sourceCode = requireView().findViewById(R.id.rl_code);
+        RelativeLayout privacy = requireView().findViewById(R.id.rl_privacy);
         RelativeLayout praise = requireView().findViewById(R.id.rl_praise);
 
         RelativeLayout author = requireView().findViewById(R.id.rl_author);
@@ -85,6 +85,7 @@ public class AboutFragment extends Fragment {
 
         releaseNote.setOnClickListener(v -> requireActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.lawrefbook_log)))));
         sourceCode.setOnClickListener(v -> requireActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_lawrefbook)))));
+        privacy.setOnClickListener(v -> requireActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacy_address)))));
         praise.setOnClickListener(v -> openMarket(requireContext()));
         author.setOnClickListener(v -> requireActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.author_blog)))));
         email.setOnClickListener(v -> IntentAction.sendEmail(requireContext(), String.format(getString(R.string.content_feedback), getResources().getString(R.string.app_name)), "", getString(R.string.author_email)));

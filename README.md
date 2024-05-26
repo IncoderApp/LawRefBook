@@ -10,7 +10,7 @@
 [![](https://img.shields.io/badge/Android%20Studio-Chipmunk%202021.2.1+-06?logo=Android%20Studio&labelColor=02303A)](https://developer.android.google.cn/studio/releases)
 [![](https://img.shields.io/badge/Compatibleby-SDK%2024%20~%2033-06?logo=Android&labelColor=02303A)](https://developer.android.google.cn/reference)
 [![](https://img.shields.io/badge/Use%20up%20by-JDK%201.11+-important?logo=openjdk&labelColor=02303A)](https://jdk.java.net/java-se-ri/11)
-[![](https://img.shields.io/badge/Build%20up%20by-Gradle%207.5%20bin-06A0CE?logo=Gradle&labelColor=02303A)](https://docs.gradle.org/7.5/release-notes.html)
+[![](https://img.shields.io/badge/Build%20up%20by-Gradle%208.0%20bin-06A0CE?logo=Gradle&labelColor=02303A)](https://docs.gradle.org/8.0/release-notes.html)
 [![](https://github.com/IncoderApp/LawRefBook/actions/workflows/android.yml/badge.svg?branch=main)](https://github.com/IncoderApp/LawRefBook/actions)
 
 1. 离线使用；
@@ -23,9 +23,9 @@
 
 ## Download
 
-[//]: # ([<img alt="下载应用，请到 Google Play" src="art/google-play.png" width="240">]&#40;https://play.google.com/store/apps/details?id=app.incoder.lawrefbook&#41; [<img alt="下载应用，请到 F-Droid" src="art/f-droid.png" width="240">]&#40;&#41; [<img alt="下载应用，请到 Github" src="art/github.png" width="240">]&#40;https://github.com/IncoderApp/LawRefBook/releases&#41;)
+[<img alt="下载应用，请到 Google Play" src="art/google-play.png" width="240">](https://play.google.com/store/apps/details?id=app.incoder.lawrefbook) [<img alt="下载应用，请到 F-Droid" src="art/f-droid.png" width="240">]() [<img alt="下载应用，请到 Github" src="art/github.png" width="240">](https://github.com/IncoderApp/LawRefBook/releases)
 
-[//]: # (> LawRefBook 是一个可重复构建的应用，你不需要担心 F-Droid 和其他应用商店签名问题，参见：[向可重现的 F-Droid 前进]&#40;https://f-droid.org/zh_Hans/2023/01/15/towards-a-reproducible-fdroid.html&#41;)
+> LawRefBook 是一个可重复构建的应用，你不需要担心 F-Droid 和其他应用商店签名问题，参见：[向可重现的 F-Droid 前进](https://f-droid.org/zh_Hans/2023/01/15/towards-a-reproducible-fdroid.html)
 
 ## Preview
 
@@ -54,7 +54,8 @@
 2. [x] 目录可定位
 3. [x] 内容标题剧中显示
 4. [x] 分享内容生成图片（限制数量：3条法条）
-5. [ ] 应用上架 F-Droid
+5. [x] 隐私协议版本管理
+6. [ ] 应用上架 F-Droid
 
 ### 1.2.0
 
@@ -62,6 +63,7 @@
 2. [ ] 自定义可展示分类
 3. [ ] 目录与内容互相联动
 4. [ ] 手动导入数据源选项
+5. [ ] Github Action & F-Droid CI 脚本
 
 > [重构数据源数据结构](https://github.com/IncoderApp/Laws)，解析源数据生成离线 SQLite3 可手动导入数据
 
