@@ -205,6 +205,48 @@
                     android:background="?android:attr/listDivider" />
 
                 <RelativeLayout
+                    android:id="@+id/rl_privacy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/listChoiceBackgroundIndicator"
+                    android:paddingStart="@dimen/dimen_16"
+                    android:paddingTop="@dimen/dimen_12"
+                    android:paddingEnd="@dimen/dimen_16"
+                    android:paddingBottom="@dimen/dimen_12">
+
+                    <ImageView
+                        android:id="@+id/iv_privacy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/dimen_16"
+                        android:contentDescription="@string/privacy_des"
+                        android:src="@drawable/ic_baseline_privacy_tip_24" />
+
+                    <TextView
+                        android:id="@+id/tv_privacy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/iv_privacy"
+                        android:text="@string/privacy_des"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_privacy"
+                        android:layout_toEndOf="@+id/iv_privacy"
+                        android:autoLink="web"
+                        android:text="@string/privacy_address"
+                        tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0.5"
+                    android:background="?android:attr/listDivider" />
+
+                <RelativeLayout
                     android:id="@+id/rl_praise"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
