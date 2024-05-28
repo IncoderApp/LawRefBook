@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager2.setOffscreenPageLimit(mFragmentList.size());
         new TabLayoutMediator(mTabLayout, viewPager2, true, (tab, position) -> {
             tab.setText(mCategories.get(position).getName());
-            if (queryText != null && queryText.length() > 0) {
+            if (queryText != null && !queryText.isEmpty()) {
                 searchData(queryText);
             }
         }).attach();
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                if (queryText != null && queryText.length() > 0) {
+                if (queryText != null && !queryText.isEmpty()) {
                     searchData(queryText);
                 }
             }
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    if (newText.length() < 1) {
+                    if (newText.isEmpty()) {
                         queryText = "";
                     } else {
                         queryText = newText;
@@ -160,6 +160,6 @@ public class MainActivity extends AppCompatActivity {
         Category category = mCategories.get(mTabLayout.getSelectedTabPosition());
         List<Law> laws = Sqlite3Dao.lawList(this, category.getId());
         List<Law> data = laws.stream().filter(t -> t.getName().contains(query)).collect(Collectors.toList());
-        mFragmentList.get(mTabLayout.getSelectedTabPosition()).changeLawre(data);
+        mFragmentList.get(mTabLayout.getSelectedTabPosition()).changeLawRef(data);
     }
 }

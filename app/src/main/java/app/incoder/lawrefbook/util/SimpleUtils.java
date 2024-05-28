@@ -1,15 +1,21 @@
 package app.incoder.lawrefbook.util;
 
+import android.annotation.SuppressLint;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.util.LruCache;
 import android.view.View;
@@ -20,9 +26,13 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,6 +52,42 @@ import app.incoder.lawrefbook.R;
 public class SimpleUtils {
 
     private static final String TAG = "SimpleUtils";
+
+    /**
+     * bitmap 保存为文件
+     *
+     * @param bm       bitmap
+     * @param filePath 文件路径
+     * @return 返回保存结果 true：成功，false：失败
+     */
+    private static Boolean saveBitmapToFile(Context context, Bitmap bm, String filePath, String name) {
+        try {
+            File path = new File(filePath);
+            path.deleteOnExit();
+            if (!path.getParentFile().exists()) {
+                path.getParentFile().mkdirs();
+            }
+            Date date = new Date(System.currentTimeMillis());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
+            String string = simpleDateFormat.format(date);
+            String fileFormat = String.format(context.getString(R.string.picture_format), name, string);
+            File file = new File(path + fileFormat + ".png");
+//            FileOutputStream fileOutputStream;
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+            boolean b;
+            if (filePath.toLowerCase().endsWith(".png")) {
+                b = bm.compress(Bitmap.CompressFormat.PNG, 100, bos);
+            } else {
+                b = bm.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            }
+            bos.flush();
+            bos.close();
+            return b;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     /**
      * 将 Bitmap 保存到 SD 卡
@@ -255,4 +301,122 @@ public class SimpleUtils {
         return bigBitmap;
     }
 
+    public void saveFreshAppImageToGallery(Context context, int imageResId) {
+        @SuppressLint("UseCompatLoadingForDrawables")
+        Drawable drawable = context.getDrawable(imageResId);
+
+        if (drawable instanceof BitmapDrawable) {
+            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+            String displayName = System.currentTimeMillis() + ".jpg";
+
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.DISPLAY_NAME, displayName);
+            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+            values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000);
+
+            ContentResolver contentResolver = context.getContentResolver();
+            Uri collection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+            Uri item = contentResolver.insert(collection, values);
+
+            if (item != null) {
+                try {
+                    OutputStream outputStream = contentResolver.openOutputStream(item);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                    outputStream.close();
+                    Toast.makeText(context, "Save successfully!", Toast.LENGTH_SHORT).show();
+                    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    mediaScanIntent.setData(item);
+                    context.sendBroadcast(mediaScanIntent);
+                } catch (Exception e) {
+                    Toast.makeText(context, "Save Failed!", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void saveToGallery(Context context, File photoFile) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, "photo.jpg");
+        contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            contentValues.put(MediaStore.Images.Media.IS_PENDING, 1);
+        }
+
+        ContentResolver contentResolver = context.getContentResolver();
+        Uri collectionUri = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ?
+                MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY) :
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
+        Uri imageUri = contentResolver.insert(collectionUri, contentValues);
+        if (imageUri != null) {
+            try {
+                OutputStream outputStream = contentResolver.openOutputStream(imageUri);
+                InputStream inputStream = new FileInputStream(photoFile);
+                copyFile(inputStream, outputStream);
+                inputStream.close();
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                contentValues.clear();
+                contentValues.put(MediaStore.Images.Media.IS_PENDING, 0);
+                contentResolver.update(imageUri, contentValues, null, null);
+            }
+        }
+    }
+
+    public static boolean saveToGallery(Context context, Bitmap bitmap, String name) {
+        boolean result = false;
+        ContentValues contentValues = new ContentValues();
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
+        String string = simpleDateFormat.format(date);
+        String fileFormat = String.format(context.getString(R.string.picture_format), name, string);
+        contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, fileFormat + ".jpg");
+        contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            contentValues.put(MediaStore.Images.Media.IS_PENDING, 1);
+        }
+
+        ContentResolver contentResolver = context.getContentResolver();
+        Uri collectionUri = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ?
+                MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY) :
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
+        Uri imageUri = contentResolver.insert(collectionUri, contentValues);
+        if (imageUri != null) {
+            try (OutputStream outputStream = contentResolver.openOutputStream(imageUri)) {
+                if (outputStream != null) {
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                contentValues.clear();
+                contentValues.put(MediaStore.Images.Media.IS_PENDING, 0);
+                contentResolver.update(imageUri, contentValues, null, null);
+            }
+            result = true;
+        }
+        return result;
+    }
+
+
+    public static void copyFile(InputStream inputStream, OutputStream outputStream) throws IOException {
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);
+        }
+        inputStream.close();
+        outputStream.close();
+    }
 }

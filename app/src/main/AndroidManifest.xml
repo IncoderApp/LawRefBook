@@ -17,16 +17,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- Android11新增 -->
-    <uses-permission
-        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
-    <!-- android10.0根目录创建文件夹android:requestLegacyExternalStorage="true" -->
-    <!-- android11 根目录创建文件夹android:preserveLegacyExternalStorage="true"
-         在Android11的机器上覆盖安装时，才能访问旧版存储位置，卸载重装会失效-->
-    <!-- Android11 更新了新的存储权限分区存储，将不再允许用户授权访问 Downloads 的根目录、每个可用 SD 卡的根目录以及其它应用的目录。
+
+    <!--    &lt;!&ndash; Android 11 新增 &ndash;&gt;-->
+    <!--    <uses-permission-->
+    <!--        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"-->
+    <!--        tools:ignore="ScopedStorage" />-->
+
+    <!-- android 10 根目录创建文件夹 android:requestLegacyExternalStorage="true" -->
+    <!-- android 11 根目录创建文件夹 android:preserveLegacyExternalStorage="true"
+         在Android 11 的机器上覆盖安装时，才能访问旧版存储位置，卸载重装会失效-->
+    <!-- Android 11 更新了新的存储权限分区存储，将不再允许用户授权访问 Downloads 的根目录、每个可用 SD 卡的根目录以及其它应用的目录。
          应用仍然可以通过 Storage Access Framework API 或者文件选择器来帮助用户从共享存储中选取个别文件-->
 
     <application
@@ -63,6 +66,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
+        </provider>
     </application>
 
 </manifest>

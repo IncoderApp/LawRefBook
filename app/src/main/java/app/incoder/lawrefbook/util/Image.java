@@ -15,8 +15,6 @@ import android.widget.EditText;
 import app.incoder.lawrefbook.R;
 
 /**
- * Image
- *
  * <a href="https://blog.csdn.net/xuqiqiang1993/article/details/67636165">Android StaticLayout实现主流便签内容生成长图功能</a>
  *
  * @author : Jerry xu

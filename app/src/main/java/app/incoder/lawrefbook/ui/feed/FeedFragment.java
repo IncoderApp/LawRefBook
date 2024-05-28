@@ -62,7 +62,7 @@ public class FeedFragment extends Fragment {
         return fragment;
     }
 
-    public void changeLawre(List<Law> data) {
+    public void changeLawRef(List<Law> data) {
         if (mAdapter == null) {
             mAdapter = new FeedAdapter(requireActivity());
         } else {

@@ -23,18 +23,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -108,6 +104,7 @@ public class ContentActivity extends AppCompatActivity {
     private FloatingActionButton mFavorite;
     private SelectionTracker<Long> mSelectionTracker;
     private List<Content> mContentList;
+    private Selection<Long> selection;
     private boolean mCollected;
     private Integer mLibrariesId;
     private static final int REQUEST_CODE = 1024;
@@ -163,7 +160,7 @@ public class ContentActivity extends AppCompatActivity {
         fabInfo.setOnClickListener(view -> new MaterialAlertDialogBuilder(ContentActivity.this).setTitle(view.getContentDescription()).setPositiveButton(getResources().getString(R.string.i_know), null).setMessage(getResources().getString(R.string.empty_data)).show());
 
         mViewModel.getFavorite(mArticleId, Classify.FULL_CATEGORY.getName()).observe(this, libraries -> {
-            if (libraries.size() > 0) {
+            if (!libraries.isEmpty()) {
                 mLibrariesId = libraries.stream().map(Libraries::getId).findFirst().get();
                 mFavorite.setImageResource(R.drawable.ic_baseline_favorite_24);
                 mCollected = true;
@@ -181,11 +178,9 @@ public class ContentActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if (savedInstanceState != null) {
-            mSelectionTracker.onRestoreInstanceState(savedInstanceState);
-        }
+        mSelectionTracker.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
@@ -198,10 +193,10 @@ public class ContentActivity extends AppCompatActivity {
         mBottomAppBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.menu_share) {
                 // share
-                if (mSelectionTracker.getSelection().size() < 1) {
+                if (mSelectionTracker.getSelection().isEmpty()) {
                     Toast.makeText(this, getResources().getString(R.string.select_share_content), Toast.LENGTH_SHORT).show();
                 } else {
-                    Selection<Long> selection = mSelectionTracker.getSelection();
+                    selection = mSelectionTracker.getSelection();
                     new MaterialAlertDialogBuilder(ContentActivity.this).setTitle(getResources().getString(R.string.menu_share)).setPositiveButton(getResources().getString(R.string.i_know), null).setItems(getResources().getStringArray(R.array.content_action), (dialog, which) -> {
                         if (which == 0) {
                             // collection
@@ -218,7 +213,7 @@ public class ContentActivity extends AppCompatActivity {
                                 Toast.makeText(this, "超出保存法条", Toast.LENGTH_SHORT).show();
                                 return;
                             }
-                            saveLawPicture(selection);
+                            saveLawPicture();
                         }
                         mSelectionTracker.clearSelection();
                         mBinding.tvCount.setText(String.format(getString(R.string.word_count), mArticle.getInfo().getWordsCount()));
@@ -233,20 +228,11 @@ public class ContentActivity extends AppCompatActivity {
         });
     }
 
-    private void saveLawPicture(Selection<Long> selection) {
-        requestPermission();
-        StringBuilder sb = new StringBuilder();
-        sb.append("《").append(mArticle.getTitle()).append("》").append("\n");
-        for (Long index : selection) {
-            String snippets = mContentList.get(index.intValue()).getRule();
-            sb.append(snippets).append(selection.size() > 1 ? "\n" : "");
-        }
-        EditText editText = new EditText(this);
-        editText.setText(sb.toString());
-        Bitmap bitmap = Image.getBitmap(this, editText);
-        boolean saveResult = SimpleUtils.saveBitmapToSdCard(this, bitmap, mArticle.getTitle());
-        if (saveResult) {
-            Toast.makeText(this, getResources().getString(R.string.save_success), Toast.LENGTH_SHORT).show();
+    private void saveLawPicture() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+        } else {
+            doSomething();
         }
     }
 
@@ -314,7 +300,7 @@ public class ContentActivity extends AppCompatActivity {
         mSelectionTracker.addObserver(new SelectionTracker.SelectionObserver<Long>() {
             @Override
             public void onSelectionChanged() {
-                if (mSelectionTracker.getSelection().size() > 0) {
+                if (!mSelectionTracker.getSelection().isEmpty()) {
                     String title = String.format(getString(R.string.select_count), mSelectionTracker.getSelection().size());
                     mBinding.tvCount.setText(title);
                 } else {
@@ -355,7 +341,7 @@ public class ContentActivity extends AppCompatActivity {
 
     protected void setUpBottomDrawer() {
         mBottomAppBar.setNavigationOnClickListener(v -> {
-            if (mArticle.getToc().size() < 1) {
+            if (mArticle.getToc().isEmpty()) {
                 Toast.makeText(this, getResources().getString(R.string.untitled), Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -381,7 +367,7 @@ public class ContentActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (mSelectionTracker.getSelection().size() > 0) {
+        if (!mSelectionTracker.getSelection().isEmpty()) {
             mSelectionTracker.clearSelection();
         } else {
             super.onBackPressed();
@@ -423,45 +409,12 @@ public class ContentActivity extends AppCompatActivity {
         diffResult.dispatchUpdatesTo(mAdapter);
     }
 
-
-    private void requestPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            // 先判断有没有权限
-            if (Environment.isExternalStorageManager()) {
-                doSomething();
-            } else {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                intent.setData(Uri.parse("package:" + this.getPackageName()));
-                startActivityForResult(intent, REQUEST_CODE);
-            }
-        } else {
-            // 先判断有没有权限
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                doSomething();
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
-            }
-        }
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CODE) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 doSomething();
-            } else {
-                Toast.makeText(this, getResources().getString(R.string.obtain_permissions), Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (Environment.isExternalStorageManager()) {
-//                writeFile();
             } else {
                 Toast.makeText(this, getResources().getString(R.string.obtain_permissions), Toast.LENGTH_SHORT).show();
             }
@@ -472,6 +425,18 @@ public class ContentActivity extends AppCompatActivity {
      * 模拟文件写入
      */
     private void doSomething() {
-//        ToastUtils.show("doSomething");
+        StringBuilder sb = new StringBuilder();
+        sb.append("《").append(mArticle.getTitle()).append("》").append("\n");
+        for (Long index : selection) {
+            String snippets = mContentList.get(index.intValue()).getRule();
+            sb.append(snippets).append(selection.size() > 1 ? "\n" : "");
+        }
+        EditText editText = new EditText(this);
+        editText.setText(sb.toString());
+        Bitmap bitmap = Image.getBitmap(this, editText);
+        boolean saveResult = SimpleUtils.saveToGallery(this, bitmap, mArticle.getTitle());
+        if (saveResult) {
+            Toast.makeText(this, getResources().getString(R.string.save_success), Toast.LENGTH_SHORT).show();
+        }
     }
 }
