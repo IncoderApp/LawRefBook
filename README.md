@@ -8,13 +8,14 @@
 因此该项目的 JDK 版本取决于你的运行环境
 
 [![](https://img.shields.io/badge/Android%20Studio-Chipmunk%202021.2.1+-06?logo=Android%20Studio&labelColor=02303A)](https://developer.android.google.cn/studio/releases)
-[![](https://img.shields.io/badge/Compatibleby-SDK%2024%20~%2033-06?logo=Android&labelColor=02303A)](https://developer.android.google.cn/reference)
+[![](https://img.shields.io/badge/Compatibleby-SDK%2024%20~%2034-06?logo=Android&labelColor=02303A)](https://developer.android.google.cn/reference)
 [![](https://img.shields.io/badge/Use%20up%20by-JDK%201.11+-important?logo=openjdk&labelColor=02303A)](https://jdk.java.net/java-se-ri/11)
 [![](https://img.shields.io/badge/Build%20up%20by-Gradle%208.0%20bin-06A0CE?logo=Gradle&labelColor=02303A)](https://docs.gradle.org/8.0/release-notes.html)
-[![](https://github.com/IncoderApp/LawRefBook/actions/workflows/android.yml/badge.svg?branch=main)](https://github.com/IncoderApp/LawRefBook/actions)
+
+[//]: # ([![]&#40;https://github.com/IncoderApp/LawRefBook/actions/workflows/android.yml/badge.svg?branch=main&#41;]&#40;https://github.com/IncoderApp/LawRefBook/actions&#41;)
 
 1. 离线使用；
-2. 遵循 [Material Design](https://material.io) 风格；
+2. 遵循 [Material Design2](https://m2.material.io) 风格；
 3. 上架 F-Droid，[Google Play](https://play.google.com/store/apps/details?id=app.incoder.lawrefbook)  应用市场；
 4. 完全开源，如有需要请遵循开源协议自行提取
 
@@ -23,9 +24,10 @@
 
 ## Download
 
-[<img alt="下载应用，请到 Google Play" src="art/google-play.png" width="240">](https://play.google.com/store/apps/details?id=app.incoder.lawrefbook) [<img alt="下载应用，请到 F-Droid" src="art/f-droid.png" width="240">]() [<img alt="下载应用，请到 Github" src="art/github.png" width="240">](https://github.com/IncoderApp/LawRefBook/releases)
+[//]: # ([<img alt="下载应用，请到 Google Play" src="art/google-play.png" width="240">]&#40;https://play.google.com/store/apps/details?id=app.incoder.lawrefbook&#41; [<img alt="下载应用，请到 F-Droid" src="art/f-droid.png" width="240">]&#40;&#41; [<img alt="下载应用，请到 Github" src="art/github.png" width="240">]&#40;https://github.com/IncoderApp/LawRefBook/releases&#41;)
 
-> LawRefBook 是一个可重复构建的应用，你不需要担心 F-Droid 和其他应用商店签名问题，参见：[向可重现的 F-Droid 前进](https://f-droid.org/zh_Hans/2023/01/15/towards-a-reproducible-fdroid.html)
+[//]: # ()
+[//]: # (> LawRefBook 是一个可重复构建的应用，你不需要担心 F-Droid 和其他应用商店签名问题，参见：[向可重现的 F-Droid 前进]&#40;https://f-droid.org/zh_Hans/2023/01/15/towards-a-reproducible-fdroid.html&#41;)
 
 ## Preview
 
@@ -79,7 +81,7 @@
 ## License
 
 ```text
-Copyright 2022 ~ 2023 Jerry xu
+Copyright 2022 ~ 2024 Jerry xu
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
