@@ -76,32 +76,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
-        if (mLaw != null && mLaw.size() > 0) {
+        if (mLaw != null && !mLaw.isEmpty()) {
             Law law = mLaw.get(position);
             holder.mTitle.setText(law.getName());
-            String path;
-
-            if (law.getFilename() == null) {
-                if (ignorePublish.contains(mCategory.getFolder())) {
-                    path = mCategory.getFolder() + "/" + law.getName() + ".md";
-                } else {
-                    if (law.getPublish() == null) {
-                        path = mCategory.getFolder() + "/" + law.getName() + ".md";
-                    } else {
-                        path = mCategory.getFolder() + "/" + law.getName() + "(" + law.getPublish() + ")" + ".md";
-                    }
-                }
-            } else {
-                if (ignorePublish.contains(mCategory.getFolder())) {
-                    path = mCategory.getFolder() + "/" + law.getFilename() + ".md";
-                } else {
-                    if (law.getPublish() == null) {
-                        path = mCategory.getFolder() + "/" + law.getFilename() + ".md";
-                    } else {
-                        path = mCategory.getFolder() + "/" + law.getFilename() + "(" + law.getPublish() + ")" + ".md";
-                    }
-                }
-            }
+            String path = getString(law);
             holder.itemView.setOnClickListener(v -> {
                 Article article = LawRefBookRepository.getArticle(v.getContext(), path);
                 if (article == null) {
@@ -119,9 +97,36 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
     }
 
+    private String getString(Law law) {
+        String path;
+
+        if (law.getFilename() == null) {
+            if (ignorePublish.contains(mCategory.getFolder())) {
+                path = mCategory.getFolder() + "/" + law.getName() + ".md";
+            } else {
+                if (law.getPublish() == null) {
+                    path = mCategory.getFolder() + "/" + law.getName() + ".md";
+                } else {
+                    path = mCategory.getFolder() + "/" + law.getName() + "(" + law.getPublish() + ")" + ".md";
+                }
+            }
+        } else {
+            if (ignorePublish.contains(mCategory.getFolder())) {
+                path = mCategory.getFolder() + "/" + law.getFilename() + ".md";
+            } else {
+                if (law.getPublish() == null) {
+                    path = mCategory.getFolder() + "/" + law.getFilename() + ".md";
+                } else {
+                    path = mCategory.getFolder() + "/" + law.getFilename() + "(" + law.getPublish() + ")" + ".md";
+                }
+            }
+        }
+        return path;
+    }
+
     @Override
     public int getItemViewType(int position) {
-        if (mLaw.size() == 0) {
+        if (mLaw.isEmpty()) {
             return VIEW_TYPE_EMPTY;
         }
         return VIEW_TYPE_ITEM;
@@ -129,7 +134,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
     @Override
     public int getItemCount() {
-        if (mLaw.size() > 0) {
+        if (!mLaw.isEmpty()) {
             return mLaw.size();
         } else {
             return 1;

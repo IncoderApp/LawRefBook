@@ -43,6 +43,7 @@ import java.util.List;
 import app.incoder.lawrefbook.R;
 import app.incoder.lawrefbook.model.Content;
 import app.incoder.lawrefbook.model.Type;
+import lombok.Setter;
 
 /**
  * ContentAdapter
@@ -54,6 +55,7 @@ public class ContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private List<Content> mContent;
     private String queryText;
+    @Setter
     private SelectionTracker<Long> selectionTracker;
     public static final int VIEW_TYPE_TITLE = 0;
     public static final int VIEW_TYPE_NODE = 1;
@@ -70,10 +72,6 @@ public class ContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public List<Content> getData() {
         return mContent;
-    }
-
-    public void setSelectionTracker(SelectionTracker<Long> selectionTracker) {
-        this.selectionTracker = selectionTracker;
     }
 
     @NonNull
@@ -161,7 +159,7 @@ public class ContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private void bind(String item, Context context, int position) {
             details.position = position;
             SpannableString spannableString = new SpannableString(item);
-            if (queryText != null && queryText.length() > 0 && item.contains(queryText)) {
+            if (queryText != null && !queryText.isEmpty() && item.contains(queryText)) {
                 // search
                 int temp = item.indexOf(queryText);
                 while (temp != -1) {

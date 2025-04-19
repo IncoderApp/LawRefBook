@@ -171,9 +171,9 @@ public class TreeHelper {
      * @param node node
      */
     private static void setNodeIcon(Node node) {
-        if (node.getChildren().size() > 0 && node.isExpand()) {
+        if (!node.getChildren().isEmpty() && node.isExpand()) {
             node.setIcon(R.drawable.ic_baseline_arrow_drop_down_24);
-        } else if (node.getChildren().size() > 0 && !node.isExpand()) {
+        } else if (!node.getChildren().isEmpty()) {
             node.setIcon(R.drawable.ic_baseline_arrow_right_24);
         } else {
             node.setIcon(-1);
