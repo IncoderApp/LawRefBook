@@ -58,6 +58,11 @@
 4. [x] 分享内容生成图片（限制数量：3条法条）
 5. [x] 隐私协议版本管理
 
+### 1.1.1（20250514）
+
+1. [x] 数据 [2f4c5c2](https://github.com/LawRefBook/Laws/tree/2f4c5c23716267af9dbebbbbd6cbbf732b101981) 按照法条解析
+2. [x] 应用隐私更新，
+
 ### 1.2.0
 
 1. [ ] 平板支持
@@ -81,7 +86,7 @@
 ## License
 
 ```text
-Copyright 2022 ~ 2025 Jerry xu
+Copyright 2022 ~ 2025 Jerry Xu
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

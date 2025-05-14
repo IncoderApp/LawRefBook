@@ -83,21 +83,24 @@
         3. 上架 F-Droid，Google Play 应用市场；&lt;br>
         4. 完全开源，如有需要请遵循开源协议自行提取
     </string>
-    <string name="thanks">本项目特别感谢 @RanKKI 提供开源数据，以及 LawRefBook 项目功能参考</string>
+    <string name="app_tip">本项目与任何政府机构<b>无任何关联</b>，亦未获得任何政府机构的官方授权或认可。应用中提供的信息、服务或功能仅基于公开可用的数据，<b>仅供参考使用</b>，不构成任何官方性质的指导或承诺。</string>
+    <string name="thanks">特别感谢 @RanKKI 提供开源数据，以及 LawRefBook 项目功能参考</string>
 
     <string name="other_version">版本</string>
     <string name="other_version_name" formatted="false">%s（%s）</string>
     <string name="release_note">更新日志</string>
     <string name="lawrefbook_log">https://incoder.app/2022/06/01/lawrefbook</string>
     <string name="source_code">Source Code</string>
+    <string name="data_source">数据源</string>
+    <string name="data_source_address">https://github.com/LawRefBook/Laws</string>
     <string name="privacy_des">Privacy</string>
+    <string name="privacy_address">https://privacy.incoder.app/posts/lawrefbook</string>
     <string name="github_lawrefbook">https://github.com/IncoderApp/LawRefBook</string>
-    <string name="privacy_address">https://privacy.incoder.app/2024/05/21/lawrefbook.html</string>
     <string name="praise">五星评价</string>
     <string name="praise_desc">您的好评是我更新的动力</string>
 
     <string name="developers">Developers</string>
-    <string name="author">Jerry xu</string>
+    <string name="author">Jerry Xu</string>
     <string name="author_blog">https://incoder.org</string>
     <string name="developer_designer" formatted="false">Developer &amp; Designer</string>
     <string name="feedback" formatted="false">反馈 &amp; 建议</string>
