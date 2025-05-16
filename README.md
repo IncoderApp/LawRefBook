@@ -2,7 +2,7 @@
 
 开发环境说明
 
-1. Android Studio >= 4.2，[建议 JDK11+](https://developer.android.google.cn/studio/releases/past-releases?hl=zh-cn#4-2-0) 及以上， 
+1. Android Studio >= 4.2，[建议 JDK11+](https://developer.android.google.cn/studio/releases/past-releases?hl=zh-cn#4-2-0) 及以上，
 2. Android Studio < 4.2，要求 JDK8+ 及以上即可
 
 因此该项目的 JDK 版本取决于你的运行环境
@@ -52,16 +52,16 @@
 
 ### 1.1.0（20250412）
 
-1. [x] 数据 [1a26dbe](https://github.com/LawRefBook/Laws/tree/1a26dbeebd942b0782fb0d7d282e4c4732b22fa1) 按照法条解析
-2. [x] 目录可定位
-3. [x] 内容标题剧中显示
-4. [x] 分享内容生成图片（限制数量：3条法条）
-5. [x] 隐私协议版本管理
+1. 数据 [1a26dbe](https://github.com/LawRefBook/Laws/tree/1a26dbeebd942b0782fb0d7d282e4c4732b22fa1) 按照法条解析
+2. 目录可定位
+3. 内容标题剧中显示
+4. 分享内容生成图片（限制数量：3条法条）
+5. 隐私协议版本管理
 
 ### 1.1.1（20250514）
 
-1. [x] 数据 [2f4c5c2](https://github.com/LawRefBook/Laws/tree/2f4c5c23716267af9dbebbbbd6cbbf732b101981) 按照法条解析
-2. [x] 应用隐私更新，
+1. 数据 [2f4c5c2](https://github.com/LawRefBook/Laws/tree/2f4c5c23716267af9dbebbbbd6cbbf732b101981) 按照法条解析
+2. 应用隐私更新
 
 ### 1.2.0
 

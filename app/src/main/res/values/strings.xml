@@ -83,16 +83,18 @@
         3. 上架 F-Droid，Google Play 应用市场；&lt;br>
         4. 完全开源，如有需要请遵循开源协议自行提取
     </string>
-    <string name="app_tip">本项目与任何政府机构<b>无任何关联</b>，亦未获得任何政府机构的官方授权或认可。应用中提供的信息、服务或功能仅基于公开可用的数据，<b>仅供参考使用</b>，不构成任何官方性质的指导或承诺。</string>
+    <string name="app_tip" formatted="false">本应用<b>不代表</b>政府机关，&lt;br>
+        本应用<b>不是</b>政府提供的服务，&lt;br>
+        本应用<b>不是</b>政府机关提供的 App</string>
     <string name="thanks">特别感谢 @RanKKI 提供开源数据，以及 LawRefBook 项目功能参考</string>
 
     <string name="other_version">版本</string>
     <string name="other_version_name" formatted="false">%s（%s）</string>
     <string name="release_note">更新日志</string>
-    <string name="lawrefbook_log">https://incoder.app/2022/06/01/lawrefbook</string>
+    <string name="lawrefbook_log">https://incoder.app/android/lawrefbook</string>
     <string name="source_code">Source Code</string>
     <string name="data_source">数据源</string>
-    <string name="data_source_address">https://github.com/LawRefBook/Laws</string>
+    <string name="data_source_address">https://flk.npc.gov.cn</string>
     <string name="privacy_des">Privacy</string>
     <string name="privacy_address">https://privacy.incoder.app/posts/lawrefbook</string>
     <string name="github_lawrefbook">https://github.com/IncoderApp/LawRefBook</string>
