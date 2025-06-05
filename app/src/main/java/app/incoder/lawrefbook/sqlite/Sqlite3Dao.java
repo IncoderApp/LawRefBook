@@ -71,7 +71,7 @@ public class Sqlite3Dao {
         return getCategory(Sqlite3Dao.getInstance().getSqlite(context));
     }
 
-    public static List<Law> lawList(Context context, Integer categoryId) {
+    public static List<Law> lawList(Context context, String categoryId) {
         return getLaw(Sqlite3Dao.getInstance().getSqlite(context), categoryId);
     }
 
@@ -81,7 +81,7 @@ public class Sqlite3Dao {
         if (null != category) {
             if (category.moveToFirst()) {
                 do {
-                    int id = category.getInt(category.getColumnIndexOrThrow("id"));
+                    String id = category.getString(category.getColumnIndexOrThrow("id"));
                     String name = category.getString(category.getColumnIndexOrThrow("name"));
                     String folder = category.getString(category.getColumnIndexOrThrow("folder"));
                     Integer subFolder = category.getInt(category.getColumnIndexOrThrow("isSubFolder"));
@@ -103,10 +103,10 @@ public class Sqlite3Dao {
         return result;
     }
 
-    private static List<Law> getLaw(SQLiteDatabase sqlite, Integer categoryIds) {
+    private static List<Law> getLaw(SQLiteDatabase sqlite, String categoryIds) {
         Cursor law;
         if (categoryIds != null) {
-            law = sqlite.rawQuery("SELECT * FROM law WHERE category_id = ? ORDER BY `order`", new String[]{categoryIds.toString()});
+            law = sqlite.rawQuery("SELECT * FROM law WHERE category_id = ? ORDER BY `order`", new String[]{categoryIds});
         } else {
             law = sqlite.rawQuery("SELECT * FROM law ORDER BY `order`", null);
         }

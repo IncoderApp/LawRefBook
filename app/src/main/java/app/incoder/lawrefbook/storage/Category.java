@@ -34,7 +34,7 @@ import lombok.Data;
 @Builder
 public class Category implements Serializable {
 
-    private int id;
+    private String id;
     private String name;
     private String folder;
     private Integer isSubFolder;

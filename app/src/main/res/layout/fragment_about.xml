@@ -47,22 +47,17 @@
                 android:padding="@dimen/dimen_16">
 
                 <TextView
+                    android:id="@+id/tv_app_tip"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/app_tip"
                     android:textColor="@color/design_default_color_on_secondary" />
 
                 <TextView
-                    android:id="@+id/tv_developer_remarks"
+                    android:id="@+id/tv_thank"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_16"
-                    android:layout_marginBottom="@dimen/dimen_16"
-                    tools:text="@string/developer_remarks" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_8"
                     android:text="@string/thanks" />
 
             </LinearLayout>
@@ -120,6 +115,48 @@
                         android:layout_below="@+id/tv_version"
                         android:layout_toEndOf="@+id/iv_version"
                         tools:text="0.1.0（2022-05-04）" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0.5"
+                    android:background="?android:attr/listDivider" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_design"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/listChoiceBackgroundIndicator"
+                    android:paddingStart="@dimen/dimen_16"
+                    android:paddingTop="@dimen/dimen_12"
+                    android:paddingEnd="@dimen/dimen_16"
+                    android:paddingBottom="@dimen/dimen_12">
+
+                    <ImageView
+                        android:id="@+id/iv_design"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/dimen_16"
+                        android:contentDescription="@string/other_version"
+                        android:src="@drawable/ic_baseline_design_services_24" />
+
+                    <TextView
+                        android:id="@+id/tv_design"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/iv_design"
+                        android:text="@string/design_style"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_design"
+                        android:layout_toEndOf="@+id/iv_design"
+                        android:autoLink="web"
+                        android:text="@string/design_url"
+                        tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
                 </RelativeLayout>
 
                 <View

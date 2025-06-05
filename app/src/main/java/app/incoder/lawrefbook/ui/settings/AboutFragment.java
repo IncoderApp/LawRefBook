@@ -24,6 +24,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,8 +63,11 @@ public class AboutFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TextView developerRemarks = requireView().findViewById(R.id.tv_developer_remarks);
-        developerRemarks.setText(Html.fromHtml(getResources().getString(R.string.developer_remarks), Html.FROM_HTML_MODE_LEGACY));
+        TextView appTip = requireView().findViewById(R.id.tv_app_tip);
+        appTip.setText(Html.fromHtml(getResources().getString(R.string.app_tip), Html.FROM_HTML_MODE_LEGACY));
+
+        TextView thank = requireView().findViewById(R.id.tv_thank);
+        thank.setMovementMethod(LinkMovementMethod.getInstance());
 
         RelativeLayout version = requireView().findViewById(R.id.rl_version);
         TextView versionName = requireView().findViewById(R.id.tv_version_number);

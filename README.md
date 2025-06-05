@@ -24,7 +24,7 @@
 
 ## Download
 
-[<img alt="下载应用，请到 Google Play" src="art/google-play.png" width="240">](https://play.google.com/store/apps/details?id=app.incoder.lawrefbook) [<img alt="下载应用，请到 Github" src="art/github.png" width="240">](https://github.com/IncoderApp/LawRefBook/releases)
+[<img alt="下载应用，请到 Google Play" src="art/google-play-new.png" width="240">](https://play.google.com/store/apps/details?id=app.incoder.lawrefbook) [<img alt="下载应用，请到 Github" src="art/github.png" width="240">](https://github.com/IncoderApp/LawRefBook/releases)
 
 [//]: # ()
 [//]: # (> LawRefBook 是一个可重复构建的应用，你不需要担心 F-Droid 和其他应用商店签名问题，参见：[向可重现的 F-Droid 前进]&#40;https://f-droid.org/zh_Hans/2023/01/15/towards-a-reproducible-fdroid.html&#41;)
@@ -62,6 +62,11 @@
 
 1. 数据 [2f4c5c2](https://github.com/LawRefBook/Laws/tree/2f4c5c23716267af9dbebbbbd6cbbf732b101981) 按照法条解析
 2. 应用隐私更新
+
+### 1.1.2（20250605）
+
+1. 数据源解析映射问题处理
+2. 应用图标圆形支持
 
 ### 1.2.0
 

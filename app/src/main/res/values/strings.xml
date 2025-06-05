@@ -77,16 +77,17 @@
     <string name="save_success">保存成功</string>
 
     <string name="remarks">开发寄语</string>
-    <string name="developer_remarks" formatted="false">
-        1. 离线使用；&lt;br>
-        2. 遵循 Material Design 风格；&lt;br>
-        3. 上架 F-Droid，Google Play 应用市场；&lt;br>
-        4. 完全开源，如有需要请遵循开源协议自行提取
+    <string name="developer_remarks" formatted="true">
+        <ol>
+            <li>离线使用；</li>
+            <li><a href='https://m2.material.io'>Material Design2</a> 风格；</li>
+            <li>完全开源</li>
+        </ol>
     </string>
     <string name="app_tip" formatted="false">本应用<b>不代表</b>政府机关，&lt;br>
         本应用<b>不是</b>政府提供的服务，&lt;br>
         本应用<b>不是</b>政府机关提供的 App</string>
-    <string name="thanks">特别感谢 @RanKKI 提供开源数据，以及 LawRefBook 项目功能参考</string>
+    <string name="thanks">特别感谢 <a href='https://github.com/LawRefBook/Laws'>@RanKKI</a> 提供开源数据</string>
 
     <string name="other_version">版本</string>
     <string name="other_version_name" formatted="false">%s（%s）</string>
@@ -96,7 +97,9 @@
     <string name="data_source">数据源</string>
     <string name="data_source_address">https://flk.npc.gov.cn</string>
     <string name="privacy_des">Privacy</string>
+    <string name="design_style">Design Style</string>
     <string name="privacy_address">https://privacy.incoder.app/posts/lawrefbook</string>
+    <string name="design_url">https://m2.material.io</string>
     <string name="github_lawrefbook">https://github.com/IncoderApp/LawRefBook</string>
     <string name="praise">五星评价</string>
     <string name="praise_desc">您的好评是我更新的动力</string>
