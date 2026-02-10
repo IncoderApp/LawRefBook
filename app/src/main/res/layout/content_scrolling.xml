@@ -13,12 +13,13 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<app.incoder.lawrefbook.custom.ParallaxRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rv_text"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
     android:clipToPadding="false"
     android:paddingTop="@dimen/dimen_16"
     android:paddingBottom="@dimen/dimen_16"

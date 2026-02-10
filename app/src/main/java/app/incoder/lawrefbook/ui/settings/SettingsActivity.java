@@ -16,11 +16,19 @@
 
 package app.incoder.lawrefbook.ui.settings;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.material.appbar.MaterialToolbar;
 
 import app.incoder.lawrefbook.R;
 
@@ -32,12 +40,27 @@ import app.incoder.lawrefbook.R;
  */
 public class SettingsActivity extends AppCompatActivity {
 
-    public ActionBar actionBar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // 实际上 targetSdk >= 34 默认已启用，但显式调用更清晰
+            WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
+        LinearLayout contentMain = findViewById(R.id.ll_settings);
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(contentMain, (v, insets) -> {
+            // 获取状态栏高度（仅当系统提供 insets 时才生效）
+            Insets statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars());
+            v.setPadding(v.getPaddingLeft(), statusBars.top, v.getPaddingRight(), v.getPaddingBottom());
+            return insets;
+        });
         if (savedInstanceState == null) {
             /*getSupportFragmentManager()
                     .beginTransaction()
@@ -47,11 +70,6 @@ public class SettingsActivity extends AppCompatActivity {
                     .beginTransaction()
                     .replace(R.id.settings, new AboutFragment())
                     .commit();
-        }
-        actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(R.string.menu_settings);
-            actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
 

@@ -40,6 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceTitleLarge"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="16sp"
                 tools:text="文章标题" />
 
@@ -50,6 +51,7 @@
                 android:layout_below="@+id/tv_favorite_title"
                 android:maxLines="5"
                 android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="14sp"
                 tools:text="收藏内容收藏内容收藏内容收藏内容收藏内容收藏内容收藏内容" />
 
@@ -68,6 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/view_line"
                 android:textAppearance="?attr/textAppearanceLabelLarge"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="12sp"
                 tools:text="目录：刑法" />
 
@@ -78,6 +81,7 @@
                 android:layout_below="@+id/view_line"
                 android:layout_alignParentEnd="true"
                 android:textAppearance="?attr/textAppearanceLabelLarge"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="12sp"
                 tools:text="收藏时间：2022-05-01" />
 

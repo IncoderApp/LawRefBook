@@ -22,12 +22,46 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
+    <LinearLayout
+        android:id="@+id/ll_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/title"
-        app:tabMode="auto" />
+        android:background="?attr/colorPrimaryVariant">
+        <!-- 自定义 Toolbar（替代系统 ActionBar） -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/Theme.LawRefBook.AppBarOverlay"
+            app:title="@string/app_name"
+            app:titleTextColor="?attr/colorOnPrimary" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/title"
+            app:tabMode="auto" />
+
+        <ImageView
+            android:id="@+id/btn_channel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/dimen_9"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/sort"
+            android:padding="@dimen/dimen_3"
+            android:src="@drawable/baseline_notes_24" />
+    </LinearLayout>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_content"

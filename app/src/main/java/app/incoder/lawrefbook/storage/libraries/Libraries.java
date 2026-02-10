@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package app.incoder.lawrefbook.storage;
+package app.incoder.lawrefbook.storage.libraries;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

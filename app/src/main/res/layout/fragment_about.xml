@@ -26,15 +26,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_16"
-            android:layout_marginTop="@dimen/dimen_16"
-            android:layout_marginEnd="@dimen/dimen_16"
-            android:text="@string/remarks"
-            android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
-
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,8 +41,22 @@
                     android:id="@+id/tv_app_tip"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/app_tip"
-                    android:textColor="@color/design_default_color_on_secondary" />
+                    android:text="@string/app_tip1"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+                <TextView
+                    android:id="@+id/tv_app_tip2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_tip2"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+                <TextView
+                    android:id="@+id/tv_app_tip3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_tip3"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
                 <TextView
                     android:id="@+id/tv_thank"
@@ -98,7 +103,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="@dimen/dimen_16"
                         android:contentDescription="@string/other_version"
-                        android:src="@drawable/ic_baseline_new_releases_24" />
+                        android:src="@drawable/outline_verified_24" />
 
                     <TextView
                         android:id="@+id/tv_version"
@@ -139,7 +144,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="@dimen/dimen_16"
                         android:contentDescription="@string/other_version"
-                        android:src="@drawable/ic_baseline_design_services_24" />
+                        android:src="@drawable/outline_wand_stars_24" />
 
                     <TextView
                         android:id="@+id/tv_design"
@@ -223,7 +228,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="@dimen/dimen_16"
                         android:contentDescription="@string/release_note"
-                        android:src="@drawable/ic_baseline_emoji_events_24" />
+                        android:src="@drawable/outline_emoji_events_24" />
 
                     <TextView
                         android:id="@+id/tv_log"
@@ -307,7 +312,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="@dimen/dimen_16"
                         android:contentDescription="@string/privacy_des"
-                        android:src="@drawable/ic_baseline_privacy_tip_24" />
+                        android:src="@drawable/outline_privacy_tip_24" />
 
                     <TextView
                         android:id="@+id/tv_privacy"

@@ -18,6 +18,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
     android:minHeight="480dp">
 
     <TextView
@@ -29,6 +30,7 @@
         android:padding="@dimen/dimen_8"
         android:text="@string/menu_catalogue"
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        android:textColor="?attr/colorOnSurface"
         app:drawableTopCompat="@drawable/catalog_indicator" />
 
     <ListView

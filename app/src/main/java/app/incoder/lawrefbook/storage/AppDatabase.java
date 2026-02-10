@@ -18,12 +18,20 @@ package app.incoder.lawrefbook.storage;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.room.AutoMigration;
 import androidx.room.Database;
 import androidx.room.RenameColumn;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.migration.AutoMigrationSpec;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+
+import app.incoder.lawrefbook.storage.channel.Channel;
+import app.incoder.lawrefbook.storage.channel.ChannelDao;
+import app.incoder.lawrefbook.storage.libraries.Libraries;
+import app.incoder.lawrefbook.storage.libraries.LibrariesDao;
 
 /**
  * Single Room Database
@@ -31,8 +39,10 @@ import androidx.room.migration.AutoMigrationSpec;
  * @author : Jerry xu
  * @since : 2022/5/2 13:18
  */
-@Database(entities = {Libraries.class}, version = 2,
-        autoMigrations = {@AutoMigration(from = 1, to = 2, spec = AppDatabase.Libraries1To2AutoMigration.class)}
+@Database(entities = {Libraries.class, Channel.class}, version = 3
+        , autoMigrations = {
+                @AutoMigration(from = 1, to = 2, spec = AppDatabase.Libraries1To2AutoMigration.class),
+        }
 )
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -45,7 +55,9 @@ public abstract class AppDatabase extends RoomDatabase {
      */
     public abstract LibrariesDao getLibrariesDAO();
 
-    static synchronized AppDatabase getInstance(Context context) {
+    public abstract ChannelDao getChannelDAO();
+
+    public static synchronized AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "lawre_room")
 //                    .createFromAsset("database/db.sqlite3")
@@ -54,7 +66,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     // 破坏式迁移
 //                    .fallbackToDestructiveMigration()
                     // 迁移策略
-//                    .addMigrations(MIGRATION1_2)
+                    .addMigrations(MIGRATION_2_3)
                     .build();
         }
         return INSTANCE;
@@ -71,5 +83,17 @@ public abstract class AppDatabase extends RoomDatabase {
 //            database.execSQL("alter table 'product' add 'enable' integer not null default '1'");
         }
     };*/
+    static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `channel` (" +
+                    "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    "`category_name` TEXT, " +
+                    "`sort_no` INTEGER, " +
+                    "`is_show` INTEGER, " +
+                    "`create_time` TEXT, " +
+                    "`update_time` TEXT)");
+        }
+    };
 
 }

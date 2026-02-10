@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2022 The Jerry xu Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
+    android:minHeight="580dp">
+
+    <TextView
+        android:id="@+id/tv_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingTop="@dimen/dimen_12"
+        app:drawableTopCompat="@drawable/catalog_indicator" />
+
+    <LinearLayout
+        android:id="@+id/ll_fa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_bar"
+        android:layout_marginTop="-18dp"
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/dimen_16"
+        android:paddingEnd="@dimen/dimen_16"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/c_rest"
+            style="@style/Widget.MaterialComponents.Chip.Action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:layout_marginEnd="@dimen/dimen_8"
+            android:ellipsize="end"
+            android:text="@string/tab_reset"
+            android:visibility="gone"
+            app:chipIcon="@drawable/baseline_app_registration_24"
+            app:chipIconTint="?attr/colorOnSurface" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/c_edit_save"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:ellipsize="end"
+            android:text="@string/tab_edit"
+            app:checkedIcon="@drawable/baseline_check_circle_24"
+            app:checkedIconTint="@color/chip_icon_tint_selector"
+            app:closeIconEnabled="false" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_channel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_fa"
+        android:footerDividersEnabled="true"
+        android:headerDividersEnabled="true"
+        android:paddingStart="@dimen/dimen_8"
+        android:paddingEnd="@dimen/dimen_8" />
+</RelativeLayout>

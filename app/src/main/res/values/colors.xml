@@ -22,11 +22,14 @@
     <color name="purple_700">#FF8d1b11</color>
     <!--    #FF03DAC5-->
     <!--    #FF018786-->
-    <color name="teal_200">#FFFEDBD0</color>
+    <color name="teal_200">#d38113</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <!--    #f97315-->
+    <!--    #ea580b-->
+    <!--    #c2410d-->
     <color name="colorPrimary">#FEDBD0</color>
     <color name="colorPrimaryDark">#FFC2AF</color>
     <color name="colorPrimaryVariant">#FBB8AC</color>

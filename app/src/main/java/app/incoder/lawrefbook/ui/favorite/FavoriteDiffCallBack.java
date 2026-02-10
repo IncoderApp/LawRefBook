@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import java.util.List;
 
-import app.incoder.lawrefbook.storage.Libraries;
+import app.incoder.lawrefbook.storage.libraries.Libraries;
 
 /**
  * ContentDiffCallBack

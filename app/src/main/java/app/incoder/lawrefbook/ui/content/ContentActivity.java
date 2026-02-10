@@ -17,6 +17,7 @@
 package app.incoder.lawrefbook.ui.content;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -30,14 +31,18 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.selection.Selection;
 import androidx.recyclerview.selection.SelectionPredicates;
@@ -50,6 +55,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -59,14 +65,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import app.incoder.lawrefbook.R;
 import app.incoder.lawrefbook.databinding.ActivityContentBinding;
 import app.incoder.lawrefbook.model.Article;
 import app.incoder.lawrefbook.model.Classify;
 import app.incoder.lawrefbook.model.Content;
-import app.incoder.lawrefbook.storage.Libraries;
-import app.incoder.lawrefbook.storage.LibrariesViewModel;
+import app.incoder.lawrefbook.storage.libraries.Libraries;
+import app.incoder.lawrefbook.storage.libraries.LibrariesViewModel;
 import app.incoder.lawrefbook.ui.catalog.CatalogSheetFragment;
 import app.incoder.lawrefbook.ui.favorite.FavoriteActivity;
 import app.incoder.lawrefbook.util.Image;
@@ -111,13 +118,15 @@ public class ContentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        }
         super.onCreate(savedInstanceState);
-
         mViewModel = new ViewModelProvider(this).get(LibrariesViewModel.class);
         mBinding = ActivityContentBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
-        Toolbar toolbar = mBinding.toolbar;
+        MaterialToolbar toolbar = mBinding.toolbar;
         mBarLayout = mBinding.appBar;
         mCoordinatorLayout = mBinding.coordinatorLayout;
         setSupportActionBar(toolbar);
@@ -125,6 +134,12 @@ public class ContentActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        ViewCompat.setOnApplyWindowInsetsListener(mCoordinatorLayout, (v, insets) -> {
+            Insets statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars());
+            v.setPadding(v.getPaddingLeft(), statusBars.top, v.getPaddingRight(), v.getPaddingBottom());
+            return insets;
+        });
+
         mTitle = getIntent().getStringExtra(ContentActivity.Title);
         mPath = getIntent().getStringExtra(ContentActivity.Path);
         mArticleId = getIntent().getStringExtra(ContentActivity.ArticleId);
@@ -157,7 +172,9 @@ public class ContentActivity extends AppCompatActivity {
         barMenuOnClickListener();
 
         // TODO 文章官方地址
-        fabInfo.setOnClickListener(view -> new MaterialAlertDialogBuilder(ContentActivity.this).setTitle(view.getContentDescription()).setPositiveButton(getResources().getString(R.string.i_know), null).setMessage(getResources().getString(R.string.empty_data)).show());
+        fabInfo.setOnClickListener(view -> new MaterialAlertDialogBuilder(ContentActivity.this)
+                .setTitle(view.getContentDescription()).setPositiveButton(getResources().getString(R.string.i_know), null)
+                .setMessage(getResources().getString(R.string.empty_data)).show());
 
         mViewModel.getFavorite(mArticleId, Classify.FULL_CATEGORY.getName()).observe(this, libraries -> {
             if (!libraries.isEmpty()) {
@@ -175,6 +192,7 @@ public class ContentActivity extends AppCompatActivity {
         setUpRecyclerView();
 
         setUpBottomDrawer();
+        getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     @Override
@@ -197,27 +215,29 @@ public class ContentActivity extends AppCompatActivity {
                     Toast.makeText(this, getResources().getString(R.string.select_share_content), Toast.LENGTH_SHORT).show();
                 } else {
                     selection = mSelectionTracker.getSelection();
-                    new MaterialAlertDialogBuilder(ContentActivity.this).setTitle(getResources().getString(R.string.menu_share)).setPositiveButton(getResources().getString(R.string.i_know), null).setItems(getResources().getStringArray(R.array.content_action), (dialog, which) -> {
-                        if (which == 0) {
-                            // collection
-                            saveLaw(selection);
-                        } else if (which == 1) {
-                            // email feedback
-                            emailFeedback(selection);
-                        } else if (which == 2) {
-                            // text copy
-                            textClip(selection);
-                        } else {
-                            // law picture
-                            if (mSelectionTracker.getSelection().size() > 3) {
-                                Toast.makeText(this, "超出保存法条", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                            saveLawPicture();
-                        }
-                        mSelectionTracker.clearSelection();
-                        mBinding.tvCount.setText(String.format(getString(R.string.word_count), mArticle.getInfo().getWordsCount()));
-                    }).show();
+                    new MaterialAlertDialogBuilder(ContentActivity.this).setTitle(getResources().getString(R.string.menu_share))
+                            .setPositiveButton(getResources().getString(R.string.i_know), null)
+                            .setItems(getResources().getStringArray(R.array.content_action), (dialog, which) -> {
+                                if (which == 0) {
+                                    // collection
+                                    saveLaw(selection);
+                                } else if (which == 1) {
+                                    // email feedback
+                                    emailFeedback(selection);
+                                } else if (which == 2) {
+                                    // text copy
+                                    textClip(selection);
+                                } else {
+                                    // law picture
+                                    if (mSelectionTracker.getSelection().size() > 3) {
+                                        Toast.makeText(this, "超出保存法条", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    saveLawPicture();
+                                }
+                                mSelectionTracker.clearSelection();
+                                mBinding.tvCount.setText(String.format(getString(R.string.word_count), mArticle.getInfo().getWordsCount()));
+                            }).show();
                 }
             } else if (item.getItemId() == R.id.menu_collections) {
                 startActivity(new Intent(ContentActivity.this, FavoriteActivity.class));
@@ -312,7 +332,11 @@ public class ContentActivity extends AppCompatActivity {
         mAdapter = new ContentAdapter(mContentList);
         mRecyclerView.setAdapter(mAdapter);
 
-        mSelectionTracker = new SelectionTracker.Builder<>("content_selection", mRecyclerView, new ContentAdapter.KeyProvider(mAdapter), new ContentAdapter.DetailsLookup(mRecyclerView), StorageStrategy.createLongStorage()).withSelectionPredicate(SelectionPredicates.createSelectAnything()).build();
+        mSelectionTracker = new SelectionTracker.Builder<>("content_selection", mRecyclerView,
+                new ContentAdapter.KeyProvider(mAdapter),
+                new ContentAdapter.DetailsLookup(mRecyclerView),
+                StorageStrategy.createLongStorage())
+                .withSelectionPredicate(SelectionPredicates.createSelectAnything()).build();
 
         mAdapter.setSelectionTracker(mSelectionTracker);
         mSelectionTracker.addObserver(new SelectionTracker.SelectionObserver<Long>() {
@@ -354,7 +378,10 @@ public class ContentActivity extends AppCompatActivity {
     }
 
     private void showHistory() {
-        new MaterialAlertDialogBuilder(ContentActivity.this).setTitle(mArticle.getTitle()).setPositiveButton(getResources().getString(R.string.i_know), null).setItems(mArticle.getInfo().getCorrectHistory().toArray(new String[0]), null).show();
+        new MaterialAlertDialogBuilder(ContentActivity.this)
+                .setTitle(mArticle.getTitle()).setPositiveButton(getResources().getString(R.string.i_know), null)
+                .setItems(mArticle.getInfo().getCorrectHistory().toArray(new String[0]), null)
+                .show();
     }
 
     protected void setUpBottomDrawer() {
@@ -383,14 +410,24 @@ public class ContentActivity extends AppCompatActivity {
         Objects.requireNonNull(mRecyclerView.getLayoutManager()).startSmoothScroll(smoothScroller);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (!mSelectionTracker.getSelection().isEmpty()) {
-            mSelectionTracker.clearSelection();
-        } else {
-            super.onBackPressed();
+    private final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            // 直接移植你原有的逻辑
+            if (mSelectionTracker != null && !mSelectionTracker.getSelection().isEmpty()) {
+                mSelectionTracker.clearSelection();
+            } else {
+                // 1. 如果想执行默认返回操作（如关闭Activity）
+                // 先禁用自身，然后让Dispatcher继续处理
+                if (isEnabled()) {
+                    setEnabled(false);
+                    getOnBackPressedDispatcher().onBackPressed();
+                }
+                // 2. 或者，如果只想阻止返回并留在当前页面，
+                // 则什么都不做（不调用父级的onBackPressed）即可。
+            }
         }
-    }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -404,27 +441,38 @@ public class ContentActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.menu_search) {
             SearchView searchView = (SearchView) item.getActionView();
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    querySearch(query);
-                    return true;
-                }
+            if (searchView != null) {
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        querySearch(query);
+                        return true;
+                    }
 
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    querySearch(newText);
-                    return true;
-                }
-            });
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        querySearch(newText);
+                        return true;
+                    }
+                });
+            }
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void querySearch(String query) {
-        mAdapter.setData(mContentList, query);
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ContentDiffCallBack(mContentList, mContentList));
+        // filter contain queryText
+        List<Content> showContent;
+        if (query.isBlank()) {
+            showContent = mContentList;
+        } else {
+            showContent = mContentList.stream().filter(x -> x.getRule().contains(query)).collect(Collectors.toList());
+        }
+        mAdapter.setData(showContent, query);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ContentDiffCallBack(showContent, showContent));
         diffResult.dispatchUpdatesTo(mAdapter);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

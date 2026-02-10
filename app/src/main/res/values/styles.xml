@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- styles.xml -->
+    <style name="Widget.LawRefBook.PopupMenu.Overflow" parent="Widget.MaterialComponents.PopupMenu.Overflow">
+        <item name="android:popupBackground">?attr/colorSurface</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+</resources>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package app.incoder.lawrefbook.storage;
+package app.incoder.lawrefbook.storage.libraries;
 
 import android.content.Context;
 
@@ -25,6 +25,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import app.incoder.lawrefbook.storage.AppDatabase;
 
 /**
  * Libraries Repository

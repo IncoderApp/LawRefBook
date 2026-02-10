@@ -78,28 +78,26 @@ public class Sqlite3Dao {
     private static List<Category> getCategory(SQLiteDatabase sqlite) {
         Cursor category = sqlite.rawQuery("SELECT * FROM category ORDER BY `order`", null);
         List<Category> result = new ArrayList<>();
-        if (null != category) {
-            if (category.moveToFirst()) {
-                do {
-                    String id = category.getString(category.getColumnIndexOrThrow("id"));
-                    String name = category.getString(category.getColumnIndexOrThrow("name"));
-                    String folder = category.getString(category.getColumnIndexOrThrow("folder"));
-                    Integer subFolder = category.getInt(category.getColumnIndexOrThrow("isSubFolder"));
-                    String group = category.getString(category.getColumnIndexOrThrow("group"));
-                    Integer order = category.getInt(category.getColumnIndexOrThrow("order"));
-                    Category roomCategory = Category.builder()
-                            .id(id)
-                            .name(name)
-                            .folder(folder)
-                            .isSubFolder(subFolder)
-                            .group(group)
-                            .order(order)
-                            .build();
-                    result.add(roomCategory);
-                } while (category.moveToNext());
-            }
-            category.close();
+        if (category.moveToFirst()) {
+            do {
+                String id = category.getString(category.getColumnIndexOrThrow("id"));
+                String name = category.getString(category.getColumnIndexOrThrow("name"));
+                String folder = category.getString(category.getColumnIndexOrThrow("folder"));
+                Integer subFolder = category.getInt(category.getColumnIndexOrThrow("isSubFolder"));
+                String group = category.getString(category.getColumnIndexOrThrow("group"));
+                Integer order = category.getInt(category.getColumnIndexOrThrow("order"));
+                Category roomCategory = Category.builder()
+                        .id(id)
+                        .name(name)
+                        .folder(folder)
+                        .isSubFolder(subFolder)
+                        .group(group)
+                        .order(order)
+                        .build();
+                result.add(roomCategory);
+            } while (category.moveToNext());
         }
+        category.close();
         return result;
     }
 
@@ -111,36 +109,34 @@ public class Sqlite3Dao {
             law = sqlite.rawQuery("SELECT * FROM law ORDER BY `order`", null);
         }
         List<Law> result = new ArrayList<>();
-        if (null != law) {
-            if (law.moveToFirst()) {
-                do {
-                    String id = law.getString(law.getColumnIndexOrThrow("id"));
-                    String level = law.getString(law.getColumnIndexOrThrow("level"));
-                    String name = law.getString(law.getColumnIndexOrThrow("name"));
-                    String filename = law.getString(law.getColumnIndexOrThrow("filename"));
-                    String publish = law.getString(law.getColumnIndexOrThrow("publish"));
-                    String expired = law.getString(law.getColumnIndexOrThrow("expired"));
-                    Integer categoryId = law.getInt(law.getColumnIndexOrThrow("category_id"));
-                    Integer order = law.getInt(law.getColumnIndexOrThrow("order"));
-                    String subtitle = law.getString(law.getColumnIndexOrThrow("subtitle"));
-                    String validFrom = law.getString(law.getColumnIndexOrThrow("valid_from"));
-                    Law roomLaw = Law.builder()
-                            .id(id)
-                            .level(level)
-                            .name(name)
-                            .filename(filename)
-                            .publish(publish)
-                            .expired(expired)
-                            .categoryId(categoryId)
-                            .order(order)
-                            .subtitle(subtitle)
-                            .validFrom(validFrom)
-                            .build();
-                    result.add(roomLaw);
-                } while (law.moveToNext());
-            }
-            law.close();
+        if (law.moveToFirst()) {
+            do {
+                String id = law.getString(law.getColumnIndexOrThrow("id"));
+                String level = law.getString(law.getColumnIndexOrThrow("level"));
+                String name = law.getString(law.getColumnIndexOrThrow("name"));
+                String filename = law.getString(law.getColumnIndexOrThrow("filename"));
+                String publish = law.getString(law.getColumnIndexOrThrow("publish"));
+                String expired = law.getString(law.getColumnIndexOrThrow("expired"));
+                Integer categoryId = law.getInt(law.getColumnIndexOrThrow("category_id"));
+                Integer order = law.getInt(law.getColumnIndexOrThrow("order"));
+                String subtitle = law.getString(law.getColumnIndexOrThrow("subtitle"));
+                String validFrom = law.getString(law.getColumnIndexOrThrow("valid_from"));
+                Law roomLaw = Law.builder()
+                        .id(id)
+                        .level(level)
+                        .name(name)
+                        .filename(filename)
+                        .publish(publish)
+                        .expired(expired)
+                        .categoryId(categoryId)
+                        .order(order)
+                        .subtitle(subtitle)
+                        .validFrom(validFrom)
+                        .build();
+                result.add(roomLaw);
+            } while (law.moveToNext());
         }
+        law.close();
         return result;
     }
 

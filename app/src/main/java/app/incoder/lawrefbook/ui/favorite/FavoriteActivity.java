@@ -16,14 +16,20 @@
 
 package app.incoder.lawrefbook.ui.favorite;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.selection.Selection;
@@ -34,11 +40,13 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.appbar.MaterialToolbar;
+
 import java.util.List;
 
 import app.incoder.lawrefbook.R;
-import app.incoder.lawrefbook.storage.Libraries;
-import app.incoder.lawrefbook.storage.LibrariesViewModel;
+import app.incoder.lawrefbook.storage.libraries.Libraries;
+import app.incoder.lawrefbook.storage.libraries.LibrariesViewModel;
 
 /**
  * FavoriteActivity
@@ -55,14 +63,26 @@ public class FavoriteActivity extends AppCompatActivity implements ActionMode.Ca
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // 实际上 targetSdk >= 34 默认已启用，但显式调用更清晰
+            WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
+        mViewModel = new ViewModelProvider(this).get(LibrariesViewModel.class);
+        LinearLayout contentMain = findViewById(R.id.ll_favorite);
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(R.string.menu_collections);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        mViewModel = new ViewModelProvider(this).get(LibrariesViewModel.class);
+        ViewCompat.setOnApplyWindowInsetsListener(contentMain, (v, insets) -> {
+            // 获取状态栏高度（仅当系统提供 insets 时才生效）
+            Insets statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars());
+            v.setPadding(v.getPaddingLeft(), statusBars.top, v.getPaddingRight(), v.getPaddingBottom());
+            return insets;
+        });
         RecyclerView mRecyclerView = findViewById(R.id.rv_favorite);
         setUpRecyclerView(mRecyclerView);
     }
@@ -93,10 +113,10 @@ public class FavoriteActivity extends AppCompatActivity implements ActionMode.Ca
 
         mAdapter.setSelectionTracker(selectionTracker);
         selectionTracker.addObserver(
-                new SelectionTracker.SelectionObserver<Long>() {
+                new SelectionTracker.SelectionObserver<>() {
                     @Override
                     public void onSelectionChanged() {
-                        if (selectionTracker.getSelection().size() > 0) {
+                        if (!selectionTracker.getSelection().isEmpty()) {
                             if (actionMode == null) {
                                 actionMode = startSupportActionMode(FavoriteActivity.this);
                             } else {
@@ -129,7 +149,7 @@ public class FavoriteActivity extends AppCompatActivity implements ActionMode.Ca
             Selection<Long> selection = selectionTracker.getSelection();
             List<Libraries> value = mLiveData.getValue();
             for (Long id : selection) {
-                if (value != null && value.size() > 0) {
+                if (value != null && !value.isEmpty()) {
                     Libraries libraries = value.get(id.intValue());
                     mViewModel.delete(libraries);
                 }

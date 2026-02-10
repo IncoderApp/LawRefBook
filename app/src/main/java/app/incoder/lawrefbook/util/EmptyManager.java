@@ -40,7 +40,7 @@ public class EmptyManager {
         } else {
             ivEmpty.setVisibility(View.GONE);
         }
-        if (null == text || "".equals(text)) {
+        if (null == text || text.isEmpty()) {
             tvEmpty.setVisibility(View.GONE);
         } else {
             tvEmpty.setVisibility(View.VISIBLE);

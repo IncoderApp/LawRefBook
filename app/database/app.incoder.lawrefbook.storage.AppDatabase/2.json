@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "05e35cf6744054a171c25d166886ad55",
+    "identityHash": "87cb27fbf66d32dbd72871d9fe44ffd8",
     "entities": [
       {
         "tableName": "libraries",
@@ -77,12 +77,62 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "channel",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `category_name` TEXT, `sort_no` INTEGER, `is_show` INTEGER, `create_time` TEXT, `update_time` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categoryName",
+            "columnName": "category_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sortNo",
+            "columnName": "sort_no",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isShow",
+            "columnName": "is_show",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "createTime",
+            "columnName": "create_time",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updateTime",
+            "columnName": "update_time",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '05e35cf6744054a171c25d166886ad55')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '87cb27fbf66d32dbd72871d9fe44ffd8')"
     ]
   }
 }

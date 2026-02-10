@@ -23,7 +23,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,13 +62,15 @@ public class AboutFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TextView appTip = requireView().findViewById(R.id.tv_app_tip);
-        appTip.setText(Html.fromHtml(getResources().getString(R.string.app_tip), Html.FROM_HTML_MODE_LEGACY));
+//        TextView appTip = requireView().findViewById(R.id.tv_app_tip);
+//        appTip.setText(Html.fromHtml(getResources().getString(R.string.app_tip), Html.FROM_HTML_MODE_LEGACY));
 
         TextView thank = requireView().findViewById(R.id.tv_thank);
         thank.setMovementMethod(LinkMovementMethod.getInstance());
 
         RelativeLayout version = requireView().findViewById(R.id.rl_version);
+        RelativeLayout design = requireView().findViewById(R.id.rl_design);
+        RelativeLayout originData = requireView().findViewById(R.id.rl_data);
         TextView versionName = requireView().findViewById(R.id.tv_version_number);
         RelativeLayout releaseNote = requireView().findViewById(R.id.rl_log);
         RelativeLayout sourceCode = requireView().findViewById(R.id.rl_code);
@@ -86,7 +87,8 @@ public class AboutFragment extends Fragment {
         version.setOnClickListener(v -> {
 
         });
-
+        design.setOnClickListener(v -> requireActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.design_url)))));
+        originData.setOnClickListener(v -> requireActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.data_source_address)))));
         releaseNote.setOnClickListener(v -> requireActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.lawrefbook_log)))));
         sourceCode.setOnClickListener(v -> requireActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_lawrefbook)))));
         privacy.setOnClickListener(v -> requireActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacy_address)))));

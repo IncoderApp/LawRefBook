@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package app.incoder.lawrefbook.storage;
+package app.incoder.lawrefbook.storage.libraries;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -32,7 +32,7 @@ import java.util.List;
  * @since : 2022/5/2 13:18
  */
 @Dao
-interface LibrariesDao {
+public interface LibrariesDao {
 
     /**
      * insertLibraries

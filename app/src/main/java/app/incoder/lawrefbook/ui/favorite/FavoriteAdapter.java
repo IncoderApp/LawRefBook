@@ -39,8 +39,9 @@ import java.util.List;
 import app.incoder.lawrefbook.LawRefBookRepository;
 import app.incoder.lawrefbook.R;
 import app.incoder.lawrefbook.model.Article;
-import app.incoder.lawrefbook.storage.Libraries;
+import app.incoder.lawrefbook.storage.libraries.Libraries;
 import app.incoder.lawrefbook.ui.content.ContentActivity;
+import lombok.Setter;
 
 /**
  * FavoriteAdapter
@@ -51,6 +52,7 @@ import app.incoder.lawrefbook.ui.content.ContentActivity;
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder> {
 
     private List<Libraries> mLibraries;
+    @Setter
     private SelectionTracker<Long> selectionTracker;
     public static final int VIEW_TYPE_ITEM = 1;
     public static final int VIEW_TYPE_EMPTY = 0;
@@ -61,10 +63,6 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
 
     void setLibraries(List<Libraries> libraries) {
         this.mLibraries = libraries;
-    }
-
-    public void setSelectionTracker(SelectionTracker<Long> selectionTracker) {
-        this.selectionTracker = selectionTracker;
     }
 
     @NonNull
@@ -82,7 +80,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
 
     @Override
     public void onBindViewHolder(@NonNull FavoriteViewHolder holder, int position) {
-        if (mLibraries != null && mLibraries.size() > 0) {
+        if (mLibraries != null && !mLibraries.isEmpty()) {
             Libraries item = mLibraries.get(position);
             holder.itemView.setOnClickListener(v -> {
                 Article article = LawRefBookRepository.getArticle(v.getContext(), item.getArticlePath());
@@ -103,7 +101,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
 
     @Override
     public int getItemCount() {
-        if (mLibraries != null && mLibraries.size() > 0) {
+        if (mLibraries != null && !mLibraries.isEmpty()) {
             return mLibraries.size();
         } else {
             return 1;
@@ -112,7 +110,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
 
     @Override
     public int getItemViewType(int position) {
-        if (mLibraries == null || mLibraries.size() == 0) {
+        if (mLibraries == null || mLibraries.isEmpty()) {
             return VIEW_TYPE_EMPTY;
         }
         return VIEW_TYPE_ITEM;

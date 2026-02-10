@@ -87,6 +87,9 @@
     <string name="app_tip" formatted="false">本应用<b>不代表</b>政府机关，&lt;br>
         本应用<b>不是</b>政府提供的服务，&lt;br>
         本应用<b>不是</b>政府机关提供的 App</string>
+    <string name="app_tip1">本应用<b>不代表</b>政府机关，</string>
+    <string name="app_tip2">本应用<b>非</b>政府提供的服务，</string>
+    <string name="app_tip3">本应用<b>非</b>政府机关提供的 App</string>
     <string name="thanks">特别感谢 <a href='https://github.com/LawRefBook/Laws'>@RanKKI</a> 提供开源数据</string>
 
     <string name="other_version">版本</string>
@@ -119,6 +122,10 @@
     <string name="empty_data">暂无数据</string>
     <string name="app_market">您的手机没有安装应用市场</string>
 
-    <!--    Accessibility-->
+    <!-- Accessibility-->
     <string name="title">标题栏</string>
+    <string name="tab_edit">编辑</string>
+    <string name="tab_reset">恢复默认</string>
+    <string name="sort">排序</string>
+
 </resources>

@@ -23,17 +23,20 @@
         android:orderInCategory="100"
         android:title="@string/menu_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:iconTint="?attr/colorOnPrimary"
         app:showAsAction="always|collapseActionView" />
     <item
         android:id="@+id/menu_collections"
         android:icon="@drawable/ic_baseline_bookmark_border_24"
         android:orderInCategory="100"
         android:title="@string/menu_collections"
+        app:iconTint="?attr/colorOnPrimary"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_settings"
         android:icon="@drawable/ic_baseline_settings_24"
         android:orderInCategory="100"
         android:title="@string/menu_settings"
+        app:iconTint="?attr/colorOnPrimary"
         app:showAsAction="ifRoom" />
 </menu>

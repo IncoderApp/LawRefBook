@@ -63,8 +63,11 @@ public class FeedFragment extends Fragment {
     }
 
     public void changeLawRef(List<Law> data) {
+        if (!isAdded()) {
+            return;
+        }
         if (mAdapter == null) {
-            mAdapter = new FeedAdapter(requireActivity());
+            mAdapter = new FeedAdapter(requireContext());
         } else {
             DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new FeedDiffCallBack(data, laws));
             diffResult.dispatchUpdatesTo(mAdapter);
