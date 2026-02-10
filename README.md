@@ -8,11 +8,11 @@
 因此该项目的 JDK 版本取决于你的运行环境
 
 [![](https://img.shields.io/badge/Android%20Studio-Chipmunk%202021.2.1+-06?logo=Android%20Studio&labelColor=02303A)](https://developer.android.google.cn/studio/releases)
-[![](https://img.shields.io/badge/Compatibleby-SDK%2024%20~%2034-06?logo=Android&labelColor=02303A)](https://developer.android.google.cn/reference)
+[![](https://img.shields.io/badge/Compatibleby-SDK%2024%20~%2036-06?logo=Android&labelColor=02303A)](https://developer.android.google.cn/reference)
 [![](https://img.shields.io/badge/Use%20up%20by-JDK%201.11+-important?logo=openjdk&labelColor=02303A)](https://jdk.java.net/java-se-ri/11)
 [![](https://img.shields.io/badge/Build%20up%20by-Gradle%208.0%20bin-06A0CE?logo=Gradle&labelColor=02303A)](https://docs.gradle.org/8.0/release-notes.html)
 
-[![](https://github.com/IncoderApp/LawRefBook/actions/workflows/android.yml/badge.svg?branch=main)](https://github.com/IncoderApp/LawRefBook/actions)
+[//]: # ([![]&#40;https://github.com/IncoderApp/LawRefBook/actions/workflows/android.yml/badge.svg?branch=main&#41;]&#40;https://github.com/IncoderApp/LawRefBook/actions&#41;)
 
 1. 离线使用；
 2. 遵循 [Material Design2](https://m2.material.io) 风格；
@@ -68,30 +68,35 @@
 1. 数据源解析映射问题处理
 2. 应用图标圆形支持
 
+### 1.1.3（20260210）
+
+1. 适配至 targetSdk 36（预测性返回手势 和 Edge-To-Edge 全面屏）
+2. 法条搜索，只显示包含关键字的法条
+3. 黑夜模式
+4. 首页可自定义分类显示
+
 ### 1.2.0
 
 1. [ ] 平板支持
-2. [ ] 自定义可展示分类
-3. [ ] 目录与内容互相联动
-4. [ ] 手动导入数据源选项
-5. [ ] 应用上架 F-Droid
-6. [ ] Github Action & F-Droid CI 脚本
+2. [ ] 目录与内容互相联动
+3. [ ] 手动导入数据源选项
+4. [ ] 应用上架 F-Droid
+5. [ ] Github Action & F-Droid CI 脚本
 
-> [重构数据源数据结构](https://github.com/IncoderApp/Laws)，解析源数据生成离线 SQLite3 可手动导入数据
+> [重构数据源数据结构](https://github.com/IncoderApp/LawYou-Data)，解析源数据生成离线 SQLite3 可手动导入数据
 
 ### 1.2.1
 
-1. [ ] 黑夜模式
-2. [ ] 可自定义主题
-3. [ ] 文字大小调整
-4. [ ] 行间距调整
-5. [ ] 法条间距调整
-6. [ ] 超长文章标题滚动显示
+1. [ ] 可自定义主题
+2. [ ] 文字大小调整
+3. [ ] 行间距调整
+4. [ ] 法条间距调整
+5. [ ] 超长文章标题滚动显示
 
 ## License
 
 ```text
-Copyright 2022 ~ 2025 Jerry Xu
+Copyright 2022 ~ 2026 Jerry Xu
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -105,3 +110,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+
+https://mp.weixin.qq.com/s/e7RmuVRlSJS_KtvTwiHRkA
+https://mp.weixin.qq.com/s/ZxVPdrMyjtAO41M8k3N03Q
